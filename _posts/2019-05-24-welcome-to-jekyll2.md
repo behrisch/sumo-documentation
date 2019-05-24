@@ -4,23 +4,19 @@ title:  "Installing"
 date:   2019-05-24 13:40:08 +0200
 categories: jekyll update
 ---
-You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
+# Windows
+---
+There are four different binary packages for Windows depending on the platform (32 vs. 64 bit) you have and what you want to do with SUMO. If you want to install it locally and have administrator rights on your machine you should download and execute one of the installers (preferably 64 bit). If you need a "portable" version or do not have admin rights, use the correct zip, extract it into a desired folder using [7Zip](http://7-zip.de/), [Winzip](http://www.winzip.de/prod_down.htm), or a similar tool. Every package contains the binaries, all dlls needed, the examples, tools, and documentation in HTML format.
 
+Download 64 bit installer: [sumo-win64-1.2.0.msi](http://prdownloads.sourceforge.net/sumo/sumo-win64-1.2.0.msi?download)
+Download 64 bit zip: [sumo-win64-1.2.0.zip](http://prdownloads.sourceforge.net/sumo/sumo-win64-1.2.0.zip?download)
+Download 32 bit installer: [sumo-win32-1.2.0.msi](http://prdownloads.sourceforge.net/sumo/sumo-win32-1.2.0.msi?download)
+Download 32 bit zip: [sumo-win32-1.2.0.zip](http://prdownloads.sourceforge.net/sumo/sumo-win32-1.2.0.zip?download)
 
-To add new posts, simply add a file in the `_posts` directory that follows the convention `YYYY-MM-DD-name-of-post.ext` and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.
+Within the installation folder, you will find a folder named **"bin"**. Here, you can find the executables (programs). You may double click on SUMO-GUI and take a look at the examples located in **docs/examples**. All other applications (DUAROUTER, DFROUTER, etc.) have to be run from the command line. To facilitate this there is also a start-commandline.bat which sets up the whole environment for you. If you feel unsure about the command line, please read Basics/Basic_Computer_Skills#Running_Programs_from_the_Command_Line.
 
-Jekyll also offers powerful support for code snippets:
+If you want a bleeding edge nightly build or need tests or source files, you can download them from the Download page.
 
-{% highlight ruby %}
-def print_hi(name)
-  puts "Hi, #{name}"
-end
-print_hi('Tom')
-#=> prints 'Hi, Tom' to STDOUT.
-{% endhighlight %}
+For building SUMO from source see building SUMO under Windows.
 
-Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll Talk][jekyll-talk].
-
-[jekyll-docs]: https://jekyllrb.com/docs/home
-[jekyll-gh]:   https://github.com/jekyll/jekyll
-[jekyll-talk]: https://talk.jekyllrb.com/
+# Linux
