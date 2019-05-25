@@ -16,7 +16,7 @@
 title: Eclipse SUMO - Documentation
 email: 
 description: >- # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here 123. You can edit this
+  Write an awesome description for your new site here 12345. You can edit this
   line in _config.yml. It will appear in your document head meta (for
   Google search results) and in your feed.xml site description.
 baseurl: "sumo-documentation/" # the subpath of your site, e.g. /blog
@@ -28,7 +28,7 @@ github.repository_url: "https://github.com/angelobanse/sumo-documentation/tree/m
 
 # Build settings
 markdown: kramdown
-theme: minima
+#theme: minima
 #theme: just-the-docs
 plugins:
   - jekyll-feed
