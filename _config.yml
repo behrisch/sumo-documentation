@@ -24,7 +24,7 @@ url: "" # the base hostname & protocol for your site, e.g. http://example.com
 permalink: /:title.html
 twitter_username: eclipseSUMO
 github_username:
-github.repository_url: "https://github.com/angelobanse/sumo-documentation/tree/master/documentation" 
+repository_url: "https://github.com/angelobanse/sumo-documentation/tree/master/documentation" 
 
 # Build settings
 markdown: kramdown
