@@ -22,6 +22,7 @@ description: >- # this means to ignore newlines until "baseurl:"
 baseurl: "sumo-documentation/" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 permalink: /:title.html
+encoding: UTF-8
 twitter_username: eclipseSUMO
 github_username:
 repository_url: "https://github.com/angelobanse/sumo-documentation" 
