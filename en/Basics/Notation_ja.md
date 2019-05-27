@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Basics Notation
-permalink: /Basics/Notation/
+permalink: /Basics/Notation_ja/
 lang: ja
 lang-ref: basics-notation
 ---
