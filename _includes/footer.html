@@ -11,7 +11,7 @@
         <em>Read this page in a different language:</em>
         <ul>
         {% for post in posts %}
-        <li><a href="{{ site.baseurl }}{{ post.url }}" class="{{ post.lang }} title="View in {{page.lang}}">{{ page.lang }}</a></li>
+        <li><a href="{{ site.baseurl }}{{ post.url }}" class="{{ post.lang }} title="View in {{post.lang}}">{{ page.lang }}</a></li>
         {% endfor %}
         </ul>
     </div>
