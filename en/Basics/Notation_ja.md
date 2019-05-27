@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Basics Notation
+title: ドキュメント上の記法
 permalink: /Basics/Notation_ja/
 lang: ja
 lang-ref: basics-notation

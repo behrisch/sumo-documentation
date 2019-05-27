@@ -1,20 +1,3 @@
-{% if page.layout != 'home' %}
-    {% assign posts=site.posts | where:"lang-ref", page.lang-ref | sort: 'lang' %}
-    {% if posts.size == 0 %}
-        {% assign posts=site.pages | where:"lang-ref", page.lang-ref | sort: 'lang' %}
-    {% endif %}
-    {% if posts.size > 1 %}
-    <footer class="lang-options">
-        <em>Read this page in a different language:</em>
-        <ul>
-        {% for post in posts %}
-        <li><a href="{{ site.baseurl }}{{ post.url }}" class="{{ post.lang }} title="View in {{post.lang}}">{{ post.lang }}</a></li>
-        {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
-{% endif %}
-
 <footer class="site-footer h-card">
     <data class="u-url" href="{{ "/" | relative_url }}"></data>
   
