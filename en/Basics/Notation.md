@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: post
 title: Basics Notation
 permalink: /Basics/Notation/
 lang: en
