@@ -1,7 +1,4 @@
-<footer class="site-footer h-card">
-    <data class="u-url" href="{{ "/" | relative_url }}"></data>
-  
-    {% if page.layout != 'index' %}
+{% if page.layout != 'home' %}
     {% assign posts=site.posts | where:"lang-ref", page.lang-ref | sort: 'lang' %}
     {% if posts.size == 0 %}
         {% assign posts=site.pages | where:"lang-ref", page.lang-ref | sort: 'lang' %}
@@ -18,6 +15,9 @@
     {% endif %}
 {% endif %}
 
+<footer class="site-footer h-card">
+    <data class="u-url" href="{{ "/" | relative_url }}"></data>
+  
     <div class="wrapper">
   
       <div class="footer-col-wrapper">
