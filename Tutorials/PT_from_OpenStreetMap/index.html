@@ -1,0 +1,48 @@
+<p>This tutorial shows you how to build a public transit (PT) simulation scenario from scratch using an <a href="/OpenStreetMap_file" title="wikilink">OpenStreetMap file</a> as the only input. If you are new to OpenStreetMap in conjunction with SUMO you will also find the <a href="/Tutorials/Import_from_OpenStreetMap" title="wikilink">OSM</a> tutorial helpful.</p>
+
+<p>The creation of PT simulation consists of two steps:</p>
+
+<ol>
+  <li>Initial network and public transit information extraction</li>
+  <li>Finding feasible stop-to-stop travel times and creating PT schedules</li>
+</ol>
+
+<h2 id="initial-network-and-public-transit-information-extraction">Initial network and public transit information extraction</h2>
+
+<p>In the first step PT stops and line information will be extracted. The step is performed by invoking netconvert as follows</p>
+
+<p><code class="highlighter-rouge"> netconvert --osm-files osm.xml -o net.net.xml --osm.stop-output.length 20 --ptstop-output additional.xml --ptline-output ptlines.xml</code></p>
+
+<p>, where</p>
+
+<ul>
+  <li><em>–osm-files osm.xml</em> points to the <a href="/OpenStreetMap_file" title="wikilink">OpenStreetMap file</a></li>
+  <li><em>-o net.net.xml</em> points to the to-be-generated SUMO network file</li>
+  <li><em>–osm.stop-output.length 20</em> defines the length of the PT stop platforms in meter</li>
+  <li><em>–ptstop-output additional.xml</em> points to the to-be-generated <a href="/Simulation/Public_Transport" title="wikilink">PT stop file</a></li>
+  <li><em>–ptline-output ptlines.xml</em> points to an intermediate file defining the PT lines.</li>
+</ul>
+
+<h2 id="finding-feasible-stop-to-stop-travel-times-and-creating-pt-schedules">Finding feasible stop-to-stop travel times and creating PT schedules</h2>
+
+<p>The second step is to run a python script that performs the following:</p>
+
+<ol>
+  <li>To determine feasible stop-to-stop travel times, a simulation run is performed with one PT vehicle for each PT line.</li>
+  <li>The PT schedule (regular interval timetable) for all lines is created from the stop-to-stop travel time information.</li>
+</ol>
+
+<p>The stop-to-stop travel times are determined on an empty network. It will be straightforward to extend the script so the stop-to-stop travel times a determined for an existing transport model. This, however, is beyond the scope of this tutorial. The steps are performed by invoking the <em>ptlines2flows.py</em> script as follows</p>
+
+<p><code class="highlighter-rouge"> tools/ptlines2flows.py -n net.net.xml -s additional.xml -l ptlines.xml -o flows.rou.xml -p 600 --use-osm-routes</code></p>
+
+<p>, where</p>
+
+<ul>
+  <li><em>-n net.net.xml</em> points to the SUMO network previously created with netconvert</li>
+  <li><em>-s additional.xml</em> points to the PT stop file created with netconvert</li>
+  <li><em>-l ptlines.xml</em> points to the PT lines definition file created with netconvert</li>
+  <li>“-o flows.rou.xml’’ points to the to-be-generated <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes" title="wikilink">route</a> files for the PT vehicles</li>
+  <li>“-p 600” is the period for the regular interval time table in seconds</li>
+  <li>“–use-osm-routes” means the script will adopt the pt routes from osm.xml rather then creating new shortest path routes between stops</li>
+</ul>

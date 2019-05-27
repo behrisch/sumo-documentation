@@ -1,0 +1,82 @@
+<p>In the following, the inputs needed by the simulation modules <a href="/SUMO" title="wikilink">SUMO</a> and <a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a> are described.</p>
+
+<h1 id="input-files">Input Files</h1>
+
+<h2 id="road-network">Road Network</h2>
+
+<p>For a simulation, a <a href="/Networks/SUMO_Road_Networks" title="wikilink">SUMO Road Network</a> must be given using the option (or ). The network is normally built using <a href="/NETCONVERT" title="wikilink">NETCONVERT</a> or <a href="/NETGENERATE" title="wikilink">NETGENERATE</a>.</p>
+
+<h2 id="traffic-demand-routes">Traffic Demand (Routes)</h2>
+
+<p>The vehicles to simulate must be given. Their description normally includes <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes" title="wikilink">vehicle types, vehicles, and vehicle routes</a>. Routes are normally given to the simulation modules using the option (or ). As you can see, you can use more than one route file within a single simulation run.</p>
+
+<p>The routes MUST be sorted. The reason is that we want to simulate large road networks with up to millions of routes. Using a plain PC this is only possible if you do not keep all routes in memory. All files given as parameter to are read step-wise. Starting at the begin time step, new routes are loaded every n time steps for the next n time steps. n may be controlled using the where &lt;=0 forces <a href="/SUMO" title="wikilink">SUMO</a>/<a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a> to load the file completely. Fetching routes for the next steps only implies that the vehicle types - or maybe “global” routes - must be given in prior to the routes that use them.</p>
+
+<p>You may also give routes including vehicle definitions as to <a href="/SUMO" title="wikilink">SUMO</a>/<a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a>.</p>
+
+<h2 id="additional-files">Additional Files</h2>
+
+<p>One ore more (s) are used to load additional entities:</p>
+
+<ul>
+  <li>infrastructure relateded things: <a href="/Simulation/Traffic_Lights" title="wikilink">traffic light programs</a>, <a href="/Simulation/Output/Induction_Loops_Detectors_%28E1%29" title="wikilink">induction loops</a> and <a href="/Simulation/Public_Transport" title="wikilink">bus stops</a></li>
+  <li>additional visualization: <a href="/Simulation/Shapes#POI_.28Point_of_interest.29_Definitions" title="wikilink">POIs</a> and <a href="/Simulation/Shapes#Polygon_Definitions" title="wikilink">polygons</a> (i.e. rivers and houses)</li>
+  <li>dynamic simulation control structures: <a href="/Simulation/Variable_Speed_Signs" title="wikilink">variable speed signs</a> and <a href="/Simulation/Rerouter" title="wikilink">rerouters</a></li>
+  <li>demand related entities: <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicle_Types" title="wikilink">vehicle types</a> and <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicles_and_Routes" title="wikilink">routes</a></li>
+</ul>
+
+<p>All these additional structures / definitions are given to the simulation using the . The list of given files is processed incrementally, this means each file is read completely from top to bottom and the list is processed starting with the first file of the list.</p>
+
+<h2 id="parsing-order">Parsing Order</h2>
+
+<p>To ensure the correct resolution of references, it is important to know what is loaded when. The order is as follows:</p>
+
+<ol>
+  <li>the network is read</li>
+  <li>the additional files are read (completely from top to bottom) in the order in which they are given in the option</li>
+  <li>the route files are opened and the first n steps are read</li>
+  <li>each n time steps, the routes for the next n time steps are read</li>
+</ol>
+
+<h1 id="defining-the-time-period-to-simulate">Defining the Time Period to Simulate</h1>
+
+<p>Each simulation requires the definition about the time period to be simulated. This is given to <a href="/SUMO" title="wikilink">SUMO</a> or <a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a> using the options (or for short) and (). Please note that whether the option was given influences the simulation’s behavior. The details are described below.</p>
+
+<p>The simulation starts at the time given in , which defaults to 0. All vehicles with a departure time (<span class="inlxml">depart</span>) lower than the begin time are discarded.</p>
+
+<p>The simulation performs each time step one-by-one.</p>
+
+<p>The simulation ends in the following cases:</p>
+
+<ul>
+  <li>The final time step was given using and this time step was reached (time after a step is &gt;= end).</li>
+  <li>No value for has been given and all vehicles have been simulated. The state of the simulation is the one in which the last vehicle has left the simulated area. If a <a href="/TraCI" title="wikilink">TraCI</a> connection is active, the simulation will continue even after the last vehicle (potentially “forever”).</li>
+  <li>A close command has been received via <a href="/TraCI" title="wikilink">TraCI</a></li>
+</ul>
+
+<h1 id="defining-the-time-step-length">Defining the Time Step Length</h1>
+
+<p><a href="/SUMO" title="wikilink">SUMO</a>/<a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a> use a time step of one second per default. You may override this using the option. is here given in seconds, but you may enter a real number. In conclusion giving will run the simulation using time steps of 10ms.</p>
+
+<p>Specifying the option implies that vehicles perform calculations for the adaption of accelerations or lane-change maneuvers only at intervals of the given length and not within every simulations step (which is the default). Using an action-step-length different from the simulation step length automatically switches the <a href="/#Defining_the_Integration_Method" title="wikilink">integration method</a> to ‘ballistic’.</p>
+
+<p>Choosing the action step length larger than the simulation step length may speed up the simulation, but note that a value larger than the assumed reaction time tau may induce collisions. See the description of <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicle_Types" title="wikilink">vehicle type</a> and <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Car-Following_Models" title="wikilink">car-following</a> parameters for details.</p>
+
+<h1 id="defining-the-integration-method">Defining the Integration Method</h1>
+
+<p>There are two numerical integration methods available, which control the dynamical update of the simulation. Currently, the default is an Euler update, which considers the vehicle’s speed constant during one time step. As an alternative, SUMO offers the ballistic update, which considers the acceleration constant during one time step. It can be activated by giving the option or including the following into the configuration file:</p>
+
+<p><code class="highlighter-rouge"> </code><processing>
+`     &lt;step-method.ballistic value=`“`true`”`/&gt;`
+` `</processing></p>
+
+<p>Especially for larger time-steps (e.g. 1sec.) ballistic update yields more realistic dynamics for car-following models based on continuous dynamics. See also <a href="http://arxiv.org/abs/1403.4881"><em>Martin Treiber, Venkatesan Kanagaraj</em>, Comparing Numerical Integration Schemes for Time-Continuous Car-Following Models</a>.</p>
+
+<p>Ballistic update causes positions to be updated with the average speed between time steps instead of the speed of the current time step. Consider this example with step-length 1s:</p>
+
+<p>Vehicle at position x drives with speed 4.5m/s in step t and brakes to speed 0 in step t+1.</p>
+
+<ul>
+  <li>Euler-update: Vehicle is stopped at position x in step t+1 (instant deceleration)</li>
+  <li>Ballistic-update: Vehicle is stopped at position x + 2.25 in step t+1 (continuous deceleration)</li>
+</ul>

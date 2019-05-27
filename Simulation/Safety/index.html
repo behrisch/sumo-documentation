@@ -1,0 +1,107 @@
+<p><strong>FORCETOC</strong></p>
+
+<h1 id="collisions">Collisions</h1>
+
+<p><a href="/SUMO" title="wikilink">SUMO</a> tracks gaps between vehicles that are on the same edge either fully or partially. By default, whenever these gaps are reduced to below a vehicles <em>minGap</em> a collision is registered (default 2.5m). This (potentially) surprising behavior is used to detect issues with the default car-following model that is supposed to never reduce the gap below the minGap. By setting the option this threshold can be reduced. When setting , only <em>physical collisions</em> (i.e. front and back bumper meet or overlap) are registered.</p>
+
+<p>When setting the option , collisions between vehicles on the same intersection are also checked by detecting overlap of the vehicles shapes.</p>
+
+<p>The consequence of a collision is configured using the option using one of the following keywords:</p>
+
+<ul>
+  <li><strong>teleport</strong>: (the default): the follower vehicle is moved (teleported) to the next edge on its route</li>
+  <li><strong>warn</strong>: a warning is issued</li>
+  <li><strong>none</strong>: no action is take</li>
+  <li><strong>remove</strong>: both vehicles are removed from the simulation</li>
+</ul>
+
+<p>Additionally there is the possibility of stopping vehicles for a fixed time before the <em>collision action</em> takes place. This allows for pile-ups and traffic disturbance. To enable stopping, the option must be set with the stopping time in seconds.</p>
+
+<h2 id="deliberately-causing-collisions">Deliberately causing collisions</h2>
+
+<p>To force collisions at a set time, TraCI must be used. Besides setting the speed, it is also necessary to disable safety checks using <a href="/TraCI/Change_Vehicle_State" title="wikilink">the commands speedMode and laneChangeMode</a>.</p>
+
+<p>To create rear-end collisions with some probability one can configure vehicles with a value of <em>tau</em> that is lower than the simulation step size (default 1s) and use the default Krauss model.</p>
+
+<p>Collisions at intersections may be caused by any of the following:</p>
+
+<ul>
+  <li>yellow phases which are too short in relation to the vehicle speed (giving insufficient time to come to a stop). By default this causes strong braking (<em>Warning: emergency braking</em>) potentially followed by rear-end collisions</li>
+  <li>Green phases that allow conflicting streams to drive at the same time. Collision beyond the intersection due to this are always detected but collisions on the intersection are only registered when setting the option .</li>
+  <li><a href="/Networks/Building_Networks_from_own_XML-descriptions#Multiple_connections_from_the_same_edge_to_the_same_target_lane" title="wikilink">Double connections</a> from a traffic-light-controlled edge: If two lanes from the same edge with the same target lane get the green light at the same time, collisions are likely</li>
+  <li>If all <a href="/Networks/Building_Networks_from_own_XML-descriptions#Multiple_connections_from_the_same_edge_to_the_same_target_lane" title="wikilink">Double connections</a> at an edge are configured with</li>
+  <li>If connections from the minor road of a priority junction are configured with</li>
+</ul>
+
+<p>To simulate the <strong>effects</strong> of an accident see <a href="/FAQ#How_to_simulate_an_accident" title="wikilink">FAQ#How_to_simulate_an_accident</a>.</p>
+
+<h1 id="reaction-times">Reaction Times</h1>
+
+<p>In Reality, drivers take actions with some delay in regard to the evolving traffic situation. This reaction time is modelled in the simulation in various ways.</p>
+
+<h2 id="simulation-step-length">Simulation Step Length</h2>
+
+<p>All simulation vehicles select their speed simultaneously with regard to the traffic state from the previous simulation step. This means, there is at least a reaction time of the simulation step-length.</p>
+
+<p>In contrast, lane-changing within an edge happens sequentially (in the upstream direction) within each step . Consequently, two vehicles that are driving almost parallel on a 3-lane road may both change their lanes in parallel within a single simulation step because the vehicle further behind already takes into account the lateral movement of the vehicle ahead.</p>
+
+<h2 id="action-step-length">Action Step Length</h2>
+
+<p>By default, vehicles recompute their speed and lane-changing decisions every simulation step. When running with sub-second time resultion (i.e. ), this also gives very low effective reaction times.</p>
+
+<p>To decouple the decision interval from the simulation step length, the vehicle <em>action-step-length</em> can be defined as the duration between subsequent vehicle decisions. Decision-making starts direclty after insertion which means vehicles inserted at different times may take decisions during different simulation steps. During simulation steps without decision-making, vehicle positions are updated according to the previously computed acceleration. Lateral dynamics (when using the sublane model) use a dynamic acceleration curve that to complete the current lateral driving manoeuvre.</p>
+
+<p>The action step length can be defined in any of the following ways:</p>
+
+<ul>
+  <li>setting the option which sets the default action step length for all vehicles</li>
+  <li>setting the attribute <em>actionStepLength</em></li>
+  <li>calling <em>traci.vehicle.setActionStepLength</em></li>
+</ul>
+
+<h1 id="safety-related-parameters">Safety-related parameters</h1>
+
+<p>Simulation of unsafe behavior is a developing subject. Expect model additions and extensions. The following <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicle_Types" title="wikilink">vehicle type parameters</a> are safety related:</p>
+
+<h2 id="car-following-model">car-following model</h2>
+
+<ul>
+  <li><strong>speedFactor</strong>: higher value causes speeding (driving above the speed limit)</li>
+  <li><strong>accel</strong>, <strong>decel</strong>: higher values lead to abrupt speed changes</li>
+  <li><strong>tau</strong>: lower values lead to reduced gaps to the leader vehicle. When setting tau lower than the simulation parameter (default 1s), resp. the vehicle’s action step length ( or vehicle parameter <code class="highlighter-rouge">actionStepLength</code>), collisions may occur</li>
+  <li><strong>emergencyDecel</strong>: this is the maximum deceleration a vehicle can take to avoid an accident. By default this takes the same value as <strong>decel</strong></li>
+  <li><strong>apparentDecel</strong>: this is the deceleration value that will be assumed by other vehicles of the configured vehicle. By default this takes the same value as <strong>decel</strong></li>
+</ul>
+
+<h2 id="lane-changing-model">Lane-Changing Model</h2>
+
+<ul>
+  <li>lcCooperative: lower values cause less cooperation during lane changing</li>
+  <li>lcSpeedGain: higher values cause more overtaking for speed</li>
+  <li>lcKeepRight: lower values cause less driving on the right</li>
+  <li>lcPushy: setting this to values between 0 and 1 causes aggressive lateral encroachment (only when using the <a href="/Simulation/SublaneModel" title="wikilink">Sublane Model</a>)</li>
+  <li>lcAssertive: setting this values above 1 cause acceptance of smaller longitudinal gaps in proportion to driver impatience(only when using the <a href="/Simulation/SublaneModel" title="wikilink">Sublane Model</a>)</li>
+</ul>
+
+<h2 id="junction-model">Junction Model</h2>
+
+<p>There are further parameters which affect safety-related junction behavior. For a description see <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Junction_Model_Parameters" title="wikilink">Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Junction_Model_Parameters</a>.</p>
+
+<ul>
+  <li>impatience: higher values lead to acceptance of smaller time gaps at intersections. These are still safe in the sense of collision avoidance.</li>
+  <li>jmCrossingGap: lower values lead to more aggressive driving at pedestrian intersections (safe)</li>
+  <li>jmDriveAfterRedTime: Violate red lights some time after the switch (safety decreases with growing values)</li>
+  <li>jmDriveRedSpeed: Speed when violating red lights (higher values decrease safety)</li>
+  <li>jmIgnoreFoeProb: Probability to ignore foes with right-of-way (higher values decrease safety)</li>
+  <li>jmIgnoreFoeSpeed: Foe speed threshold which prevents fast vehicles from being ignored (Higher values decrease safety)</li>
+  <li>jmSigmaMinor: When planning to pass a minor link, optimum acceleration is assumed. (higher values cause reduced acceleration and thus decrease time gaps and safety)</li>
+  <li>jmTimegapMinor: Minimum time gap when passing a minor link ahead of a prioritzed vehicle (lower values decrease safety)</li>
+</ul>
+
+<h1 id="safety-related-outputs">Safety-Related Outputs</h1>
+
+<ul>
+  <li><a href="/Simulation/Output/SSM_Device" title="wikilink">Surrogate Safety Measures</a> (headway, brake rates, time to collision etc.)</li>
+  <li>The <a href="/Simulation/Output/Instantaneous_Induction_Loops_Detectors" title="wikilink">Instant Induction Loop</a> output records the <em>gap</em> attribute which gives the time gap between successive vehicles with sub-second precision.</li>
+  <li>The <a href="/Simulation/Output/Lanechange" title="wikilink">Lanechange output</a> generates a record of all lane-changes that take place in the simulation. It includes the longitudinal gap to the leader and follower vehicle on the target lane (both the actual gap and the one that would have been required to ensure stringent deceleration bounds under all circumstances). When using the <a href="/Simulation/SublaneModel" title="wikilink">sublane model</a>, the attribute <em>latGap</em> records the lateral gap to the neighboring vehicle in the direction of the change if such a vehicle exists.</li>
+</ul>

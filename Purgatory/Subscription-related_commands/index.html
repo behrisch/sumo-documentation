@@ -1,0 +1,177 @@
+<h1 id="subscription-related-commands">Subscription-related commands</h1>
+
+<h2 id="command-0x61-subscribe-lifecycles">Command 0x61: Subscribe Lifecycles</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Domain</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Subsequent creation/destruction of an object in <em>Domain</em> will trigger an <strong>Object Creation</strong>/<strong>Object Destruction</strong> response, respectively.</p>
+
+<h3 id="response-0x63-object-creation">Response 0x63: Object Creation</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">integer</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Domain</td>
+      <td style="text-align: center">DomainId</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Sent after an object <em>DomainId</em> was created in a <em>Domain</em> the client previously subscribed to using a <strong>Subscribe Lifecycles</strong> command.</p>
+
+<h3 id="response-0x64-object-destruction">Response 0x64: Object Destruction</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">integer</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Domain</td>
+      <td style="text-align: center">DomainId</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Sent after an object <em>DomainId</em> was destroyed in a <em>Domain</em> the client previously subscribed to using a <strong>Subscribe Lifecycles</strong> command.</p>
+
+<h2 id="command-0x62-unsubscribe-lifecycles">Command 0x62: Unsubscribe Lifecycles</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Domain</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Cancels a lifecycle subscription previously initiated with a <strong>Subscribe Lifecycles</strong> command.</p>
+
+<h2 id="command-0x65-subscribe-domain">Command 0x65: Subscribe Domain</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Domain</td>
+      <td style="text-align: center">Variable Count</td>
+      <td style="text-align: center">Variable 1</td>
+      <td style="text-align: center">ValueDataType 1</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">Variable n</td>
+      <td style="text-align: center">ValueDataType n</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Subsequent update of an object in <em>Domain</em> will trigger an <strong>Update Object</strong> response.</p>
+
+<h3 id="response-0x67-update-object">Response 0x67: Update Object</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center">ValueDataType 1</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">ValueDataType n</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Domain</td>
+      <td style="text-align: center">DomainId</td>
+      <td style="text-align: center">Value 1</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">Value n</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Sent after an object <em>DomainId</em> was updated in a <em>Domain</em> the client previously subscribed to using a <strong>Subscribe Domain</strong> command. The response will contain all variables specified with the last subscription, using the exact order and type given.</p>
+
+<h2 id="command-0x66-unsubscribe-domain">Command 0x66: Unsubscribe Domain</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Domain</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Cancels a domain subscription previously initiated with a <strong>Subscribe Domain</strong> command.</p>

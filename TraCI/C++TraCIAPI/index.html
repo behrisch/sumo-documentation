@@ -1,0 +1,80 @@
+<h1 id="c-traciapi-client-library">C++ TraCIAPI client library</h1>
+
+<p>The C++ TraCIAPI is client library that is part of the SUMO-source tree. The library can be downloaded <a href="http://sumo.dlr.de/daily/sumo-src-svn.zip">as part of the source distribution</a>. Examle code that uses the library is at <em>/src/traci_testclient/TraCITestClient.cpp</em>. Doxygen-generated documentation can be found <a href="http://sumo.dlr.de/daily/doxygen/d8/d1c/class_tra_c_i_a_p_i.html">here</a></p>
+
+<h2 id="building-the-library">Building the Library</h2>
+
+<p>To build the library without building SUMO, the following dependencies from the SUMO-source directory must be present:</p>
+
+<p><code class="highlighter-rouge">src/utils/traci/TraCIAPI.h</code>
+<code class="highlighter-rouge">src/utils/traci/TraCIAPI.cpp</code>
+<code class="highlighter-rouge">src/foreign/tcpip/socket.h</code>
+<code class="highlighter-rouge">src/foreign/tcpip/socket.cpp</code>
+<code class="highlighter-rouge">src/foreign/tcpip/storage.h</code>
+<code class="highlighter-rouge">src/foreign/tcpip/storage.cpp</code>
+<code class="highlighter-rouge">src/traci-server/TraCIConstants.h</code>
+<code class="highlighter-rouge">src/libsumo/TraCIDefs.h</code></p>
+
+<p>Additionally, the file <em>config.h</em> must be present but these files can be left empty. If SUMO was built, they can either be found in the <em>src</em> or the <em>cmake-build/src</em> directory)</p>
+
+<p>If you chose to copy all these files into the same directory, the include paths in <em>TraCIAPI.h</em> and <em>TraCIAPI.cpp</em> need to be patched as well.</p>
+
+<h3 id="building-on-windows">Building on Windows</h3>
+
+<p>The file <strong>ws2_32.lib</strong> must be added to the linker files in the project properties (it contains the windows socket calls) to avoid linker errors.</p>
+
+<h2 id="traci-testclient"><a href="http://sumo.dlr.de/trac.wsgi/browser/trunk/sumo/src/traci_testclient">TraCI-Testclient</a></h2>
+
+<p>The TraCI-Testclient is an application for testing the server side of the TRaCI-API. When using it as the basis for your own control script one needs to be aware of its two operating modes:</p>
+
+<h3 id="feeding-raw-traci-commands-to-sumo">Feeding raw TraCI commands to SUMO</h3>
+
+<p>In this operating mode, the full TraCI-API is supported. Example input files typically look like:</p>
+
+<p><code class="highlighter-rouge">repeat 50 simstep2 0</code>
+<code class="highlighter-rouge">setvalue 0xc4 0x31 veh0 </code><string>` e_vo0`
+`simstep2 200`</string></p>
+
+<p>This mode is meant for testing the server side and is unsuitable for building a control program that mixes TraCI calls with custom code.</p>
+
+<h3 id="testing-the-traciapi-client-library">Testing the TraCIAPI client library</h3>
+
+<p>In this mode the client library itself is used. Example code looks like:</p>
+
+<p><code class="highlighter-rouge">SUMOTime t = simulation.getCurrentTime();</code>
+<code class="highlighter-rouge">std::vector</code><std::string>` = edge.getIDList();`</std::string></p>
+
+<h2 id="example-code">Example Code</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;utils/traci/TraCIAPI.h&gt;
+
+class Client : public TraCIAPI {
+public:
+    Client() {};
+    ~Client() {};
+};
+
+int main(int argc, char* argv[]) {
+    Client client;
+    client.connect("localhost", 1337);
+    std::cout &lt;&lt; "time in ms: " &lt;&lt; client.simulation.getCurrentTime() &lt;&lt; "\n";
+    std::cout &lt;&lt; "run 5 steps ...\n";
+    client.simulationStep(5 * 1000);
+    std::cout &lt;&lt; "time in ms: " &lt;&lt; client.simulation.getCurrentTime() &lt;&lt; "\n";
+    client.close();
+}
+</code></pre></div></div>
+
+<h3 id="compiling-when-sumo-is-already-built">compiling when sumo is already built</h3>
+
+<p><code class="highlighter-rouge">g++ -std=c++0x -o test TraCIAPITest.cpp utils/traci/libtraci.a foreign/tcpip/storage.o foreign/tcpip/socket.o -I .</code></p>
+
+<h3 id="compiling-with-all-files-in-the-same-directory">compiling with all files in the same directory</h3>
+
+<p><code class="highlighter-rouge">g++ -std=c++0x -o test TraCIAPITest.cpp TraCIAPI.cpp socket.cpp storage.cpp</code></p>
+
+<h3 id="running">running</h3>
+
+<p><code class="highlighter-rouge">sumo -c test.sumocfg --remote-port 1337 &amp;</code>
+<code class="highlighter-rouge">./test</code></p>

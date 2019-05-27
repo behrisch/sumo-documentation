@@ -1,0 +1,139 @@
+<p>There are two main scripts responsible for the nightly build process which are (for the linux part) and for Windows. Essentially they both perform the following steps:</p>
+
+<ol>
+  <li>git pull</li>
+  <li>do a clean build (release and debug version)</li>
+  <li>run unittests (currently linux only)</li>
+  <li>build and upload packages</li>
+  <li>build and upload documentation (linux only)</li>
+  <li>run the acceptance tests (texttest)</li>
+  <li>upload test results</li>
+</ol>
+
+<p>All the results can be found in the <a href="http://sumo.dlr.de/daily/">daily dir on the sumo web space</a>, also see <a href="/Downloads#Nightly_Snapshots" title="wikilink">Downloads#Nightly_Snapshots</a>. Coverage information based on running the nightly tests is generated as well. The status can be found at <a href="http://sumo.dlr.de/daily/lcov/html/">the sumo web space</a>.</p>
+
+<p>There is also a local copy in the Daten/Sumo/daily directory (including the most recent game scenarios) the DLR internal tsall NAS. The windows script uses the sumo-all package from the local dir to build the binary distributable zip and the game zip.</p>
+
+<p>One final step is to trigger the nightly build on the opensuse build service. This is achieved via uploading a new spec file via a cronjob, which triggers an automatic download of the sources and a rebuild. All errors and test result e-mails are directed to the sumo-tests list at dlr.de, except for the build service errors which go to a private account since the build is currently in a private project.</p>
+
+<p>Additionally there is a continuous integration build for MacOS on Travis: <a href="https://travis-ci.org/DLR-TS/sumo">https://travis-ci.org/DLR-TS/sumo</a>.</p>
+
+<h2 id="platforms-and-tests">Platforms and tests</h2>
+
+<ul>
+  <li>“sumo” refers to the publicly available sumo</li>
+  <li>“meso” means the variant with embedded python, OSG and FFMPEG running mesoscopic and python3 tests</li>
+  <li>the clang build has debugging code enabled via the configure option “–enable-debug”</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>variant</th>
+      <th>platform</th>
+      <th>start time</th>
+      <th>estimated duration</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>sumo</td>
+      <td>32 bit msvc10</td>
+      <td>02:00</td>
+      <td>1h</td>
+    </tr>
+    <tr>
+      <td>sumo</td>
+      <td>64 bit msvc10</td>
+      <td>(after 32bit)</td>
+      <td>1h</td>
+    </tr>
+    <tr>
+      <td>meso</td>
+      <td>32 bit msvc10</td>
+      <td>05:00</td>
+      <td>1h</td>
+    </tr>
+    <tr>
+      <td>meso</td>
+      <td>64 bit msvc10</td>
+      <td>(after 32bit)</td>
+      <td>1h</td>
+    </tr>
+    <tr>
+      <td>sumo</td>
+      <td>32 bit gcc</td>
+      <td>19:00</td>
+      <td>3h</td>
+    </tr>
+    <tr>
+      <td>sumo</td>
+      <td>64 bit gcc</td>
+      <td>23:30</td>
+      <td>1.5h</td>
+    </tr>
+    <tr>
+      <td>meso</td>
+      <td>64 bit gcc</td>
+      <td>22:30</td>
+      <td>0.5h</td>
+    </tr>
+    <tr>
+      <td>sumo</td>
+      <td>64 bit clang</td>
+      <td>09:00</td>
+      <td>1.5h</td>
+    </tr>
+    <tr>
+      <td>meso</td>
+      <td>64 bit clang</td>
+      <td>11:00</td>
+      <td>1.5h</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="scenario-tests">Scenario tests</h2>
+
+<ul>
+  <li>“scenario” refers to the internal tests available at source:trunk/tests and includes the default and the daily tests
+    <ul>
+      <li>“weekly” are the weekly test suites of the internal tests available at source:trunk/tests</li>
+      <li>all scenario tests run with the internal (meso) variant of sumo</li>
+    </ul>
+  </li>
+  <li>“ics” refers to the iCS tool of colombo (currently disabled)</li>
+  <li>“vabene” refers to the tests in the vabene repository (currently disabled)</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>variant</th>
+      <th>platform</th>
+      <th>start time</th>
+      <th>estimated duration</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>scenario</td>
+      <td>64 bit gcc</td>
+      <td>02:00</td>
+      <td>5h ?</td>
+    </tr>
+    <tr>
+      <td>scenario weekly</td>
+      <td>64 bit gcc</td>
+      <td>02:00 (only sa)</td>
+      <td>72h ?</td>
+    </tr>
+    <tr>
+      <td>scenario</td>
+      <td>64 bit clang</td>
+      <td>02:00 (only mo-fr)</td>
+      <td>8h ?</td>
+    </tr>
+  </tbody>
+</table>
+

@@ -1,0 +1,47 @@
+<p>This tutorial shows how to use the Traffic Control Interface (in short TraCI) for building a pedestrian-actuated crossing. It assumes familiarity with <a href="/Tutorials/TraCI4Traffic_Lights" title="wikilink">Tutorials/TraCI4Traffic_Lights</a> which builds a vehicle-actuated controller. Additional information in regard to pedestrian modelling can be found at <a href="/Simulation/Pedestrians" title="wikilink">Simulation/Pedestrians</a>.</p>
+
+<p>All files mentioned here can also be found in the <em>/docs/tutorial/traci_pedestrian</em> directory of your installation. The most recent version can be found in the repository at .</p>
+
+<h1 id="example-description">Example description</h1>
+
+<p>The scenario consists of a single road which is crossed by a footpath. The crossing is controlled by a traffic light and should switch when triggered by the pedestrians via push-button. To model the button-pushing behavior, it is assumed that a pedestrian which arrives at a red light activates the button if it is not yet activated. To prevent undue interference with vehicular traffic, there is a minimum green duration of 15 seconds for the vehicular green phase.</p>
+
+<p><a href="/Image:ScreenshotPedCross.png" title="wikilink">Image:ScreenshotPedCross.png</a></p>
+
+<p>To run the example you need to execute the script <em>runner.py</em> with python</p>
+
+<p><code class="highlighter-rouge"> python runner.py</code></p>
+
+<h2 id="code">Code</h2>
+
+<p>The control logic resides in the python script <em>runner.py</em>. It builds the network (via <a href="/NETCONVERT" title="wikilink">NETCONVERT</a>) generates the pedestrian routes (via <a href="/http://sumo.dlr.de/wiki/Tools/Trip#randomTrips.py" title="wikilink">randomTrips.py</a>, and interacts with the simulation to controls the traffic light. It makes use of the TraCI python API bundled with SUMO. A description of the API can be found at <a href="/TraCI/Interfacing_TraCI_from_Python" title="wikilink">TraCI/Interfacing_TraCI_from_Python</a>. For a detailed list of available functions see the <a href="http://sumo.dlr.de/daily/pydoc/traci.html">pydoc generated documentation</a>.</p>
+
+<h2 id="traffic-light-control">Traffic light control</h2>
+
+<p>The traffic light follows a fixed cycle of phases of as defined below. The definition below is taken from <a href="http://sumo.dlr.de/trac.wsgi/browser/trunk/sumo/tests/complex/tutorial/traci_pedestrian_crossing/data/pedcrossing.tll.xml">pedcrossing.tll.xml</a></p>
+
+<p><code class="highlighter-rouge"> </code><tlLogic id="C" type="static" programID="custom" offset="0">
+`    `<phase duration="100000" state="GGGGr"></phase>` `
+`    `<phase duration="4" state="yyyyr"></phase>
+`    `<phase duration="10" state="rrrrG"></phase>
+`    `<phase duration="10" state="rrrrr"></phase>` `
+` `</tlLogic></p>
+
+<p>The duration of phase 0 is set to a very large value. This is the green phase for vehicles and should be prolonged indefinitely in the absence of pedestrians. When waiting pedestrians are detected while in phase 0, the traffic light is switched into the next phase and then continues its cycle automatically. The only traffic light related TraCI functions used are <em>traci.trafficlights.getPhase()</em> and traci.trafficlights.setPhase().</p>
+
+<h2 id="person-related-traci-functions">Person related traci functions</h2>
+
+<p>To simulate the push button it must be known whether pedestrians are waiting to cross the intersection. The following TraCI functions are used:</p>
+
+<ul>
+  <li><em>traci.edge.getLastStepPersonIDs()</em> : to find pedestrians at the intersection</li>
+  <li><em>traci.person.getNextEdge()</em>: to determine whether pedestrians are about to pass the crossing or are already leaving the intersection</li>
+  <li><em>traci.person.getWaitingTime()</em>: to determine whether the pedestrian has arrived at the crossing and is forced to wait</li>
+</ul>
+
+<p>The input to <em>traci.edge.getLastStepPersonIDs()</em> as well as the output of <em>traci.person.getNextEdge()</em> references network elements which are specific to pedestrian simulation. In the script <em>runner.py</em> these are defined as</p>
+
+<p><code class="highlighter-rouge">WALKINGAREAS = [':C_w0', ':C_w1']</code>
+<code class="highlighter-rouge">CROSSINGS = [':C_c0']</code></p>
+
+<p>For a description of pedestrian network elements see <a href="/Simulation/Pedestrians" title="wikilink">Simulation/Pedestrians</a>.</p>

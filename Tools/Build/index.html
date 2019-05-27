@@ -1,0 +1,29 @@
+<h1 id="build-tools">Build Tools</h1>
+
+<h1 id="code-cleaning-tools">Code Cleaning Tools</h1>
+
+<h2 id="apply_astylepy">apply_astyle.py</h2>
+
+<p>Applies <a href="http://astyle.sourceforge.net/">astyle</a> with pre-defined settings to all .cpp and .h files in the src tree. The position of the tree is determined relative to the position of the script. This call is usually done directly before releasing.</p>
+
+<p>Call:</p>
+
+<p><code class="highlighter-rouge">apply_astyle.py</code></p>
+
+<h1 id="documentation-tools">Documentation Tools</h1>
+
+<h2 id="buildhtmldocspy">buildHTMLDocs.py</h2>
+
+<p>Converts wiki-documentation into static HTML pages. It removes the wiki navigation and adds user doc navigation while keeping the contents intact. This script is called by the main Makefile if “make docs” is called. If the script is called with an argument, it tries to fetch the wiki site with the given name, if not it retrieves all sites listed in the <a href="/SUMO_User_Documentation" title="wikilink">table of contents</a>. Call “buildHTMLDocs.py –help” for a complete list of options.</p>
+
+<p>Call:</p>
+
+<p><code class="highlighter-rouge">buildHTMLDocs.py SUMO</code></p>
+
+<h2 id="checkauthorspy">checkAuthors.py</h2>
+
+<p>Checks the log for all source files for authors and “thanks” and checks whether they appear in the file header. It can optionally try to fix the file header and also update the global AUTHORS file if needed.</p>
+
+<p>Call:</p>
+
+<p><code class="highlighter-rouge">checkAuthors.py</code></p>

@@ -1,0 +1,160 @@
+<h1 id="c-code">C++ Code</h1>
+
+<p>For the C++ code we use <a href="http://astyle.sourceforge.net/">AStyle</a> to keep indentation and other whitespace usage consistent throughout the project. In order to make your code appear same as the original SUMO code use the following call to AStyle (or execute tools/build/apply_astyle.py before committing):</p>
+
+<p><code class="highlighter-rouge">astyle --style=java --unpad-paren --pad-header --pad-oper --add-brackets --indent-switches --align-pointer=type -n </code><FILE_NAME></FILE_NAME></p>
+
+<p>Still, there are several other things you should keep in mind (The <a href="https://google.github.io/styleguide/cppguide.html">Google C++ Style Guide</a> is a good read as well):</p>
+
+<h2 id="templates">Templates</h2>
+
+<p>Use the following templates for your files:</p>
+
+<ul>
+  <li><a href="/Developer/CppFileTemplate" title="wikilink">Developer/CppFileTemplate</a></li>
+  <li><a href="/Developer/HFileTemplate" title="wikilink">Developer/HFileTemplate</a></li>
+  <li><a href="/Developer/PyFileTemplate" title="wikilink">Developer/PyFileTemplate</a></li>
+</ul>
+
+<h2 id="whitespace">Whitespace</h2>
+
+<ul>
+  <li>Never use <em>tab stop</em>. Only use <em>space</em>. In Visual Studio <em>tab stop</em> can be disabled in Tools/Options/Text Editor/All languages/Tabs</li>
+</ul>
+
+<h2 id="class-names">Class Names</h2>
+
+<ul>
+  <li>All class names must start with capital letter</li>
+  <li>The first capital letters of a class must indicates their module (<strong>NB</strong>Edge -&gt; <strong>N</strong>et <strong>B</strong>uild module, <strong>MS</strong>ChargingStation -&gt; <strong>M</strong>icro <strong>S</strong>imulation module</li>
+  <li>If a class name is composed of multiple words, every word must start with capital letter (Micro simulation charging station -&gt; <strong>MSC</strong>harging<strong>S</strong>tation)</li>
+</ul>
+
+<h2 id="variable-names">Variable Names</h2>
+
+<ul>
+  <li>Variables used within methods should be named using “camel-caps”, f.e. “currentCarVelocity”</li>
+  <li>Member variables should additionally have the prefix “my”, f.e. “myMaximumVehicleVelocity”</li>
+  <li>try not to abbreviate variable names (myMaximumVehicleVelocity instead of myMVV)</li>
+  <li>give names to variables which describe its purpose within the context</li>
+  <li>do not reuse variables for different purposes</li>
+</ul>
+
+<h2 id="enums">Enums</h2>
+
+<ul>
+  <li>All enum names must start with capital letter, and If their name is composed of multiple words, every word must start with capital letter</li>
+  <li>All every definition must be written using capital letters (SumoXMLTag { <strong>SUMO_TAG_EDGE</strong>, <strong>SUMO_TAG_LANE</strong>,…)</li>
+</ul>
+
+<h2 id="encoding">Encoding</h2>
+
+<p>Only use the plain <a href="https://en.wikipedia.org/wiki/ASCII">ASCII</a> characters in <em>cpp</em> and <em>h</em> files. (0x20 - 0x7E). If you need convey extended character information use TeX or HTML notation instead.</p>
+
+<h2 id="include-statements">#include-statements</h2>
+
+<ul>
+  <li><strong>do not use backslashes (\)!</strong> use slashes (/) only</li>
+  <li><strong>do not use absolute paths!</strong>; something like #include “/home/daniel/mylibs/include_me.h” will never work somewhere else! Use relative paths and tell the compiler where the other libraries may be found. If you have problems on this, please tell us, we’ll write some further documentation!</li>
+  <li>in general we mention the standard library includes first (like #include <vector>), then the includes of libraries used by SUMO (FOX / Xerces) and later our own headers</vector></li>
+  <li>brackets (“&lt;” and “&gt;”) are preferred for files not residing in the same directory, while quotation marks are usually used for files in the same directory.</li>
+</ul>
+
+<h2 id="using-namespace--statements">“using namespace …”-statements</h2>
+
+<ul>
+  <li>Avoid them whenever possible and especially <strong>do not use “using namespace …”-statements within the .h-files!</strong> It’s possible that an included library tries to use a different impementation - who knows? Using a “using namespace …”-statement within your .h-file may yield in an unexpected behaviour.</li>
+</ul>
+
+<h2 id="throw-declarations">Throw-declarations</h2>
+
+<ul>
+  <li>We are not using throw-declarations, see: <a href="http://www.gotw.ca/publications/mill22.htm">http://www.gotw.ca/publications/mill22.htm</a> (thanks to Björn Hendriks); we’ll remove the existing ones subsequently.</li>
+</ul>
+
+<h2 id="object-handling">Object Handling</h2>
+
+<ul>
+  <li>If the structure you are implementing has an id, then derive the object from <code class="highlighter-rouge">Named</code> (/src/utils/common/Named.h). This class supports the <code class="highlighter-rouge">std::string getID()</code>-method.</li>
+  <li>If you want to store something in a map pointing from string ids to object instances, then use <code class="highlighter-rouge">NamedObjectCont</code> (/src/utils/common/NamedObjectCont.h).</li>
+</ul>
+
+<h2 id="integer-types">Integer Types</h2>
+
+<ul>
+  <li>Use simple int whenever possible. There are probably lots of places in the sumo code which rely on the fact that this has at least 32 bits, so you may too.</li>
+  <li>Try to avoid unsigned ints whenever possible. It is sometimes not possible when calling Xerces-C and GL functions or using std::string::npos but try to limit it to those cases.</li>
+  <li>If you need at least 64 bit, use long long int.</li>
+</ul>
+
+<h2 id="conditionals">Conditionals</h2>
+
+<ul>
+  <li>Do not use redundant condition checks. Example: <em><strong>if</strong> (myCondition)</em> instead of <em><strong>if</strong> (myCondition == <strong>true</strong>)</em></li>
+</ul>
+
+<h2 id="loops">Loops</h2>
+
+<ul>
+  <li>Use always as possible the C++ 11 syntax. Example: <strong><em>for</em>’ (</strong>auto<em>’ it : myContainer)</em> instead of <em><strong>for</strong> (container::iterator it = myContainer.begin(); it != myContainer.end(); it++)</em></li>
+</ul>
+
+<h1 id="python-code">Python Code</h1>
+
+<p>We try to adhere to the <a href="http://www.python.org/dev/peps/pep-0008/">PEP 8 Style Guide</a>. Please remember to make your file executable if (and only if) the file should be executable (i.e. is not a module to be imported by others). Windows users please follow this <a href="https://stackoverflow.com/questions/21691202/how-to-create-file-execute-mode-permissions-in-git-on-windows">recipe</a>. Executable files should also contain a so called shebang in the first line:</p>
+
+<p><code class="highlighter-rouge">!#/usr/bin/env python</code></p>
+
+<h2 id="python3-compatibility">Python3 compatibility</h2>
+
+<p>Our main development still focusses on Python 2.7 but we strive for Python 3 compatibility. When writing or editing scripts, keep the following in mind:</p>
+
+<ul>
+  <li>use <em>print</em> as a function (<code class="highlighter-rouge">from __future__ import print_function</code>)</li>
+  <li>use <em>items</em> instead of iteritems, which will return a list under Python 2.7 and an iterator in Python 3(<code class="highlighter-rouge">for item in dict.items()</code>)</li>
+  <li>use <em>values</em> instead of <em>itervalues</em>, which will return a list under Python 2.7 and an iterator in Python 3(<code class="highlighter-rouge">for val in dict.values()</code>)</li>
+  <li>use <em>//</em> instead of <em>/</em> for integer division because <em>/</em> will do a floating point division under Python 3 (<code class="highlighter-rouge">4/3 = 1.3333333</code>)</li>
+  <li>the floating point division with <em>/</em> can be included in Python 2 by (<code class="highlighter-rouge">from __future__ import division</code>)</li>
+  <li>while iterating over unsorted lists or iterators Python 2 and Python 3 do not work in the same order. Therefore add a explicit <em>sorted</em> before iteration when you write e.g. a xml file (<code class="highlighter-rouge">for item in sorted(list)</code>)</li>
+  <li>use argparse library instead for optparse due to optparse wont be updated for Python 3 anymore. The use of most functions stayed the same, only some names differ. For further information please check <a href="https://docs.python.org/3/library/argparse.html">https://docs.python.org/3/library/argparse.html</a></li>
+  <li>if you want to use different code for Python 2 and Python 3, which can be necessary since not all libraries exist for both versions, you can use a simple if else statement with the PY3 boolean defined by(<code class="highlighter-rouge">PY3 = sys.version_info &gt; (3,)</code>)</li>
+  <li>use byte type in python 3 wherever you use binary data and string type wherever you used unicode strings before. This can be made by if else statements using the PY3 boolean. See a list for the different methods possible on bytes and strings at <a href="https://docs.python.org/3/howto/pyporting.html#text-versus-binary-data">https://docs.python.org/3/howto/pyporting.html#text-versus-binary-data</a></li>
+</ul>
+
+<p>For further information about possible error sources and difficulties resulting in Python 3 compatibility see also <a href="http://python3porting.com/">http://python3porting.com/</a> and <a href="https://docs.python.org/3/howto/pyporting.html">https://docs.python.org/3/howto/pyporting.html</a></p>
+
+<h2 id="template">Template</h2>
+
+<p>Use the following template for your files:</p>
+
+<ul>
+  <li><a href="/Developer/PythonFileTemplate" title="wikilink">Developer/PythonFileTemplate</a></li>
+</ul>
+
+<h1 id="line-endings-and-keyword-replacement">Line endings and keyword replacement</h1>
+
+<p>We enforce special line endings for the following file types (overriding core.autocrlf settings of git) using :</p>
+
+<ul>
+  <li>LF for
+    <ul>
+      <li>source files (“.h”, “.cpp”, “.py”, …),</li>
+      <li>Test files (“.xml”, “.prog”, “.complex”, “.dfrouter”, “.duarouter”, “.jtrrouter”, “.netconvert”, “.sumo”, “.meso”, …)</li>
+    </ul>
+  </li>
+  <li>CRLF for Windows only files (“.bat”, “.props”, “.vcxproj”, “.filters”, …)</li>
+</ul>
+
+<p>Git has no equivalent to the <svn:keywords> property. We use a custom script to handle the $Id$ keyword like before but it has to be enabled manually by adding the following lines to your global .gitconfig (usually in your home directory)</svn:keywords></p>
+
+<p><code class="highlighter-rouge">  [filter </code>“<code class="highlighter-rouge">keywords</code>”<code class="highlighter-rouge">]</code>
+<code class="highlighter-rouge">      clean  = .git_filters/keywords.py clean</code>
+<code class="highlighter-rouge">      smudge = .git_filters/keywords.py %f</code></p>
+
+<p>The filter is enabled for Python and C++ source files.</p>
+
+<p>For the current settings you can always look at .</p>
+
+<h1 id="checking-code-style">Checking code style</h1>
+
+<p>There is a python script checking (and optionally enforcing) some code style including the header format in .</p>

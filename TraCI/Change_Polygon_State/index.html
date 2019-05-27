@@ -1,0 +1,269 @@
+<h1 id="command-0xc8-change-polygon-state">Command 0xc8: Change Polygon State</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center"><value_type></value_type></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Variable</td>
+      <td style="text-align: center">Polygon ID</td>
+      <td style="text-align: center">Type of the value</td>
+      <td style="text-align: center">New Value</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Changes the state of a polygon. Because it is possible to change different values of a polygon, the number of parameter to supply and their types differ between commands. The following values can be changed, the parameter which must be given are also shown in the table.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>ValueType</th>
+      <th>Description</th>
+      <th><a href="/TraCI/Interfacing_TraCI_from_Python" title="wikilink">Python Method</a></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>type (0x4f)</td>
+      <td>string</td>
+      <td>Sets the polygon’s type to the given value</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._polygon.html#PolygonDomain-setType">setType</a></td>
+    </tr>
+    <tr>
+      <td>color (0x45)</td>
+      <td>color (ubyte,ubyte,ubyte,ubyte)</td>
+      <td>Sets the polygon’s color to the given value (r,g,b,a) - please note that a(lpha) = 0 means fully transparent</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._polygon.html#PolygonDomain-setColor">setColor</a></td>
+    </tr>
+    <tr>
+      <td>shape (0x4e)</td>
+      <td>2D-polygon</td>
+      <td>Sets the polygon’s shape to the given value</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._polygon.html#PolygonDomain-setShape">setShape</a></td>
+    </tr>
+    <tr>
+      <td>filled (0x55)</td>
+      <td>ubyte</td>
+      <td>Marks that the polygon shall be filled if the value is !=0.</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._polygon.html#PolygonDomain-setFilled">setFilled</a></td>
+    </tr>
+    <tr>
+      <td>ADD (0x80)</td>
+      <td>Polygon-definition, see below</td>
+      <td>Adds the defined Polygon</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._polygon.html#PolygonDomain-add">add</a></td>
+    </tr>
+    <tr>
+      <td>REMOVE (0x81)</td>
+      <td>int (layer), see below</td>
+      <td>Removes the defined Polygon</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._polygon.html#PolygonDomain-remove">remove</a></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The message contents are as following:</p>
+
+<h3 id="type-0x4f">type (0x4f)</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">string</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">value type <em>string</em></td>
+      <td style="text-align: center">New Type Name</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="color-0x45">color (0x45)</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">value type <em>color</em></td>
+      <td style="text-align: center">red</td>
+      <td style="text-align: center">green</td>
+      <td style="text-align: center">blue</td>
+      <td style="text-align: center">alpha</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="shape-0x42">shape (0x42)</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">double</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">value type <em>polygon</em></td>
+      <td style="text-align: center">entry number (n)</td>
+      <td style="text-align: center">x-coordinate#0</td>
+      <td style="text-align: center">y-ccordinate#0</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">x-coordinate#n-1</td>
+      <td style="text-align: center">y-coordinate#n-1</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="filled-0x55">filled (0x55)</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">value type <em>ubyte</em></td>
+      <td style="text-align: center">filled (!=0)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="add-0x80">ADD (0x80)</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">int</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">color</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">int</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">shape</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">value type <em>compound</em></td>
+      <td style="text-align: center">item number = 5</td>
+      <td style="text-align: center">value type <em>string</em></td>
+      <td style="text-align: center">type name</td>
+      <td style="text-align: center">value type <em>color</em></td>
+      <td style="text-align: center">color</td>
+      <td style="text-align: center">value type <em>ubyte</em></td>
+      <td style="text-align: center">filled</td>
+      <td style="text-align: center">value type <em>int</em></td>
+      <td style="text-align: center">layer</td>
+      <td style="text-align: center">value type <em>shape</em></td>
+      <td style="text-align: center">shape</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>If the polygon could not been added because another one with the same ID already exists within the layer, an error message is generated.</p>
+
+<h3 id="remove-0x81">REMOVE (0x81)</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">int</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">value type <em>int</em></td>
+      <td style="text-align: center">layer</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>If the named polygon can not be found in the given layer, all polygons with the given ID are removed (from all layers). If no polygon with the given ID could be found, an error message is generated.</p>

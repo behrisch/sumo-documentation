@@ -1,0 +1,111 @@
+<p><strong>TOC</strong>
+=Intro= simpla is a configurable, platooning plugin for the <a href="/TraCI/Interfacing_TraCI_from_Python" title="wikilink">TraCI Python client</a>. It manages the spontaneous formation of vehicle platoons and allows you to define specific behavior for vehicles that travel inside a platoon.</p>
+
+<p>This is achieved by defining additional <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicle_Types" title="wikilink">vehicle types</a> which represent platooning modes, and by providing information, which type (mode) to use for normal, solitary travel, and which one to use when platooning is activated. Further, ‘catch-up’ modes may be specified, which are used when a potential platooning partner is farther ahead downstream.</p>
+
+<p>For platooning up to four operational modes may be specified apart from the normal traveling mode (see section <a href="/simpla#configuration" title="wikilink">Configuration</a> for the details):</p>
+
+<ul>
+  <li>Platoon leader mode (parametrization of a vehicle driving at the front of a platoon)</li>
+  <li>Platoon follower mode (parametrization of a vehicle driving behind another vehicle within a platoon)</li>
+  <li>Platoon catch-up mode (parametrization of a vehicle in range of a platoon, which is feasible for joining)</li>
+  <li>Platoon catch-up follower mode (parametrization of a vehicle traveling in a platoon, with a platoon leader in catchup mode)</li>
+</ul>
+
+<p>It suffices to specify the platoon leader mode to use simpla. The behavior in situations corresponding to the follower mode will use the leader mode if the follower mode is not specified. The situations corresponding to the catch-up mode will use the solitary mode if no separate catch-up mode is specified. The situations corresponding to the catch-up follower mode will use the follower mode if no separate catch-up follower mode is specified.</p>
+
+<h1 id="configuration">Configuration</h1>
+
+<p>The configuration of simpla is done by providing an xml-file containing obligatory and optional parameters for the application. It has a root element with children tagged by the parameter name and holding attributes corresponding to the different parameter values. All possible attributes are listed in the attribute table below. A very simple configuration file could look like this (a more complete example, which serves as a template can be found in the installation directory <code class="highlighter-rouge">/tools/simpla</code>):</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;configuration&gt;
+    &lt;vehicleSelector value="pkw" /&gt;
+    &lt;vTypeMap original="simple_pkw" leader="simple_pkw_as_platoon_leader"  follower="simple_pkw_as_platoon_follower"/&gt;
+    ...
+&lt;/configuration&gt;
+</code></pre></div></div>
+
+<p>The following table summarizes all admissible configuration parameters:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter Name</th>
+      <th>Value Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>vehicleSelectors</strong></td>
+      <td>string</td>
+      <td>A vehicle is controlled by simpla if its vehicle type id has a given vehicle selector string as a substring. The given value may be a comma-separated list of selectors. Defaults to an empty string, which selects all vehicles for control.</td>
+    </tr>
+    <tr>
+      <td><strong>controlRate</strong></td>
+      <td>float</td>
+      <td>The number of the updates (per seconds) for the platoon management logic. Defaults to 1.0 sec.</td>
+    </tr>
+    <tr>
+      <td><strong>maxPlatoonGap</strong></td>
+      <td>float</td>
+      <td>Gap (in m.) below which vehicles are considered as a platoon (if their vType parameters allow safe traveling for the actual situation). Defaults to 15 m.</td>
+    </tr>
+    <tr>
+      <td><strong>platoonSplitTime</strong></td>
+      <td>float</td>
+      <td>Time (in secs.) until a vehicle which maintains a distance larger than <strong>maxPlatoonGap</strong> from its leader within the platoon (or travels on a different lane or behind a vehicle not belonging to its platoon) is split off. Defaults to 3.0 secs.</td>
+    </tr>
+    <tr>
+      <td><strong>catchupDist</strong></td>
+      <td>float</td>
+      <td>If a catch-up mode was defined, vehicles switch their type to the corresponding catch-up vehicle type as soon as a platoon is ahead closer than the given value (in m.). Defaults to 50.0 m.</td>
+    </tr>
+    <tr>
+      <td><strong>switchImpatienceFactor</strong></td>
+      <td>float</td>
+      <td>The switch impatience factor determines the magnitude of the effect that an increasing waiting time for a mode switch (due to safety constraints) has on the active speed factor of a vehicle. The active speed factor is calculated as <code class="highlighter-rouge">activeSpeedFactor = modeSpecificSpeedFactor/(1+impatienceFactor*waitingTime)</code>. The default value for the switch impatience factor is 0.1. Providing values &lt;= 0 will deactivate the impatience mechanism.</td>
+    </tr>
+    <tr>
+      <td><strong>lcMode</strong></td>
+      <td>integers (binary code) {original, leader, follower, catchup, catchupFollower}</td>
+      <td>Specifies the <a href="/TraCI/Change_Vehicle_State#lane_change_mode_.280xb6.29" title="wikilink">lane-change modes</a> to be used during the corresponding operation modes (e.g. ). The modes <em>leader</em> and <em>original</em> default to 594 and <em>follower</em> and <em>catch-up</em> modes default to 514.</td>
+    </tr>
+    <tr>
+      <td><strong>speedFactor</strong></td>
+      <td>floats {original, leader, follower, catchup, catchupFollower}</td>
+      <td>Specifies the <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Speed_Distributions" title="wikilink">speed factors</a> to be used during the corresponding operation modes (e.g. ). All modes default to 1.0.</td>
+    </tr>
+    <tr>
+      <td><strong>vTypeMap</strong></td>
+      <td>strings {original, leader, follower, catchup, catchupFollower}</td>
+      <td>Specifies the <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicle_Types" title="wikilink">vehicle types</a> to be used during the corresponding operation modes (e.g. ).</td>
+    </tr>
+    <tr>
+      <td><strong>vTypeMapFile</strong></td>
+      <td>string</td>
+      <td>Specifies the name of a file containing the specification of vehicle type mappings. The referenced file should contain lines of the form <code class="highlighter-rouge">origTypeID:leaderTypeID:followerTypeID:catchupTypeID:catchupFollowerTypeID</code>. The given vehicle type IDs can be empty strings leading to the default behavior as described above.</td>
+    </tr>
+    <tr>
+      <td><strong>verbosity</strong></td>
+      <td>int</td>
+      <td>Specifies the level of output during the simulation.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>=Integrating simpla into your traci script=</p>
+
+<p>First of all you should ensure that the directory <code class="highlighter-rouge">/tools</code> is in your <code class="highlighter-rouge">PYTHONPATH</code> (<a href="/TraCI/Interfacing_TraCI_from_Python#importing_traci_in_a_script" title="wikilink">See here for further explanations</a>). To use simpla with your python script further requires the provision of a configuration file <a href="/simpla#configuration" title="wikilink">as described above</a>. Assuming such a file named <code class="highlighter-rouge">simpla.cfg</code> is located in your working directory, all you have to do is importing simpla as a python module:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import simpla
+</code></pre></div></div>
+
+<p>and, after <a href="/TraCI/Interfacing_TraCI_from_Python#First_Steps" title="wikilink">establishing a TraCI-connection</a> to SUMO, load your configuration.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>traci.start(...)
+...
+simpla.load("simpla.cfg")
+</code></pre></div></div>
+
+<p>The call to <code class="highlighter-rouge">simpla.load</code> automatically installs a <a href="/TraCI/Interfacing_TraCI_from_Python#Adding_a_StepListener" title="wikilink">TraCI-stepListener</a> and the platoon management is executed at the end of each call to <code class="highlighter-rouge">traci.simulationStep()</code>.</p>

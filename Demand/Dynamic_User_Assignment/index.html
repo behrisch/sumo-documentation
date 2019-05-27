@@ -1,0 +1,77 @@
+<h1 id="introduction">Introduction</h1>
+
+<p>For a given set of vehicles with of origin-destination relations (trips), the simulation must determine routes through the network (list of edges) that are used to reach the destination from the origin edge. The simplest method to find these routes is by computing shortest or fastest routes through the network using a routing algorithm such as Djikstra or A*. These algorithms require assumptions regarding the travel time for each network edge which is commonly not known before running the simulation due to the fact that travel times depend on the number of vehicles in the network. .</p>
+
+<p>The problem of determining suitable routes that take into account travel times in a traffic-loaded network is called <em>user assignment</em>. SUMO provides different tools to solve this problem and they are described below.</p>
+
+<h1 id="iterative-assignment-dynamic-user-equilibrium">Iterative Assignment (<strong>D</strong>ynamic <strong>U</strong>ser <strong>E</strong>quilibrium)</h1>
+
+<p>The tool ‘’ /tools/assign/duaIterate.py ‘’ can be used to compute the (approximate) dynamic user equilibrium.</p>
+
+<p><code class="highlighter-rouge">python duaIterate.py -n </code>***<network-file>***` -t `***<trip-file>***` -l `***<nr-of-iterations>***</nr-of-iterations></trip-file></network-file></p>
+
+<p><em>duaIterate.py</em> supports many of the same options as <a href="/SUMO" title="wikilink">SUMO</a>. Any options not listed when calling *duaIterate.py * can be passed to <a href="/SUMO" title="wikilink">SUMO</a> by adding after the regular options (i.e. .</p>
+
+<p>This script tries to calculate a user equilibrium, that is, it tries to find a route for each vehicle (each trip from the trip-file above) such that each vehicle cannot reduce its travel cost (usually the travel time) by using a different route. It does so iteratively (hence the name) by</p>
+
+<ol>
+  <li>calling <a href="/DUAROUTER" title="wikilink">DUAROUTER</a> to route the vehicles in a network with the last known edge costs (starting with empty-network travel times)</li>
+  <li>calling <a href="/SUMO" title="wikilink">SUMO</a> to simulate “real” travel times result from the calculated routes. The result edge costs are used in the net routing step.</li>
+</ol>
+
+<p>The number of iterations may be set to a fixed number of determined dynamically depending on the used options. In order to ensure convergence there are different methods employed to calculate the route choice probability from the route cost (so the vehicle does not always choose the “cheapest” route). In general, new routes will be added by the router to the route set of each vehicle in each iteration (at least if none of the present routes is the “cheapest”) and may be chosen according to the route choice mechanisms described below.</p>
+
+<p>Between successive calls of DUAROUTER, the <em>.rou.alt.xml</em> format is used to record not only the current <em>best</em> route but also previously computed alternative routes. These routes are collected within a route distribution and used when deciding the actual route to drive in the next simulation step. This isn’t always the one with the currently lowest cost but is rather sampled from the distribution of alternative routes by a configurable algorithm described below.</p>
+
+<h2 id="route-choice-algorithm">Route-Choice algorithm</h2>
+
+<p>The two methods which are implemented are called <a href="/Publications#Traffic_Assignment" title="wikilink">Gawron</a> and <a href="https://en.wikipedia.org/wiki/Discrete_choice">Logit</a> in the following. The input for each of the methods is a weight or cost function <em>w</em> on the edges of the net, coming from the simulation or default costs (in the first step or for edges which have not been traveled yet), and a set of routes <em>R</em> where each route <em>r</em> has an old cost <em>c</em><sub><em>r</em></sub> and an old probability <em>p</em><sub><em>r</em></sub> (from the last iteration) and needs a new cost <em>c</em><sub><em>r</em></sub>′ and a new probability <em>p</em><sub><em>r</em></sub>′.</p>
+
+<h3 id="gawron-default">Gawron (default)</h3>
+
+<p>The Gawron algorithm computes probabilities for chosing from a set of alterantive routes for each driver. The following values are considered to compute these probabilities:</p>
+
+<ul>
+  <li>the travel time along the used route in the previous simulation step</li>
+  <li>the sum of edge travel times for a set of alternative routes</li>
+  <li>the previous probability of chosing a route</li>
+</ul>
+
+<h3 id="logit">Logit</h3>
+
+<p>The Logit mechanism applies a fixed formula to each route to calculate the new probability. It ignores old costs and old probabilities and takes the route cost directly as the sum of the edge costs from the last simulation.</p>
+
+<p><em>c</em><sub><em>r</em></sub>′=∑<sub><em>e</em> ∈ <em>r</em></sub><em>w</em>(<em>e</em>)</p>
+
+<p>The probabilities are calculated from an exponential function with parameter <em>θ</em> scaled by the sum over all route values:</p>
+
+<p>$p_r’ = \frac{\exp(\theta c_r’)}{\sum_{s\in R}\exp(\theta c_s’)}$</p>
+
+<h2 id="termination">Termination</h2>
+
+<p>The option may be used to detect convergence and abort iterations automatically. Otherwise, a fixed number of iterations is used. Once the script finishes any of the resulting <em>.rou.xml</em> files may be used for simulation but the last one(s) should be the best.</p>
+
+<h2 id="usage-examples">Usage Examples</h2>
+
+<h3 id="loading-vehicle-types-from-an-additional-file">Loading vehicle types from an additional file</h3>
+
+<p>By default, vehicle types are taken from the input trip file and are then propagated through <a href="/DUAROUTER" title="wikilink">DUAROUTER</a> iterations (always as part of the written route file).</p>
+
+<p>In order to use vehicle type definitions from an , further options must be set</p>
+
+<p><code class="highlighter-rouge">duaIterate.py -n ... -t ... -l ... </code>
+<code class="highlighter-rouge">  --additional-file </code>*<FILE_WITH_VTYPES>*` `
+`  duarouter--aditional-file `*<FILE_WITH_VTYPES>*` `
+`  duarouter--vtype-output dummy.xml`</FILE_WITH_VTYPES></FILE_WITH_VTYPES></p>
+
+<p>Options preceeded by the string <em>duarouter–</em> are passed directly to duarouter and the option <em>vtype-output dummy.xml</em> must be used to prevent duplicate definition of vehicle types in the generated output files.</p>
+
+<h1 id="oneshot-assignment">oneShot-assignment</h1>
+
+<p>An alternative to the iterative user assignment above is incremental assignment. This happens automatically when using input directly in <a href="/SUMO" title="wikilink">SUMO</a> instead of s with pre-defined routes. In this case each vehicle will compute a fastest-path computation at the time of departure which prevents all vehicles from driving blindly into the same jam and works pretty well empirically (for larger scenarios).</p>
+
+<p>The routes for this incremental assignment are computed using the <a href="/Demand/Automatic_Routing" title="wikilink">Automatic Routing / Routing Device</a> mechanism. Since this device allows for various configuration options, the script <a href="/Tools/Assign#one-shot.py" title="wikilink">Tools/Assign#one-shot.py</a> may be used to automatically try different parameter settings.</p>
+
+<h1 id="marouter"><a href="/MAROUTER" title="wikilink">MAROUTER</a></h1>
+
+<p>The <a href="/MAROUTER" title="wikilink">MAROUTER</a> application computes a <em>classic</em> macroscopic assignment. It employs mathematical functions (resistive functions) that approximate travel time increases when increasing flow. This allows to compute an iterative assignment without the need for time-consuming microscopic simulation.</p>

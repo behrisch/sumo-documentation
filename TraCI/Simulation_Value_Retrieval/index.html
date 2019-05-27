@@ -1,0 +1,540 @@
+<h2 id="command-0xab-get-simulation-variable">Command 0xab: Get Simulation Variable</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">string</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Variable</td>
+      <td style="text-align: center">Simulation ID (always unused)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Asks for the value of a certain simulation variable</p>
+
+<p>The following variable values can be retrieved, the type of the return value is also shown in the table.</p>
+
+<table>
+<caption><strong>Overview Retrievable Simulation Variables</strong></caption>
+<thead>
+<tr class="header">
+<th><p>Variable</p></th>
+<th><p>ValueType</p></th>
+<th><p>Description</p></th>
+<th><p><a href="/TraCI/Interfacing_TraCI_from_Python" title="wikilink">Python Method</a></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>current simulation time (0x70)</p></td>
+<td><p>int</p></td>
+<td><p>Returns the current simulation time (in ms)</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getCurrentTime">getCurrentTime</a></p></td>
+</tr>
+<tr class="even">
+<td><p>number of loaded vehicles (id 0x71)</p></td>
+<td><p>int</p></td>
+<td><p>The number of vehicles which were loaded in this time step.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getLoadedNumber">getLoadedNumber</a></p></td>
+</tr>
+<tr class="odd">
+<td><p>ids of loaded vehicles (id 0x72)</p></td>
+<td><p>stringList</p></td>
+<td><p>A list of ids of vehicles which were loaded in this time step.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getLoadedIDList">getLoadedIDList</a></p></td>
+</tr>
+<tr class="even">
+<td><p>number of departed vehicles (id 0x73)</p></td>
+<td><p>int</p></td>
+<td><p>The number of vehicles which departed (were inserted into the road network) in this time step.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getDepartedNumber">getDepartedNumber</a></p></td>
+</tr>
+<tr class="odd">
+<td><p>ids of departed vehicles (id 0x74)</p></td>
+<td><p>stringList</p></td>
+<td><p>A list of ids of vehicles which departed (were inserted into the road network) in this time step.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getDepartedIDList">getDepartedIDList</a></p></td>
+</tr>
+<tr class="even">
+<td><p>number of vehicles that start to teleport<br />
+(id 0x75)</p></td>
+<td><p>int</p></td>
+<td><p>The number of vehicles which started to teleport in this time step.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getStartingTeleportNumber">getStartingTeleportNumber</a></p></td>
+</tr>
+<tr class="odd">
+<td><p>ids of vehicles that start to teleport (id 0x76)</p></td>
+<td><p>stringList</p></td>
+<td><p>A list of ids of vehicles which started to teleport in this time step.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getStartingTeleportIDList">getStartingTeleportIDList</a></p></td>
+</tr>
+<tr class="even">
+<td><p>number of vehicles that end being teleported<br />
+(id 0x77)</p></td>
+<td><p>int</p></td>
+<td><p>The number of vehicles which ended to be teleported in this time step.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getEndingTeleportNumber">getEndingTeleportNumber</a></p></td>
+</tr>
+<tr class="odd">
+<td><p>ids of vehicles that end being teleported<br />
+(id 0x78)</p></td>
+<td><p>stringList</p></td>
+<td><p>A list of ids of vehicles which ended to be teleported in this time step.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getEndingTeleportIDList">getEndingTeleportIDList</a></p></td>
+</tr>
+<tr class="even">
+<td><p>number of arrived vehicles (id 0x79)</p></td>
+<td><p>int</p></td>
+<td><p>The number of vehicles which arrived (have reached their destination and are removed from the road network) in this time step.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getArrivedNumber">getArrivedNumber</a></p></td>
+</tr>
+<tr class="odd">
+<td><p>ids of arrived vehicles (id 0x7a)</p></td>
+<td><p>stringList</p></td>
+<td><p>A list of ids of vehicles which arrived (have reached their destination and are removed from the road network) in this time step.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getArrivedIDList">getArrivedIDList</a></p></td>
+</tr>
+<tr class="even">
+<td><p>network boundaries (id 0x7c)</p></td>
+<td><p>boundary box</p></td>
+<td><p>The boundary box of the simulation network.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getNetBoundary">getNetBoundary</a></p></td>
+</tr>
+<tr class="odd">
+<td><p>minimum number of vehicles that are still expected to leave the net (id 0x7d)</p></td>
+<td><p>int</p></td>
+<td><p>The number of vehicles which are in the net plus the ones still waiting to start. This number may be smaller than the actual number of vehicles still to come because of delayed route file parsing.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getMinExpectedNumber">getMinExpectedNumber</a></p></td>
+</tr>
+<tr class="even">
+<td><p>number of vehicles that begin a stop (id 0x68)</p></td>
+<td><p>int</p></td>
+<td><p>The number of vehicles that halted on a scheduled stop in this time step.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getStopStartingVehiclesNumber">getStopStartingVehiclesNumber</a></p></td>
+</tr>
+<tr class="odd">
+<td><p>ids of vehicles that begin a stop (id 0x69)</p></td>
+<td><p>stringList</p></td>
+<td><p>A list of ids of vehicles that halted on a scheduled stop in this time step.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getStopStartingVehiclesIDList">getStopStartingVehiclesIDList</a></p></td>
+</tr>
+<tr class="even">
+<td><p>number of vehicles that end a stop (id 0x6a)</p></td>
+<td><p>int</p></td>
+<td><p>The number of vehicles that begin to continue their journey, leaving a scheduled stop in this time step.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getStopEndingVehiclesNumber">getStopEndingVehiclesNumber</a></p></td>
+</tr>
+<tr class="odd">
+<td><p>ids of vehicles that end a stop (id 0x6b)</p></td>
+<td><p>stringList</p></td>
+<td><p>A list of ids of vehicles that begin to continue their journey, leaving a scheduled stop in this time step.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getStopEndingVehiclesIDList">getStopEndingVehiclesIDList</a></p></td>
+</tr>
+<tr class="even">
+<td><p>number of vehicles involved in a collision (id 0x80)</p></td>
+<td><p>int</p></td>
+<td><p>The number of vehicles that were involved in a collision in this time step.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getCollidingVehiclesNumber">getCollidingVehiclesNumber</a></p></td>
+</tr>
+<tr class="odd">
+<td><p>ids of vehicles involved in a collision (id 0x81)</p></td>
+<td><p>stringList</p></td>
+<td><p>A list of ids of vehicles that were involved in a collision in this time step.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getCollidingVehiclesIDList">getCollidingVehiclesIDList</a></p></td>
+</tr>
+<tr class="even">
+<td><p>number of vehicles that begin to be parked<br />
+(id 0x6c)</p></td>
+<td><p>int</p></td>
+<td><p>The number of vehicles that enter a parking position in this time step.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getParkingStartingVehiclesNumber">getParkingStartingVehiclesNumber</a></p></td>
+</tr>
+<tr class="odd">
+<td><p>ids of vehicles that begin to be parked<br />
+(id 0x6d)</p></td>
+<td><p>stringList</p></td>
+<td><p>A list of ids of vehicles that enter a parking position in this time step.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getParkingStartingVehiclesIDList">getParkingStartingVehiclesIDList</a></p></td>
+</tr>
+<tr class="even">
+<td><p>number of vehicles that end to be parked<br />
+(id 0x6e)</p></td>
+<td><p>int</p></td>
+<td><p>The number of vehicles that begin to continue their journey, leaving a scheduled parking in this time step.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getParkingEndingVehiclesNumber">getParkingEndingVehiclesNumber</a></p></td>
+</tr>
+<tr class="odd">
+<td><p>ids of vehicles that end being parked (id 0x6f)</p></td>
+<td><p>stringList</p></td>
+<td><p>A list of ids of vehicles that begin to continue their journey, leaving a scheduled parking in this time step.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getParkingEndingVehiclesIDList">getParkingEndingVehiclesIDList</a></p></td>
+</tr>
+<tr class="even">
+<td><p>bus stop waiting (id 0x67)</p></td>
+<td><p>int</p></td>
+<td><p>Get the total number of waiting persons at the named bus stop.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getBusStopWaiting">getBusStopWaiting</a></p></td>
+</tr>
+<tr class="odd">
+<td><p>delta T (id 0x7b)</p></td>
+<td><p>int</p></td>
+<td><p>Returns the length of one simulation step in milliseconds.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getDeltaT">getDeltaT</a></p></td>
+</tr>
+<tr class="even">
+<td><p>parameter (0x7e)</p></td>
+<td><p>string</p></td>
+<td><p><a href="/#Generic_Parameter_Retrieval_0x7e" title="wikilink">Returns the value for the given string parameter</a></p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getParameter">getParameter</a></p></td>
+</tr>
+<tr class="odd">
+</tr>
+</tbody>
+</table>
+
+<h2 id="response-0xbb-simulation-variable">Response 0xbb: Simulation Variable</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center"><return_type></return_type></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Variable</td>
+      <td style="text-align: center"><invalid></invalid></td>
+      <td style="text-align: center">Return type of the variable</td>
+      <td style="text-align: center"><VARIABLE_VALUE></VARIABLE_VALUE></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The respond to a <strong>“Command Get Simulation Variable”</strong>.</p>
+
+<h2 id="extended-retrieval-messages">Extended retrieval messages</h2>
+
+<p>Some further messages require additional parameters.</p>
+
+<table>
+<caption><strong>Overview Extended Variables Retrieval</strong></caption>
+<thead>
+<tr class="header">
+<th><p>Variable</p></th>
+<th><p>Request ValueType</p></th>
+<th><p>Response ValueType</p></th>
+<th><p>Description</p></th>
+<th><p><a href="/TraCI/Interfacing_TraCI_from_Python" title="wikilink">Python Method</a></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>position conversion (0x82)</p></td>
+<td><p>compound, see below</p></td>
+<td><p>Position, as wished</p></td>
+<td><p>Reads a position information and returns it converted into the given representation.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-convert2D">convert2D</a><br />
+<a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-convert3D">convert3D</a><br />
+<a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-convertGeo">convertGeo</a><br />
+<a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-convertRoad">convertRoad</a></p></td>
+</tr>
+<tr class="even">
+<td><p>distance request (0x83)</p></td>
+<td><p>compound, see below</p></td>
+<td><p>double</p></td>
+<td><p>Reads two positions and an indicator whether the air or the driving distance shall be computed. Returns the according distance.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getDistanceRoad">getDistanceRoad</a><br />
+<a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-getDistance2D">getDistance2D</a></p></td>
+</tr>
+<tr class="odd">
+<td><p>find route (0x86)</p></td>
+<td><p>compound, see below</p></td>
+<td><p>compound, see below</p></td>
+<td><p>Reads origin and destination edge together with some vehicle paramters and computes the currently fastest driving route for the vehicle (for pedestrians / passengers use find intermodal route).</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-findRoute">findRoute</a></p></td>
+</tr>
+<tr class="even">
+<td><p>find intermodal route (0x87)</p></td>
+<td><p>compound, see below</p></td>
+<td><p>compound, see below</p></td>
+<td><p>Reads origin and destination position together with usable modes and other person paramters and computes the currently fastest route for the person using the available modes.</p></td>
+<td><p><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-findIntermodalRoute">findIntermodalRoute</a></p></td>
+</tr>
+<tr class="odd">
+</tr>
+</tbody>
+</table>
+
+<h3 id="command-0x82-position-conversion">Command 0x82: Position Conversion</h3>
+
+<p>The request needs the following parameter:</p>
+
+<table>
+<tbody>
+<tr class="odd">
+<td align="center"><p>byte</p></td>
+<td align="center"><p>integer</p></td>
+<td align="center"><p><em>Position</em></p></td>
+<td align="center"><p>byte</p></td>
+<td align="center"><p>ubyte</p></td>
+</tr>
+<tr class="even">
+<td align="center"><p>value type <em>compound</em></p></td>
+<td align="center"><p>item number (always 2)</p></td>
+<td align="center"><p>position to convert</p></td>
+<td align="center"><p>value type <em>ubyte</em></p></td>
+<td align="center"><p>Type of the<br />
+Position to return</p></td>
+</tr>
+</tbody>
+</table>
+
+<p>Use this command to convert between the different position types used by TraCI. The specified <em>Position</em> is converted into the requested format given through <em>PositionId</em>. The result is the closest position that was found to match the given one. The return values consists of the converted value only.</p>
+
+<p>See <a href="/TraCI/Protocol#Position_Representations" title="wikilink">TraCI/Protocol#Position Representations</a> for available position formats.</p>
+
+<h3 id="command-0x83-distance-request">Command 0x83: Distance Request</h3>
+
+<p>The request needs the following parameter:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">byte</td>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center"><em>Position</em></td>
+      <td style="text-align: center"><em>Position</em></td>
+      <td style="text-align: center">ubyte</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">value type <em>compound</em></td>
+      <td style="text-align: center">item number (always 3)</td>
+      <td style="text-align: center">start position</td>
+      <td style="text-align: center">end position</td>
+      <td style="text-align: center">Distance Type</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>where</p>
+
+<p>Distance Type==0: air distance</p>
+
+<p>Distance Type==1: driving distance</p>
+
+<p>The resulting distance is returned.</p>
+
+<h3 id="command-0x86-find-route">Command 0x86: Find Route</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">byte</td>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center">byte</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">byte</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">byte</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">byte</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">byte</td>
+      <td style="text-align: center">integer</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">value type <em>compound</em></td>
+      <td style="text-align: center">item number (always 5)</td>
+      <td style="text-align: center">value type <em>string</em></td>
+      <td style="text-align: center">start edge</td>
+      <td style="text-align: center">value type <em>string</em></td>
+      <td style="text-align: center">destination edge</td>
+      <td style="text-align: center">value type <em>string</em></td>
+      <td style="text-align: center">vehicle type</td>
+      <td style="text-align: center">value type <em>double</em></td>
+      <td style="text-align: center">departure time (s)</td>
+      <td style="text-align: center">value type <em>integer</em></td>
+      <td style="text-align: center">routing mode (see below)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The following response is returned:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">type + string</td>
+      <td style="text-align: center">type + string</td>
+      <td style="text-align: center">type + stringList</td>
+      <td style="text-align: center">type + double</td>
+      <td style="text-align: center">type + double</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">type (always “driving”)</td>
+      <td style="text-align: center">line (always “”)</td>
+      <td style="text-align: center">edges</td>
+      <td style="text-align: center">travel time (s)</td>
+      <td style="text-align: center">travel time (s)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="command-0x87-find-intermodal-route">Command 0x87: Find Intermodal Route</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">byte</td>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center">byte</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">byte</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">byte</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">byte</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">byte</td>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center">byte</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">byte</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">byte</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">byte</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">byte</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">byte</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">byte</td>
+      <td style="text-align: center">string</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">value type <em>compound</em></td>
+      <td style="text-align: center">item number (always 12)</td>
+      <td style="text-align: center">value type <em>string</em></td>
+      <td style="text-align: center">start edge</td>
+      <td style="text-align: center">value type <em>string</em></td>
+      <td style="text-align: center">destination edge</td>
+      <td style="text-align: center">value type <em>string</em></td>
+      <td style="text-align: center">available modes</td>
+      <td style="text-align: center">value type <em>double</em></td>
+      <td style="text-align: center">departure time (s)</td>
+      <td style="text-align: center">value type <em>integer</em></td>
+      <td style="text-align: center">routing mode (see above)</td>
+      <td style="text-align: center">value type <em>double</em></td>
+      <td style="text-align: center">walking speed (m/s)</td>
+      <td style="text-align: center">value type <em>double</em></td>
+      <td style="text-align: center">walk factor</td>
+      <td style="text-align: center">value type <em>double</em></td>
+      <td style="text-align: center">depart position (m)</td>
+      <td style="text-align: center">value type <em>double</em></td>
+      <td style="text-align: center">arrival position (m)</td>
+      <td style="text-align: center">value type <em>double</em></td>
+      <td style="text-align: center">departPosLat (m)</td>
+      <td style="text-align: center">value type <em>string</em></td>
+      <td style="text-align: center">vtype of the vehicle</td>
+      <td style="text-align: center">value type <em>string</em></td>
+      <td style="text-align: center">vtype of the pedestrian</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The available modes are “car”, “public”, “bicycle” or space separated combination. Walking is always considered possible and is the default (or used when giving an empty string). When “car” is an available mode the vehicle type can be given using the vtype parameter. If this is empty, the default vehicle type is used.</p>
+
+<p>The response is a list of stages similar to the one returned by findRoute.</p>
+
+<h2 id="generic-parameter-retrieval-0x7e">Generic Parameter Retrieval 0x7e</h2>
+
+<p>The simulation supports retrieval of additional object parameters using the <a href="/Traci/GenericParameters#get_parameter" title="wikilink">generic parameter retrieval call</a>. The <em>object id</em> refers to the object (i.e. chargingStation) id. The following parameters are supported:</p>
+
+<ul>
+  <li>chargingStation.totalEnergyCharged</li>
+  <li>parkingArea.capacity</li>
+  <li>parkingArea.occupancy</li>
+</ul>

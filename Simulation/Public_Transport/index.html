@@ -1,0 +1,156 @@
+<p><strong>FORCETOC</strong></p>
+
+<h1 id="bus-stops">Bus Stops</h1>
+
+<p>It is possible to define positions of bus stops and let vehicles (“busses”) stop at these positions for a pre-given time. Definitions of bus stop locations in SUMO have the following format: <span class="inlxml">&lt;busStop id=”<BUS_STOP_ID>" lane=“<LANE_ID>” startPos=“<STARTING_POSITION>” endPos=“<ENDING_POSITION>” \[lines=“<LINE_ID>\[ <LINE_ID>\]\*”\]/&gt;&lt;/span&gt;. That means that a bus stop is an area on a lane. The parameters have the following meanings:</LINE_ID></LINE_ID></ENDING_POSITION></STARTING_POSITION></LANE_ID></BUS_STOP_ID></span></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute Name</th>
+      <th>Value Type</th>
+      <th>Value Range</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>id</strong></td>
+      <td>string</td>
+      <td>id</td>
+      <td> </td>
+      <td>The ID of the bus stop; must be unique</td>
+    </tr>
+    <tr>
+      <td><strong>lane</strong></td>
+      <td>string</td>
+      <td>valid lane id</td>
+      <td> </td>
+      <td>The name of the lane the bus stop shall be located at</td>
+    </tr>
+    <tr>
+      <td>startPos</td>
+      <td>float</td>
+      <td>-lane.length &lt; x &lt; lane.length (negative values count backwards from the end of the lane)</td>
+      <td>0</td>
+      <td>The begin position on the lane (the lower position on the lane) in meters</td>
+    </tr>
+    <tr>
+      <td>endPos</td>
+      <td>float</td>
+      <td>-lane.length &lt; x &lt; lane.length (negative values count backwards from the end of the lane)</td>
+      <td>lane.length</td>
+      <td>The end position on the lane (the higher position on the lane) in meters, must be larger than <em>startPos</em> by more than 0.1m</td>
+    </tr>
+    <tr>
+      <td>friendlyPos</td>
+      <td>bool</td>
+      <td><em>true,false</em></td>
+      <td><em>false</em></td>
+      <td>whether invalid stop positions should be corrected automatically (default <em>false</em>)</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>string</td>
+      <td>simple String</td>
+      <td> </td>
+      <td>Bus stop name. This is only used for visualization purposes.</td>
+    </tr>
+    <tr>
+      <td>lines</td>
+      <td>string list</td>
+      <td>A list of names separated by spaces (‘ ‘)</td>
+      <td> </td>
+      <td>meant to be the names of the bus lines that stop at this bus stop. This is only used for visualization purposes.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="access-lanes">Access Lanes</h2>
+
+<p>Each named may have additional child elements to model access from other parts of the network (i.e. road access to a stop on the rail network. This takes the following form:</p>
+
+<busStop id="myStop" lane="A_0" startPos="230" endPos="250">
+`   `<access lane="B_0" pos="150" />
+</busStop>
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute Name</th>
+      <th>Value Type</th>
+      <th>Value Range</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>lane</strong></td>
+      <td>string</td>
+      <td>id</td>
+      <td>The name of the lane from which this stop may also be accessed</td>
+    </tr>
+    <tr>
+      <td><strong>pos</strong></td>
+      <td>float</td>
+      <td>position along lane</td>
+      <td>The position along the lane from which the stop is reached</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="letting-vehicles-stop-at-a-bus-stop">Letting Vehicles stop at a bus stop</h1>
+
+<p>Vehicles must be informed that they must stop at a bus stop. The following example shows how this can be done (taken from ‘’ /examples/sumo/busses’’):</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd"&gt;
+    &lt;busStop id="busstop1" lane="2/1to1/1_0" startPos="20" endPos="40" lines="100 101 102"/&gt;
+    &lt;busStop id="busstop2" lane="1/2to0/2_0" startPos="20" endPos="40" lines="100 101"/&gt;
+    &lt;busStop id="busstop3" lane="0/1to0/0_0" startPos="20" endPos="40" lines="100 101 102"/&gt;
+    &lt;busStop id="busstop4" lane="1/0to2/0_0" startPos="20" endPos="40" lines="100 101"/&gt;
+
+    &lt;vType id="BUS" accel="2.6" decel="4.5" sigma="0" length="12" minGap="3" maxSpeed="70" color="1,1,0" guiShape="bus"/&gt;
+
+    &lt;vehicle id="0" type="BUS" depart="0" color="1,1,0"&gt;
+        &lt;route edges="2/0to2/1 2/1to1/1 1/1to1/2 1/2to0/2 0/2to0/1 0/1to0/0 0/0to1/0 1/0to2/0 2/0to2/1"/&gt;
+        &lt;stop busStop="busstop1" duration="20"/&gt;
+        &lt;stop busStop="busstop2" duration="20"/&gt;
+        &lt;stop busStop="busstop3" duration="20"/&gt;
+        &lt;stop busStop="busstop4" duration="20"/&gt;
+    &lt;/vehicle&gt;
+&lt;/additional&gt;
+</code></pre></div></div>
+
+<p>What is defined here is a vehicle named “0” being a “BUS”. “BUS” is a referenced type declared earlier. The vehicle has an embedded route (written by hand in this case) and a list of stop places. Each stop place is described by two attributes, “bus_stop” and “duration” where “bus_stop” is the name of the bus stop the vehicle shall halt at and “duration” is the time the vehicle shall wait at the bus stop in seconds. Please note that the order of bus stops the vehicle shall halt at must be correct.</p>
+
+<p>For a complete list of attributes for the “stop”-element of a vehicle see <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Stops" title="wikilink">Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Stops</a>.</p>
+
+<h2 id="incomplete-route-definition">Incomplete Route Definition</h2>
+
+<p>It is also possible to define a bus route without defining all intermediate edges:</p>
+
+<p><code class="highlighter-rouge">   </code><trip id="0" type="BUS" depart="0" color="1,1,0" from="2/0to2/1" to="2/0to2/1">
+`       `<stop busStop="busstop1" duration="20"></stop>
+`       `<stop busStop="busstop2" duration="20"></stop>
+`       `<stop busStop="busstop3" duration="20"></stop>
+`       `<stop busStop="busstop4" duration="20"></stop>
+`   `</trip></p>
+
+<p>The vehicle will take the fastest path between <em>from</em>-edge and <em>to</em>-edge that visits all stops in their correct order.</p>
+
+<h1 id="stopping-without-defining-a-bus-stop">Stopping without defining a bus stop</h1>
+
+<p>You may also let a vehicle stop at another position than a bus stop. The short definition of a vehicle’s stop is: <span class="inlxml">&lt;stop  bus_stop=”<BUS_STOP_ID>" | ( lane=“<LANE_ID>” endPos=“<POSITION_AT_LANE>” ) duration=“<HALTING_DURATION>”/&gt;&lt;/span&gt;. This means you can either use a bus stop or a lane position to define where a vehicle has to stop. For a complete list of attributes for the “stop”-element of a vehicle see [Definition_of_Vehicles,_Vehicle_Types,_and_Routes\#Stops](/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Stops "wikilink").</HALTING_DURATION></POSITION_AT_LANE></LANE_ID></BUS_STOP_ID></span></p>
+
+<h1 id="passengers">Passengers</h1>
+
+<p><a href="/Specification/Persons#Rides" title="wikilink">Additional definitions are necessary if the persons using the public transport lines shall be modeled as well</a>.</p>
+
+<p>To make use of <a href="/IntermodalRouting" title="wikilink">intermodal routing, additional constrains on public transport definition must be met.</a></p>

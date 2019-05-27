@@ -1,0 +1,32 @@
+<h1 id="geo-referenced-networks">Geo-Referenced Networks</h1>
+
+<p>SUMO networks are always encoded in Cartesian coordinates (meters) and may contain geo-referencing information to allow conversion to lon,lat. By default the Cartesian coordinates use the UTM-projection with the origin shifted to so that the lower left corner of the network is at 0,0.</p>
+
+<ul>
+  <li>When importing a network from <a href="/Networks/Import/OpenStreetMap" title="wikilink">OSM</a>, geo-referencing is automatically included in the generated <em>.net.xml</em> file</li>
+  <li>When importing a network from <a href="/Networks/Building_Networks_from_own_XML-descriptions" title="wikilink">plain-xml</a> files, coordinates may be given in lon,lat and importing using a projection option such as</li>
+  <li>When importing a network from Shapefile, the availability of geo-referencing depends on the format of the source data.</li>
+</ul>
+
+<h1 id="checking-geo-coordinates">Checking Geo-Coordinates</h1>
+
+<p>In <a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a> when right-clicking anywhere in a geo-referenced network, the option <em>copy cursor geo-position to clipboard</em> is available. The resulting <em>lat,lon</em> coordinates are suitable for pasting into any map engine such as [maps.google.com] or [maps.bing.com]. Also, the network coordinates as well as the geo-coordinates at the cursor position are shown in the bottom right-corner of the window.</p>
+
+<h1 id="performing-coordinate-transformations">Performing coordinate-transformations</h1>
+
+<ul>
+  <li>using <a href="/TraCI/Simulation_Value_Retrieval#Command_0x82:_Position_Conversion" title="wikilink">TraCI</a>, coordinates can be transformed between network-coordinates (m,m) and geo-coordinates (lon,lat) and vice versa</li>
+  <li>using <a href="/Tools/Sumolib#coordinate_transformations" title="wikilink">sumolib</a> , coordinates can be transformed between network-coordinates (m,m) and geo-coordinates (lon,lat) and vice versa</li>
+</ul>
+
+<h1 id="obtaining-output-with-geo-coordinates">Obtaining output with geo-coordinates</h1>
+
+<ul>
+  <li>A network can be exported as <em>plain-xml</em> in geo-coordinates using the netconvert command</li>
+</ul>
+
+<p><code class="highlighter-rouge"> netconvert --sumo-net-file myNet.net.xml --plain-output-prefix plain --proj.plain-geo</code></p>
+
+<ul>
+  <li><a href="/Simulation/Output/FCDOutput" title="wikilink">FCD-output</a> can be obtained in geo-coordinates by adding the option</li>
+</ul>

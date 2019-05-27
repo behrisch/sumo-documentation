@@ -1,0 +1,63 @@
+<p>There are a wide range of influences on vehicle speed. They are described in the following. Each of these influences sets an upper bound on the vehicle speed. The actual speed in any given situation is the minimum speed of all influences.</p>
+
+<h1 id="maxspeed">maxSpeed</h1>
+
+<p>The <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicle_Types" title="wikilink">-attribute </a> models the maximum speed that a vehicle will travel. It can be thought of as the maximum speed of the engine or the maximum speed desired by the driver under any circumstances (possibly these two aspects will be modelled with separate attributes in the future).</p>
+
+<h1 id="edgelane-speed">edge/lane speed</h1>
+
+<p>The -attribute is usually <a href="/Networks/Building_Networks_from_own_XML-descriptions#Edge_Descriptions" title="wikilink">defined for edges</a> but may also <a href="/Networks/Building_Networks_from_own_XML-descriptions#Lane-specific_Definitions" title="wikilink">differ among the lanes</a> of the same edge. It models the legal speed limit.</p>
+
+<p>When approaching an edge with a lower speed limit than the current one, a vehicle will slow down so as to stay within the new limit at the time of reaching the new edge.</p>
+
+<p>Each vehicle can be <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Speed_Distributions" title="wikilink">assigned an individual speed multiplier</a> which then lets it exceed this limit.</p>
+
+<p>Since version 0.24.0 it is also possible to define <a href="/Networks/Building_Networks_from_own_XML-descriptions#vehicle-class_specific_speed_limits" title="wikilink">vClass-specific speed limits for every edge</a>.</p>
+
+<h1 id="car-following-model">Car Following Model</h1>
+
+<p>The <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Car-Following_Models" title="wikilink">car following model</a> of a vehicle defines its speed in relation the vehicle ahead. The default model always selects the maximum speed which is <em>safe</em> in the sense of being able to stop in time to avoid a collision.</p>
+
+<h2 id="acceleration-and-deceleration">Acceleration and Deceleration</h2>
+
+<p>All models are subject to constraints in their <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Car-Following_Models" title="wikilink">acceleration an deceleration</a>. By default they will not accelerate stronger then the <em>accel</em> value. The default model plans it’s maneuvers so as to stay within the <em>decel</em> value (per second) but other models may interpret this value differently. All models will never brake harder than the <em>emergencyDecel</em> value (which defaults to the same value as <em>decel</em> but may be set independently).</p>
+
+<h2 id="dawdling">Dawdling</h2>
+
+<p>Most car-following models support the -attribute which models driver imperfection. For values above <strong>0</strong>, drivers with the default car-following model will drive <em>slower</em> than would be safe by a random amount (between [0, ]).</p>
+
+<h1 id="intersections">Intersections</h1>
+
+<p>Vehicles approaching an intersection without the right-of-way have to slow down. If the intersection is used by other vehicles which have the right of way, stopping may be necessary until a safe time-window is found. That time windows is based on the same safety assumptions as the car-following model. For the default <em>Krauss</em>-model this means that each vehicle must be able to stop safely even if it’s lead vehicle brakes hard to a full stop.</p>
+
+<p>Even if a vehicle has the right-of-way it may need to slow down due to <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Impatience" title="wikilink">impatient</a> drivers which drive across the intersection. The <a href="/Networks/Building_Networks_from_own_XML-descriptions#Right-of-way" title="wikilink">right-of-way rules</a> at an intersection are <a href="/Networks/Building_Networks_from_own_XML-descriptions#Node_Descriptions" title="wikilink">defined by the node -attribute</a> and by <a href="/Simulation/Traffic_Lights" title="wikilink">traffic lights</a>.</p>
+
+<p>The visibility of intersections can be controlled by the visibility attribute for the corresponding connections, see <a href="/Networks/Building_Networks_from_own_XML-descriptions#Connection_Descriptions" title="wikilink">Connection Descriptions</a>. Per default, a vehicle approaching from a minor road slows down until it is 4.5m away from the intersection (even if no prioritized vehicle is nearby). After that it may start to accelerate again if there is a safe gap in traffic.</p>
+
+<h1 id="lane-changing">Lane Changing</h1>
+
+<p>Vehicles may decide to slow down in order to execute a lane-change maneuver. They may also slow down in order to aid other vehicles with lane-changing. If the lane a vehicle is on does not have a connection to the next edge on a vehicles route, the vehicle will decelerate and stop.</p>
+
+<h1 id="stops">Stops</h1>
+
+<p>Vehicles will decelerate when approaching the position of a <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Stops" title="wikilink">-definition</a>.</p>
+
+<h1 id="acceleration--deceleration-constraints">Acceleration / Deceleration constraints</h1>
+
+<p>Vehicles can only change their speed by a certain amount each time step. This is defined by the <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicle_Types" title="wikilink">-attributes and </a></p>
+
+<h1 id="departspeed--arrivalspeed">departSpeed / arrivalSpeed</h1>
+
+<p>Vehicles enter the network using their <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicles_and_Routes" title="wikilink">defined </a>. When approaching the end of their route they will adapt their speed to match their <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicles_and_Routes" title="wikilink">defined </a></p>
+
+<h1 id="variable-speed-signs">Variable Speed Signs</h1>
+
+<p><a href="/Simulation/Variable_Speed_Signs" title="wikilink">Variable speed signs</a> are used to modify the speed limit of an edge for a defined time interval.</p>
+
+<h1 id="calibrators">Calibrators</h1>
+
+<p><a href="/Simulation/Calibrator" title="wikilink">Calibrators</a> are used to adapt the flow on an edge for a defined time interval but may also be used to modify the speed limit of an edge.</p>
+
+<h1 id="traci">TraCI</h1>
+
+<p>Vehicles can forced to adapt their speed using <a href="/TraCI/Change_Vehicle_State" title="wikilink">TraCI commands</a>. When using the command <em>slow down</em> stochastic influences on speed are not applied. By using <a href="/TraCI/Change_Vehicle_State#speed_mode_.280xb3.29" title="wikilink">the <em>speed mode</em> command, various safety related influences can be selectively disabled</a>.</p>

@@ -1,0 +1,113 @@
+<h2 id="prerequisites">Prerequisites</h2>
+
+<ul>
+  <li>installed <a href="https://www.visualstudio.com">Visual Studio Community, Professional or Enterprise 2013 or later.</a></li>
+  <li>installed <a href="https://cmake.org/download">cmake for windows</a></li>
+  <li>fresh sumo sources (either an unpacked src zip or a git clone, see <a href="/Installing/Linux_Build#Getting_the_source_code" title="wikilink">Installing/Linux_Build#Getting_the_source_code</a>)</li>
+  <li>installed libraries (Xerces-C, Proj, Fox) preferrably by cloning <a href="https://github.com/DLR-TS/SUMOLibraries/">https://github.com/DLR-TS/SUMOLibraries/</a>.
+    <ul>
+      <li>Make sure that the SUMO_LIBRARIES environment variable points to your cloned directory</li>
+    </ul>
+  </li>
+  <li>Place all relevant dll dirs in the PATH</li>
+</ul>
+
+<p>&lt;File:CMakeEnviromentVariables.png%7CLib&gt; folders placed in PATH</p>
+
+<h2 id="method-1-cmake-gui">Method 1: CMake GUI</h2>
+
+<ul>
+  <li>start cmake gui</li>
+  <li>select source path (e.g. D:\projects\sumo)</li>
+  <li>select build path (e.g. D:\projects\sumo\cmake-build)
+    <ul>
+      <li>can be identical to source path but it is advised to separate</li>
+      <li>Build dir will be created if necessary</li>
+    </ul>
+  </li>
+  <li>Start configuration pressing “Configure” button
+    <ul>
+      <li>select compiler (default should do)</li>
+    </ul>
+  </li>
+  <li>Create the Visual Studio solution pressing “Generate” button</li>
+  <li>Open <em>D:\projects\sumo\cmake-build\SUMO.sln</em> (from the explorer or by clicking on open project)</li>
+  <li>Build the configurations you want
+    <ul>
+      <li>Binaries appear in D:\projects\sumo\bin</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Visual guide:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Image:CMakeClonningSUMO.png</td>
+      <td>Cloning SUMO Image:CMakeConfiguration1.png</td>
+      <td>Selecting Solution (Visual Studio, Eclipse, etc.)</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Image:CMakeConfiguration4.png</td>
+      <td>Libraries successfully configured Image:CMakeConfiguration5.png</td>
+      <td>Generated solution</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="method-2-cmake-command-line">Method 2: CMake command line</h2>
+
+<ul>
+  <li>go to source path (e.g. <code class="highlighter-rouge">cd D:\projects\sumo</code>)</li>
+  <li>create build path (e.g. <code class="highlighter-rouge">mkdir cmake-build &amp;&amp; cd cmake-build</code>)</li>
+  <li>run cmake with the correct Visual Studio version (e.g. <code class="highlighter-rouge">cmake .. -G </code>“<code class="highlighter-rouge">Visual</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">Studio</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">12</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">2013</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">Win64</code>”)
+    <ul>
+      <li>for a list of possible generators run <code class="highlighter-rouge">cmake --help</code></li>
+    </ul>
+  </li>
+  <li>Open the solution <em>D:\projects\sumo\cmake-build\SUMO.sln</em>
+    <ul>
+      <li>or build from the command line using <code class="highlighter-rouge">cmake --build . --config Release</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="additional-options-and-fine-tuning">Additional options and fine tuning</h2>
+
+<ul>
+  <li>For a different target platform (e.g. 32bit) start cmake again, do not use Visual Studio to add a different platform</li>
+  <li>To enable <a href="/Libsumo" title="wikilink">Libsumo</a> add SWIG dir and exe for building Python and Java bindings
+    <ul>
+      <li>Make sure Python and a JDK are installed</li>
+      <li>Python will only work with the release build (unless you compile a debug version of Python yourself)</li>
+    </ul>
+  </li>
+  <li>To disable certain features delete all values referring to the feature (e.g. to disable GDAL remove GDAL_INCLUDE_DIR and GDAL_LIBRARY in the CMake GUI or in CMakeCache.txt) and run the generator again</li>
+</ul>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<ul>
+  <li>Python cannot be found
+    <ul>
+      <li>Make sure that there isn’t two different Python version installed</li>
+      <li>Python libraries can be specified manually (e.g. <PythonFolder>\\libs\\python<version>.lib)</version></PythonFolder></li>
+    </ul>
+  </li>
+</ul>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Image:CMakeConfiguration6.png</td>
+      <td>Python library field Image:CMakePython1.png</td>
+      <td>Two different python version at the same time</td>
+    </tr>
+  </tbody>
+</table>

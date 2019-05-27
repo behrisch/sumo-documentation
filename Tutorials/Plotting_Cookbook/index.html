@@ -1,0 +1,38 @@
+<p>In the following, You will find some examples for plotting results obtained from SUMO.</p>
+
+<h2 id="number-of-vehicles-within-the-simulation-over-time">Number of Vehicles within the Simulation over Time</h2>
+
+<p>Let’s assume You want to show the number of vehicles running through your simulation over time. You’ll need the <a href="/Simulation/Output/Summary" title="wikilink">summary-output</a> that contains the number of vehicles within the simulation for each simulation time step.</p>
+
+<p>If Your <a href="/Simulation/Output/Summary" title="wikilink">summary-output</a> is named “summary.xml”, You may show the number of running vehicles using</p>
+
+<p><code class="highlighter-rouge">python plot_summary.py -i summary.xml</code></p>
+
+<p>as “<span class="inlxml">running</span>”, the measurement You want to plot, is the default. The following image will be shown:</p>
+
+<p><a href="/Image:summary_running_mo.png" title="wikilink">300px</a></p>
+
+<p>Now, let’s assume You want to compare the number of running vehicles from different runs. The example below uses <a href="/Simulation/Output/Summary" title="wikilink">summary-outputs</a> from runs that cover different types of days of a week (mo\summary.xml: Monday, dido\summary.xml: Tuesday-Tursday, etc.). As we want to show only a single day, we limit the x-axis to [0,86400] (86400: seconds in a day) using and we also save the figure into the file “summary_running_all.png” using . To know what is shown, we replace the file names in the legend by the week day types using .</p>
+
+<p><code class="highlighter-rouge">python plot_summary.py -i mo\summary.xml,dido\summary.xml,fr\summary.xml,sa\summary.xml,so\summary.xml \</code>
+<code class="highlighter-rouge"> -l Mo,Di-Do,Fr,Sa,So -o summary_running_all.png --xlim 0,86400</code></p>
+
+<p><a href="/Image:summary_running_all.png" title="wikilink">300px</a></p>
+
+<p>Ok, now we’ll make it professional by adding labels and titles, proper ticks, using a different format for the simulation time than seconds, etc.</p>
+
+<p><code class="highlighter-rouge">python plot_summary.py -i mo\summary.xml,dido\summary.xml,fr\summary.xml,sa\summary.xml,so\summary.xml \</code>
+<code class="highlighter-rouge"> -l Mo,Di-Do,Fr,Sa,So --xlim 0,86400 --ylim 0,10000 -o sumodocs/summary_running.png --yticks 0,10001,2000,14 \</code>
+<code class="highlighter-rouge"> --xticks 0,86401,14400,14 --xtime1 --ygrid --ylabel </code>“<code class="highlighter-rouge">running</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">vehicles</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">[#]</code>”<code class="highlighter-rouge"> --xlabel </code>“<code class="highlighter-rouge">time</code>”<code class="highlighter-rouge"> \</code>
+<code class="highlighter-rouge"> --title </code>“<code class="highlighter-rouge">running</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">vehicles</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">over</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">time</code>”<code class="highlighter-rouge"> --adjust .14,.1 </code></p>
+
+<p><a href="/Image:summary_running.png" title="wikilink">300px</a></p>
+
+<p>The <a href="/Simulation/Output/Summary" title="wikilink">summary-output</a> contains further measures that can be visualised in the same way, among them <span class="inlxml">loaded</span>, <span class="inlxml">inserted</span>, <span class="inlxml">waiting</span>, or <span class="inlxml">ended</span>. Please consult the <a href="/Simulation/Output/Summary" title="wikilink">summary-output</a> documentation for a complete list.</p>
+
+<p>Further information can be found at:</p>
+
+<ul>
+  <li><a href="/Simulation/Output/Summary" title="wikilink">summary-output</a> documentation</li>
+  <li><a href="/Tools/Visualization" title="wikilink">visualisation tools</a> documentation</li>
+</ul>

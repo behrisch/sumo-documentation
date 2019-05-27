@@ -1,0 +1,414 @@
+<p>This page details the <a href="/TraCI" title="wikilink">TraCI</a> protocol. Please see there for a general introduction.</p>
+
+<h2 id="basic-flow">Basic Flow</h2>
+
+<p>After starting <a href="/SUMO" title="wikilink">SUMO</a>, clients connect to <a href="/SUMO" title="wikilink">SUMO</a> by setting up a TCP connection to the appointed <a href="/SUMO" title="wikilink">SUMO</a> port. TraCI supports multiple clients and executes all commands of a client in a sequence until it issues the <a href="/TraCI/Control-related_commands#Command_0x02:_Simulation_Step" title="wikilink">TraCI/Control-related commands#Command 0x02: Simulation Step</a> command. In order to have a predefined execution order every client should issue a <a href="/TraCI/Control-related_commands#Command_0x03:_SetOrder" title="wikilink">TraCI/Control-related commands#Command 0x03: SetOrder</a> command before the first simulation step. It assigns a number to the client and commands from different clients during the same simulation step will be executed in the order of that numbering (which does not need to be consecutive nor positive but unique). When using multi client setups the number of clients needs to be known when starting SUMO and all clients need to connect before the first simulation step.</p>
+
+<p><strong>Figure:TraCI: establishing a connection to SUMO</strong></p>
+
+<p><a href="/Image:traciConnect_sequence.png" title="wikilink">Image:traciConnect_sequence.png</a></p>
+
+<p>The client application sends commands to <a href="/SUMO" title="wikilink">SUMO</a> to control the simulation run, to influence single vehicle’s behavior or to ask for environmental details. <a href="/SUMO" title="wikilink">SUMO</a> answers with a <em>Status</em>-response to each command and additional results that depend on the given command.</p>
+
+<p>The client has to trigger each simulation step in <a href="/SUMO" title="wikilink">SUMO</a> using the <a href="/TraCI/Control-related_commands#Command_0x02:_Simulation_Step" title="wikilink">TraCI/Control-related commands#Command 0x02: Simulation Step</a> command. If any <a href="/TraCI/Object_Variable_Subscription" title="wikilink">subscriptions</a> have been done, the subscribed values are returned. The simulation will advance to the next once all clients have sent the simulation step command. Currently all clients receive all subscription results (even if the subscription has been issued by a different client).</p>
+
+<p>The client is responsible for shutting down the connection using the <a href="/TraCI/Control-related_commands#Command_0x7F:_Close" title="wikilink">close</a> command. See <a href="/Simulation/Basic_Definition#Defining_the_Time_Period_to_Simulate" title="wikilink">Simulation/Basic Definition#Defining the Time Period to Simulate</a> for further information on differences between running the simulation in TraCI-mode. When all clients issued close, the simulation will end, freeing all resources.</p>
+
+<p><strong>Figure:TraCI: closing a connection to SUMO</strong></p>
+
+<p><a href="/Image:traciColose_sequence.png" title="wikilink">Image:traciColose_sequence.png</a></p>
+
+<h2 id="messages">Messages</h2>
+
+<p>A TCP message acts as container for a list of commands or results. Therefore, each TCP message consists of a small header that gives the overall message size and a set of commands that are put behind it. The length and identifier of each command is placed in front of the command. A scheme of this container is depicted below:</p>
+
+<p><code class="highlighter-rouge"> 0                 7 8               15</code>
+<code class="highlighter-rouge">+--------------------------------------+</code>
+<code class="highlighter-rouge">| Message Length including this header |</code>
+<code class="highlighter-rouge">+--------------------------------------+</code>
+<code class="highlighter-rouge">|      (Message Length, continued)     |</code>
+<code class="highlighter-rouge">+--------------------------------------+  \</code>
+<code class="highlighter-rouge">|     Length        |    Identifier    |  |</code>
+<code class="highlighter-rouge">+--------------------------------------+   &gt; Command_0</code>
+<code class="highlighter-rouge">|           Command_0 content          |  |</code>
+<code class="highlighter-rouge">+--------------------------------------+  /</code>
+<code class="highlighter-rouge">                   ...</code>
+<code class="highlighter-rouge">+--------------------------------------+  \</code>
+<code class="highlighter-rouge">|     Length        |    Identifier    |  |</code>
+<code class="highlighter-rouge">+--------------------------------------+   &gt; Command_n-1</code>
+<code class="highlighter-rouge">|          Command_n-1 content         |  |</code>
+<code class="highlighter-rouge">+--------------------------------------+  /</code></p>
+
+<p>In some cases the length of a single command may not suffice, since the maximum command length is limited to 255. In those cases an extended length can be used by setting the original ubyte length field to zero and adding an integer length field. This extended scheme for a command looks as follows:</p>
+
+<p><code class="highlighter-rouge"> 0                 7 8               15</code>
+<code class="highlighter-rouge">+--------------------------------------+  \</code>
+<code class="highlighter-rouge">|   Length = 0      |                  |  |</code>
+<code class="highlighter-rouge">+-------------------+                  |  |</code>
+<code class="highlighter-rouge">|        32 bit Integer Length         |  |</code>
+<code class="highlighter-rouge">|                   +------------------+   &gt; Command</code>
+<code class="highlighter-rouge">|                   |   Identifier     |  |</code>
+<code class="highlighter-rouge">+--------------------------------------+  |</code>
+<code class="highlighter-rouge">|            Command content           |  |</code>
+<code class="highlighter-rouge">+--------------------------------------+  /</code></p>
+
+<p>To simplify the usage of TraCI, we provide a class for handling the socket connection and another for composing a message out of basic data types. The C++ implementation of these classes is available at , the Python implementation is in and . For a Java implementation have a look at <a href="http://traas.sourceforge.net/">TraaS</a>. The class <code class="highlighter-rouge">tcpip::Socket</code> handles a TCP connection on server as well as on client side. The class <code class="highlighter-rouge">tcpip::Storage</code> is designed to hold a list of elementary data types. By using the method <code class="highlighter-rouge">tcpip::Socket::sendExact(tcpip::Storage)</code> and <code class="highlighter-rouge">tcpip::Socket::receiveExact(Storage)</code>, messages can be send and received as Storage objects.</p>
+
+<h3 id="status-response">Status Response</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">string</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Result</td>
+      <td style="text-align: center">Description</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Each command is acknowledged by a status response, included are a <em>Result</em> and a <em>Description</em>. The identifier refers to the identifier of the respective command that is acknowledged.
+<em>Result</em> can have the following values:</p>
+
+<ul>
+  <li>0x00 in case of succes</li>
+  <li>0xFF if the requested command failed</li>
+  <li>0x01 if the requested command is not implemented in the network simulator (in addition, a <em>Description</em> text must be added)</li>
+</ul>
+
+<h2 id="data-types">Data types</h2>
+
+<h3 id="atomar-types">Atomar Types</h3>
+
+<p>The following table shows the supported elementary data types:</p>
+
+<table>
+<thead>
+<tr class="header">
+<th><p>Data type</p></th>
+<th><p>Size</p></th>
+<th><p>Description</p></th>
+<th><p>Identifier</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>ubyte</p></td>
+<td><p>8 bit</p></td>
+<td><p>integer numbers (0 to 255)</p></td>
+<td><p>0x07</p></td>
+</tr>
+<tr class="even">
+<td><p>byte</p></td>
+<td><p>8 bit</p></td>
+<td><p>integer numbers (-128 to 127)</p></td>
+<td><p>0x08</p></td>
+</tr>
+<tr class="odd">
+<td><p>integer</p></td>
+<td><p>32 bit</p></td>
+<td><p>integer numbers (-2<sup>31</sup> to 2<sup>31</sup>-1)<br />
+includes bitsets with bit0 meaning the least significant bit</p></td>
+<td><p>0x09</p></td>
+</tr>
+<tr class="even">
+<td><p>float</p></td>
+<td><p>32 bit</p></td>
+<td><p>IEEE754 floating point numbers (see note)</p></td>
+<td><p>0x0A</p></td>
+</tr>
+<tr class="odd">
+<td><p>double</p></td>
+<td><p>64 bit</p></td>
+<td><p>IEEE754 floating point numbers</p></td>
+<td><p>0x0B |-|</p></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="composed-types">Composed Types</h3>
+
+<p>In the following, composed data types are described.</p>
+
+<h4 id="position-representations">Position Representations</h4>
+
+<p><strong>2DPosition (<em>ubyte</em> identifier: 0x01)</strong></p>
+
+<p>A cartesian 2D position within the simulation network, described by two double values (x and y coordinate).</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">double</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>3DPosition (<em>ubyte</em> identifier: 0x03)</strong> A cartesian 3D position within the simulation network, described by three double values (x, y and z coordinates).</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">double</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Road Map Position (<em>ubyte</em> identifier: 0x04)</strong> Alternative position description that is also used by <a href="/SUMO" title="wikilink">SUMO</a> in most cases. <em>RoadId</em> identifies a road segment (edge), <em>Pos</em> describes the position of the node in longitudinal direction (ranging from 0 to the road’s length). <em>LaneId</em> identifies the driving lane on the road segment. Lanes are numbered sequentially from right to left starting with 0.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">ubyte</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Lon-Lat-Position (<em>ubyte</em> identifier: 0x00)</strong> A position within the simulation network in geo-coordinates, described by two double values (longitude and latitude).</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">double</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Lon-Lat-Alt-Position (<em>ubyte</em> identifier: 0x02)</strong> A position within the simulation network in geo-coordinates with altitude, described by three double values (longitude, latitude, and altitude).</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">double</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="boundary-box-ubyte-identifier-0x05">Boundary Box (<em>ubyte</em> identifier: 0x05)</h4>
+
+<p>A boundary box represented by its lower left and upper right corner.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">double</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="polygon-ubyte-identifier-0x06">Polygon (<em>ubyte</em> identifier: 0x06)</h4>
+
+<p>A sequence of 2D points, representing a polygon shape. <em>Length</em> is the number of (x,y) points that make up the polygon.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="traffic-light-phase-list-ubyte-identifier-0x0d">Traffic Light Phase List (<em>ubyte</em> identifier: 0x0D)</h4>
+
+<p>This type is used to report the different phases of a traffic light. A total of <em>Length</em> phases is reported together with the preceding and succeeding roads that are affected by the respective light phase.</p>
+
+<p>The following identifiers for a phase exist:</p>
+
+<ul>
+  <li>0x01: red</li>
+  <li>0x02: yellow</li>
+  <li>0x03: green</li>
+  <li>0x04: traffic light is off and blinking</li>
+  <li>0x05: traffic light is off, not blinking</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="color-ubyte-identifier-0x11">Color (<em>ubyte</em> identifier: 0x11)</h4>
+
+<p>A R,G,B,A-quadruple of unsigned byte (0-255).</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">0</td>
+    </tr>
+  </tbody>
+</table>
+

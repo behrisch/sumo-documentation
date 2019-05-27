@@ -1,0 +1,46 @@
+<p><strong>FORCETOC</strong></p>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>SUMO includes the following emission models:</p>
+
+<ul>
+  <li><a href="/Models/Emissions/HBEFA-based" title="wikilink">HBEFA v2.1-based</a>: A continuous reformulation of the <a href="http://www.hbefa.net/">HBEFA</a> v2.1 emissions data base (open source);</li>
+  <li><a href="/Models/Emissions/HBEFA3-based" title="wikilink">HBEFA v3.1-based</a>: A continuous reformulation of the <a href="http://www.hbefa.net/">HBEFA</a> v3.1 emissions data base (open source);</li>
+  <li><a href="/Models/Emissions/PHEMlight" title="wikilink">PHEMlight</a>, a derivation of the original <a href="http://www.ivt.tugraz.at/de/forschung/emissionen.html">PHEM</a> emission model (closed source, commercial).</li>
+  <li><a href="/Models/Electric#Emission_Output" title="wikilink">Electric Vehicle Model</a>: an electricity-consumption model by <a href="/Models/Electric#Publications" title="wikilink">Kurczveil, T., López, P.A., Schnieder</a>.</li>
+</ul>
+
+<p>Literature on the Models and their implementation can be found at <a href="http://elib.dlr.de/89398/">the DLR electronic library (http://elib.dlr.de/89398/)</a>.</p>
+
+<h1 id="using-models">Using Models</h1>
+
+<p>All models implement different vehicle emission classes. These classes can be assigned to vehicles by using the vehicle type attribute “<span class="inlxml">emissionClass</span>”. Available emission classes can be found within the emission model descriptions (<a href="/Models/Emissions/HBEFA-based" title="wikilink">HBEFA v2.1-based</a>, <a href="/Models/Emissions/HBEFA3-based" title="wikilink">HBEFA v3.1-based</a>, <a href="/Models/Emissions/PHEMlight" title="wikilink">PHEMlight</a>). The current default model is <code class="highlighter-rouge">HBEFA3/PC_G_EU4</code> (a gasoline powered Euro norm 4 passenger car modeled using the HBEFA3 based model).</p>
+
+<h1 id="pollutants-covered-by-models">Pollutants covered by models</h1>
+
+<center>
+| model            | pollutant / measurement |
+|------------------|-------------------------|
+| CO<sub>2</sub>   | CO                      |
+| HBEFA v2.1-based | x                       |
+| HBEFA v3.1-based | x                       |
+| PHEMlight        | x                       |
+||
+
+</center>
+<p>Outputs
+=======</p>
+
+<p>Pollutants emitted by the simulated vehicles can be visualised using <a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a> or be written into output files, both by <a href="/SUMO" title="wikilink">SUMO</a> and <a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a>. The following output can be used:</p>
+
+<ul>
+  <li><a href="/Simulation/Output/TripInfo" title="wikilink">trip information</a>: In combination with the emissions device, the tripinfo output contains the sum of all pollutants emitted / fuel consumed during a vehicle’s journey. To record emissions for all trips add the options and . Alternatively, you can configure emission recording for selected vehicles using <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Devices" title="wikilink">generic parameters</a>.</li>
+  <li><a href="/Simulation/Output/Lane-_or_Edge-based_Emissions_Measures" title="wikilink">edgelane emissions</a>: These output files contain the pollutants emitted at an edge / a lane, aggregated over a variable time span</li>
+  <li><a href="/SUMO-GUI#Vehicle_Visualisation_Settings" title="wikilink">Color vehicles by emissions</a>: This can be used to show the emissions for each vehicle during each simulation step</li>
+  <li><a href="/SUMO-GUI#Edge.2FLane_Visualisation_Settings" title="wikilink">Color lanes/edges by emissions</a>: This can be used to show the emissions for all vehicles on a lane during each simulation step (or for the whole edge in <a href="/Simulation/Meso" title="wikilink">Simulation/Meso</a>).</li>
+</ul>
+
+<h1 id="further-interfaces">Further Interfaces</h1>
+
+<p>The tool <a href="/Tools/TraceExporter" title="wikilink">traceExporter.py</a> converts SUMO’s <a href="/Simulation/Output/FCDOutput" title="wikilink">fcd-output</a> into files that can be directly read by the <a href="http://www.ivt.tugraz.at/de/forschung/emissionen.html">PHEM</a> application. A <a href="/Tutorials/Trace_File_Generation" title="wikilink">tutorial on generating trace files (including PHEM input files)</a> using this tool is available.</p>

@@ -1,0 +1,203 @@
+<p><strong>FORCETOC</strong></p>
+
+<h1 id="overview">Overview</h1>
+
+<p><a href="/SUMO" title="wikilink">SUMO</a> supports the simulation of wireless onboard devices to facilitate a sensor mechanism which relies on the detection of radio signals (usually bluetooth or WLAN) emitted by the vehicle. Every vehicle can act as a sender and/or a receiving device. The parameters of the detection (e.g. the range and detection probability) can be configured and a log of the detection events can be written. It is currently not possible to retrieve the detection events via <a href="/TraCI" title="wikilink">TraCI</a> or react directly in the simulation to such an event. The relevant parameters for configuring the sender and recevier devices are described at <a href="/SUMO#Communication" title="wikilink">SUMO#Communication</a>. Details on the detection process can be found in the following publication: <a href="http://elib.dlr.de/95237/">Behrisch, Michael and Gurczik, Gaby (2014) Modelling Bluetooth Inquiry for SUMO. In: SUMO2014 Modeling Mobility with Open Data. SUMO2014, 15.-16. Mai 2014, Berlin</a></p>
+
+<h1 id="output">Output</h1>
+
+<p>The option generates an XML output file of the following form:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;bt-output&gt;
+    &lt;bt id="&lt;VEHICLE_ID&gt;"&gt;
+        &lt;seen id="&lt;VEHICLE_ID&gt;" tBeg="&lt;TIME&gt;" observerPosBeg="&lt;COORD&gt;" observerSpeedBeg="&lt;SPEED&gt;" observerLaneIDBeg="&lt;LANE_ID&gt;" observerLanePosBeg="&lt;LANE_POS&gt;"
+                                              seenPosBeg="&lt;COORD&gt;" seenSpeedBeg="&lt;SPEED&gt;" seenLaneIDBeg="&lt;LANE_ID&gt;" seenLanePosBeg="&lt;LANE_POS&gt;"
+                                tEnd="&lt;TIME&gt;" observerPosEnd="&lt;COORD&gt;" observerSpeedEnd="&lt;SPEED&gt;" observerLaneIDEnd="&lt;LANE_ID&gt;" observerLanePosEnd="&lt;LANE_POS&gt;"
+                                              seenPosEnd="&lt;COORD&gt;" seenSpeedEnd="&lt;SPEED&gt;" seenLaneIDEnd="&lt;LANE_ID&gt;" seenLanePosEnd="&lt;LANE_POS&gt;"
+                                observerRoute="&lt;EDGE_ID&gt;+" seenRoute="&lt;EDGE_ID&gt;+"&gt;
+            &lt;recognitionPoint t="&lt;TIME&gt;" observerPos="&lt;COORD&gt;" observerSpeed="&lt;SPEED&gt;" observerLaneID="&lt;LANE_ID&gt;" observerLanePos="&lt;LANE_POS&gt;"
+                                         seenPos="&lt;COORD&gt;" seenSpeed="&lt;SPEED&gt;" seenLaneID="&lt;LANE_ID&gt;" seenLanePos="&lt;LANE_POS&gt;"/&gt;
+
+            ... more recognition points ...
+
+        &lt;/seen&gt;
+
+        ... more contacts of the same vehicle ...
+    &lt;/bt&gt;
+
+    ... more data of of sensor vehicles ...
+&lt;/bt-output&gt;
+</code></pre></div></div>
+
+<p>If the option is not given only the first recognition point will be printed for each encounter. The meanings of the written values are given in the following table.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id@bt</td>
+      <td>ID</td>
+      <td>The id of the observing vehicle (receiver)</td>
+    </tr>
+    <tr>
+      <td>id@seen</td>
+      <td>ID</td>
+      <td>The id of the detected vehicle (sender)</td>
+    </tr>
+    <tr>
+      <td>tBeg</td>
+      <td>s</td>
+      <td>The time the sender entered the detection range</td>
+    </tr>
+    <tr>
+      <td>observerPosBeg</td>
+      <td>x,y in m</td>
+      <td>Cartesian coordinates of the observer when the sender entered the range</td>
+    </tr>
+    <tr>
+      <td>observerSpeedBeg</td>
+      <td>m/s</td>
+      <td>Speed of the observer when the sender entered the range</td>
+    </tr>
+    <tr>
+      <td>observerLaneIDBeg</td>
+      <td>ID</td>
+      <td>Lane id of the observer when the sender entered the range</td>
+    </tr>
+    <tr>
+      <td>observerLanePosBeg</td>
+      <td>m</td>
+      <td>Longitudinal position on the lane of the observer when the sender entered the range</td>
+    </tr>
+    <tr>
+      <td>seenPosBeg</td>
+      <td>x,y in m</td>
+      <td>Cartesian coordinates of the sender when it entered the range</td>
+    </tr>
+    <tr>
+      <td>seenSpeedBeg</td>
+      <td>m/s</td>
+      <td>Speed of the sender when it entered the range</td>
+    </tr>
+    <tr>
+      <td>seenLaneIDBeg</td>
+      <td>ID</td>
+      <td>Lane id of the sender when it entered the range</td>
+    </tr>
+    <tr>
+      <td>seenLanePosBeg</td>
+      <td>m</td>
+      <td>Longitudinal position on the lane of the sender when it entered the range</td>
+    </tr>
+    <tr>
+      <td>tEnd</td>
+      <td>s</td>
+      <td>The time the sender left the detection range</td>
+    </tr>
+    <tr>
+      <td>observerPosEnd</td>
+      <td>x,y in m</td>
+      <td>Cartesian coordinates of the observer when the sender left the range</td>
+    </tr>
+    <tr>
+      <td>observerSpeedEnd</td>
+      <td>m/s</td>
+      <td>Speed of the observer when the sender left the range</td>
+    </tr>
+    <tr>
+      <td>observerLaneIDEnd</td>
+      <td>ID</td>
+      <td>Lane id of the observer when the sender left the range</td>
+    </tr>
+    <tr>
+      <td>observerLanePosEnd</td>
+      <td>m</td>
+      <td>Longitudinal position on the lane of the observer when the sender left the range</td>
+    </tr>
+    <tr>
+      <td>seenPosEnd</td>
+      <td>x,y in m</td>
+      <td>Cartesian coordinates of the sender when it left the range</td>
+    </tr>
+    <tr>
+      <td>seenSpeedEnd</td>
+      <td>m/s</td>
+      <td>Speed of the sender when it left the range</td>
+    </tr>
+    <tr>
+      <td>seenLaneIDEnd</td>
+      <td>ID</td>
+      <td>Lane id of the sender when it left the range</td>
+    </tr>
+    <tr>
+      <td>seenLanePosEnd</td>
+      <td>m</td>
+      <td>Longitudinal position on the lane of the sender when it left the range</td>
+    </tr>
+    <tr>
+      <td>observerRoute</td>
+      <td>list of IDs</td>
+      <td>the route of the observing vehicle</td>
+    </tr>
+    <tr>
+      <td>seenRoute</td>
+      <td>list of IDs</td>
+      <td>the route of the sender vehicle</td>
+    </tr>
+    <tr>
+      <td>t</td>
+      <td>s</td>
+      <td>The time the observer detected the sender</td>
+    </tr>
+    <tr>
+      <td>observerPos</td>
+      <td>x,y in m</td>
+      <td>Cartesian coordinates of the observer when it detected the sender</td>
+    </tr>
+    <tr>
+      <td>observerSpeed</td>
+      <td>m/s</td>
+      <td>Speed of the observer when it detected the sender</td>
+    </tr>
+    <tr>
+      <td>observerLaneID</td>
+      <td>ID</td>
+      <td>Lane id of the observer when it detected the sender</td>
+    </tr>
+    <tr>
+      <td>observerLanePos</td>
+      <td>m</td>
+      <td>Longitudinal position on the lane of the observer when it detected the sender</td>
+    </tr>
+    <tr>
+      <td>seenPos</td>
+      <td>x,y in m</td>
+      <td>Cartesian coordinates of the sender when it was detected</td>
+    </tr>
+    <tr>
+      <td>seenSpeed</td>
+      <td>m/s</td>
+      <td>Speed of the sender when it was detected</td>
+    </tr>
+    <tr>
+      <td>seenLaneID</td>
+      <td>ID</td>
+      <td>Lane id of the sender when it left the range</td>
+    </tr>
+    <tr>
+      <td>seenLanePos</td>
+      <td>m</td>
+      <td>Longitudinal position on the lane of the sender when it was detected</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="simulating-vehicle-to-infrastructure-v2i">Simulating Vehicle-to-Infrastructure (V2I)</h1>
+
+<p>To simulate detection events between vehicles and a road-side-unit (RSU), it is convenient to place a stopped vehicle at the side of the road. This can be accomplished by by setting <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Stops" title="wikilink">attribute <em>parking=“true”</em></a>.</p>

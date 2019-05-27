@@ -1,0 +1,60 @@
+<h1 id="command-0xcc-change-simulation-state">Command 0xcc: Change Simulation State</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">string <em>(arbitrary)</em></td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center"><value_type></value_type></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Variable</td>
+      <td style="text-align: center">Simulation ID <em>(arbitrary, see below)</em></td>
+      <td style="text-align: center">Type of the value</td>
+      <td style="text-align: center">New Value</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Changes the simulation state. Because there is currently only one simulation, the ‘Simulation ID’ is ignored. The following values can be changed, the parameter(s) which must be given are also shown in the table.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>ValueType</th>
+      <th>Description</th>
+      <th><a href="/TraCI/Interfacing_TraCI_from_Python" title="wikilink">Python Method</a></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>clear pending vehicles (0x94)</td>
+      <td>string <em>routeID</em></td>
+      <td>Discards all loaded vehicles with a depart time below the current time step which could not be inserted yet. If the given <em>routeID</em> has non-zero length, only vehicles that have this routeID are discarded.</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-clearPending">clearPending</a></td>
+    </tr>
+    <tr>
+      <td>save state (0x95)</td>
+      <td>string <em>filename</em></td>
+      <td>Saves current simulation state to the given <em>filename</em>.</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._simulation.html#SimulationDomain-saveState">saveState</a></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+

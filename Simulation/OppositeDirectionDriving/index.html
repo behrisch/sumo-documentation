@@ -1,0 +1,34 @@
+<h1 id="opposite-direction-driving">Opposite-Direction-Driving</h1>
+
+<p>This page describes simulations which are enabled for for overtaking through the opposite-direction edge. To enable this feature, the network must contain additional information regarding the adjacency of opposite-direction edges.</p>
+
+<h1 id="building-a-network-for-opposite-direction-driving">Building a Network for opposite-direction-driving</h1>
+
+<p>The enable overtaking through the opposite direction lane, the <em>.net.xml</em> file must contain elements that specify adjacency. The options for including this information are described below.</p>
+
+<h2 id="heuristically">Heuristically</h2>
+
+<p>By setting the <a href="/NETCONVERT" title="wikilink">NETCONVERT</a> option , opposite edges are identified heuristically.</p>
+
+<h2 id="explicitly">Explicitly</h2>
+
+<p>Adjacency can be declared explicitly in an <em>.edg.xml</em> file <a href="/Networks/Building_Networks_from_own_XML-descriptions#Neighboring_opposite-direction_Lanes" title="wikilink">as described here</a>. Explicity definitions take precedence over heuristic computation of adjacency.</p>
+
+<h1 id="model-description">Model Description</h1>
+
+<p>Vehicles may overtake through the opposite direction lane to improve their travel speed. The decision to perform such a maneuver is subject to additional checks in regard to</p>
+
+<ul>
+  <li>oncoming vehicles</li>
+  <li>the assumed duration for overtaking the leading vehicle(s)</li>
+  <li>the presence of free space at the end of the column being overtaken (maximum look-ahead is currently fixed at 150m and overtaking may only take place if free space is found before that threshold).</li>
+  <li>the priority of intersections that may be passed during overtaking (only straight prioritized links may be used for opposite-direction overtaking)</li>
+</ul>
+
+<h1 id="limitations">Limitations</h1>
+
+<ul>
+  <li>Opposite-direction-driving is not yet compatible with the <a href="/Simulation/SublaneModel" title="wikilink">sublane model</a>.</li>
+  <li>Visibility of oncoming traffic and the preceding vehicles due to road topology and occluding vehicles is not taken into account.</li>
+  <li>Neighboring lane information can only be set if both edges have the same length. As a workaround the length of the edges may be set to a custom value (which may be different from the geometrical length). This can be automated by setting the option .</li>
+</ul>

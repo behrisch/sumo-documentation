@@ -1,0 +1,40 @@
+<p>You should read the main page on <a href="/NETCONVERT" title="wikilink">NETCONVERT</a> before reading this.</p>
+
+<h1 id="openstreetmap-project">OpenStreetMap-project</h1>
+
+<p><em>URL</em>: <a href="http://www.openstreetmap.org/">http://www.openstreetmap.org/</a></p>
+
+<p><em>Area</em>: the complete world :-)</p>
+
+<p><em>Demand data</em>: not available</p>
+
+<p><em>Extraction</em>:</p>
+
+<ol>
+  <li>
+    <p><a href="/Networks/Import/OpenStreetMapDownload" title="wikilink">Networks/Import/OpenStreetMapDownload</a> explains how to obtain OSM-data.</p>
+  </li>
+  <li>
+    <p><a href="/Networks/Import/OpenStreetMap" title="wikilink">Networks/Import/OpenStreetMap</a> explains how to create Sumo-networks from OSM-data using <a href="/NETCONVERT" title="wikilink">NETCONVERT</a>.</p>
+  </li>
+</ol>
+
+<p><em>Comments</em>: A great source of networks and man-made infrastucture. However, infrastructure data and definitions are still changing which complicates import.</p>
+
+<p><em>See also</em>: <a href="/Data/Scenarios/TAPASCologne" title="wikilink">Data/Scenarios/TAPASCologne</a> - a complete scenario based on OSM and TAPAS</p>
+
+<h1 id="frida-project">Frida-project</h1>
+
+<p><em>URL</em>: <a href="http://frida.intevation.org/">http://frida.intevation.org/</a></p>
+
+<p><em>Area</em>: city of Osnabrück</p>
+
+<p><em>Demand data</em>: not available</p>
+
+<p><em>Extraction</em>: <strong>netconvert –shapefile strassen -o frida2.net.xml –shapefile.street-id strShapeID -t frida.typ.xml –shapefile.type-id strTypID -v –proj “+proj=utm +ellps=bessel +units=m”</strong></p>
+
+<p><em>Comments</em>: Not really applicable because the streets lack information about the number of lanes and the direction. Especially the second makes the converted network quite useless. Trying to use the option <strong>–shapefile.all-bidi</strong> solves the problem for inner-city roads but makes highway on/offramps bidirectional, too. The projection might be wrong as well, give <strong>–proj.utm</strong> a try.</p>
+
+<p><em>See also</em>:</p>
+
+<p><a href="/Networks/Import/ArcView" title="wikilink">Networks/Import/ArcView</a> - (notes on) importing ArcView networks (shapefiles)</p>

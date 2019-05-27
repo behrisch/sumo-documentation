@@ -1,0 +1,52 @@
+<p>Besides using a debugger (e.g. <a href="https://www.gnu.org/s/gdb/">gdb</a>) with the debug build (see below), the SUMO source code offers debugging macros at several locations, which are usually deactivated (e.g., commented out). Activating the macros can yield a detailed program output, that can be configured by given parameters.</p>
+
+<h2 id="debug-build">Debug Build</h2>
+
+<p>To create debugging symbols during the build, see the build instructions for your operating system (<a href="/Installing/Linux_Build" title="wikilink">Linux</a> / <a href="/Installing/Windows_Build" title="wikilink">Windows</a> / <a href="/Installing/MacOS_Build" title="wikilink">MacOS</a>). The corresponding binaries receive the suffix <code class="highlighter-rouge">D</code> (e.g. <code class="highlighter-rouge">sumoD</code> instead of <code class="highlighter-rouge">sumo</code>). The debug configuration defines a preprocessor macro <code class="highlighter-rouge">_DEBUG</code> that may be used to encapsulate debug specific code. For simple text debugging, local macros should be used that can be switched on and off more flexibly, see below.</p>
+
+<h2 id="local-debug-macros">Local Debug Macros</h2>
+
+<p>The recommended style for inserting reusable debugging code in SUMO is encapsulation by preprocessor directives. This is done by placing a <code class="highlighter-rouge">#define DEBUG_THIS_CODE</code> at the beginning of a source (preferably just below any other <code class="highlighter-rouge">#include</code> or <code class="highlighter-rouge">#define</code> macros). The debugging code (e.g. some output to <code class="highlighter-rouge">std::cout</code>) should then be surrounded by</p>
+
+<p><code class="highlighter-rouge">#ifdef DEBUG_THIS_CODE</code>
+<code class="highlighter-rouge">    ...</code>
+<code class="highlighter-rouge">#endif</code></p>
+
+<p>Thus, it can be switched on and off by (un)commenting the <code class="highlighter-rouge">#define DEBUG_THIS_CODE</code> line.</p>
+
+<p>Sometimes it is useful to combine this with a condition for more specific debugging output. For instance, if only output for the vehicle with ID ‘my_new_ferrari’ is needed while looping through all vehicles, you should insert a corresponding debug condition</p>
+
+<p><code class="highlighter-rouge">#define DEBUG_COND (veh.getID() == </code>“<code class="highlighter-rouge">my_new_ferrari</code>”<code class="highlighter-rouge">)</code></p>
+
+<p>(at the same location as the <code class="highlighter-rouge">#define DEBUG_THIS_CODE</code>) and encapsulate the debug code further as</p>
+
+<p><code class="highlighter-rouge">#ifdef DEBUG_THIS_CODE</code>
+<code class="highlighter-rouge">    if DEBUG_COND {</code>
+<code class="highlighter-rouge">        ...</code>
+<code class="highlighter-rouge">    }</code>
+<code class="highlighter-rouge">#endif</code></p>
+
+<p>Note that this presupposes that <code class="highlighter-rouge">veh</code> is a reference to the current vehicle, which is being looped over. It is worth mentioning that you can also define debug conditions with arguments to become a bit more flexible. For example:</p>
+
+<p><code class="highlighter-rouge">#define DEBUG_COND(x) (x != 0 &amp;&amp; x-&gt;getID() == "my_new_ferrari")</code>
+<code class="highlighter-rouge">    ...</code>
+<code class="highlighter-rouge">#ifdef DEBUG_THIS_CODE</code>
+<code class="highlighter-rouge">    if DEBUG_COND(veh_pointer) {</code>
+<code class="highlighter-rouge">        ...</code>
+<code class="highlighter-rouge">    }</code>
+<code class="highlighter-rouge">#endif</code></p>
+
+<p>Debugging macros already exist at several locations (see some of these before implementing your own):</p>
+
+<ul>
+  <li>src/microsim/MSLane.cpp</li>
+  <li>src/microsim/MSLink.cpp</li>
+  <li>src/microsim/MSVehicle.cpp</li>
+  <li>src/microsim/lcmodel/MSLCM_LC2013.cpp</li>
+  <li>src/guisim/GUIVehicle.cpp</li>
+  <li>src/guisim/GUILane.cpp</li>
+</ul>
+
+<h2 id="selection-based-vehicle-debugging">Selection based vehicle debugging</h2>
+
+<p>The header <code class="highlighter-rouge">utils/common/StdDefs.h</code> provides the String <code class="highlighter-rouge">gDebugSelectedVehicle</code>, which always holds the id of the last vehicle, which was selected in the GUI, and can be used in the debugging conditions to obtain a dynamic debugging selection (provided the corresponding macro is activated).</p>

@@ -1,0 +1,74 @@
+<p>This tutorial covers the very basic elements for creating heterogeneous flows on a multi-lane highway and modifying and saving view settings.</p>
+
+<h1 id="building-a-highway">Building a Highway</h1>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[thumb</td>
+      <td>upright=0.7</td>
+      <td>Editing geometry pointsOpen](/File:AutobahnEditGeometryPoints.png “wikilink”) <a href="/NETEDIT" title="wikilink">NETEDIT</a> to create a fictional highway. We keep this very simplistic for the start and consider a segment without on- or off-ramps. Enter the edge creation mode by pressing <code class="highlighter-rouge">e</code> and create an edge that is a few kilometers long. <b>Hint</b>: you can start with a long straight edge and then change to the move-mode (press <code class="highlighter-rouge">m</code>) to add and drag around geometry points on the edge to alter its shape. Save your highway as <code class="highlighter-rouge">autobahn.net.xml</code>. Now add some more lanes to the edge by right clicking on it and selecting “Duplicate lane”. Now enter the inspect mode (press <code class="highlighter-rouge">i</code>) and click on the edge. For the “speed” enter 36.11 (recall that SUMO always uses m/s as the unit for speed, 36.11m/s ~ 130km/h). Then split a short (about onehundred meters long) initial segment (right click on edge -&gt; context menu -&gt; Split edge here) of the edge and name it “entry” (press <code class="highlighter-rouge">i</code> and click on the edge, then find the right textfield in the left panel). Do the same at the end of the long edge and call the shorter edge at the end “exit”. Give the long edge the name “longEdge”.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="create-traffic">Create Traffic</h1>
+
+<p>To populate the highway with traffic, we want to add different vehicle types:</p>
+
+<ul>
+  <li>many normal passenger cars</li>
+  <li>some trucks</li>
+  <li>a few coaches</li>
+  <li>a few sporty passenger cars (higher desired travelling speed, less dawdling)</li>
+</ul>
+
+<p>All of these should in themselves have a certain heterogeneity that can be achieved in a simple way by giving the corresponding <code class="highlighter-rouge">vType</code>-element an attribute <code class="highlighter-rouge">speedDev</code> (see <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Speed_Distributions" title="wikilink">Speed Distributions</a>). We will use this approach here but for more sophisticated realizations of vehicle variability we recommend the script <code class="highlighter-rouge">createVehTypeDistribution.py</code> in the /tools directory.</p>
+
+<p>Create a routes-file <code class="highlighter-rouge">autobahn.rou.xml</code> with the following content:</p>
+
+<p><code class="highlighter-rouge">&lt;routes&gt;</code>
+<code class="highlighter-rouge">    &lt;vType id="normal car" vClass="passenger" maxSpeed="40" speedFactor="0.9" speedDev="0.2" sigma="0.5" /&gt;</code>
+<code class="highlighter-rouge">    &lt;vType id="sporty car" vClass="passenger" maxSpeed="60" speedFactor="1.3" speedDev="0.1" sigma="0.1" /&gt;</code>
+<code class="highlighter-rouge">    &lt;vType id="trailer" vClass="trailer"  maxSpeed="30" speedFactor="1.1" speedDev="0.1" /&gt;</code>
+<code class="highlighter-rouge">    &lt;vType id="coach" vClass="coach"  maxSpeed="30" speedFactor="1." speedDev="0.1" /&gt;</code>
+<code class="highlighter-rouge">    &lt;flow id="normal" type="normal car" begin="0" end="5000" number="5000" from="entry" to="exit" departPos="last" departLane="best" /&gt;</code>
+<code class="highlighter-rouge">    &lt;flow id="sporty" type="sporty car" begin="0" end="5000" number="300" from="entry" to="exit" departPos="last" departLane="best" /&gt;</code>
+<code class="highlighter-rouge">    &lt;flow id="coach" type="coach" begin="0" end="5000" number="300" from="entry" to="exit" departPos="last" departLane="best" /&gt;</code>
+<code class="highlighter-rouge">    &lt;flow id="trailer" type="trailer" begin="0" end="5000" number="700" from="entry" to="exit" departPos="last" departLane="best" /&gt;</code>
+<code class="highlighter-rouge">&lt;/routes&gt;</code></p>
+
+<h1 id="run-the-simulation">Run the Simulation</h1>
+
+<p>Create a config-file <code class="highlighter-rouge">autobahn.sumocfg</code>:</p>
+
+<p><code class="highlighter-rouge">&lt;configuration&gt;</code>
+<code class="highlighter-rouge">   &lt;input&gt;</code>
+<code class="highlighter-rouge">       &lt;net-file value="autobahn.net.xml"/&gt;</code>
+<code class="highlighter-rouge">       &lt;route-files value="autobahn.rou.xml"/&gt;</code>
+<code class="highlighter-rouge">   &lt;/input&gt;</code>
+<code class="highlighter-rouge">&lt;/configuration&gt;</code></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[thumb</td>
+      <td>upright=0.7</td>
+      <td>Editing and saving of view settingsStart](/File:autobahnEditViewSettings.png “wikilink”) SUMO with this config. In the simulation select the visualization scheme “real world” from the dropdown menu in the toolbar. Then click on the View Settings button (looks like a color wheel, right beside the scheme selection) and go to the tab “vehicles” in the appearing View Settings dialog. In the Color-dropdown menu you can chose from a lot of ways to encode information about the vehicles in their color. For now, let us select “by speed”. Then set the time step delay to 200ms and run the simulation.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>It is possible to export the view settings into an additional xml-file and load it on simulation start. Optionally check the checkbox for including delay in the export. To save our current visualization scheme click on the floppy-icon in the View Settings dialog and save it as <code class="highlighter-rouge">autobahn.view.xml</code>. Then adapt the configuration to load the view settings by adding a &lt;gui-settings-file … /&gt;-element:</p>
+
+<p><code class="highlighter-rouge">&lt;configuration&gt;</code>
+<code class="highlighter-rouge">   &lt;input&gt;</code>
+<code class="highlighter-rouge">       &lt;net-file value="autobahn.net.xml"/&gt;</code>
+<code class="highlighter-rouge">       &lt;route-files value="autobahn.rou.xml"/&gt;</code>
+<code class="highlighter-rouge">       &lt;gui-settings-file value="autobahn.view.xml"/&gt;</code>
+<code class="highlighter-rouge">   &lt;/input&gt;</code>
+<code class="highlighter-rouge">&lt;/configuration&gt;</code></p>
+
+<p>If you now restart SUMO with the configuration, it will automatically load the view settings stored in <code class="highlighter-rouge">autobahn.view.xml</code>.</p>
+
+<p>Back to <a href="/Tutorials" title="wikilink">Tutorials</a>.</p>

@@ -1,0 +1,20 @@
+<p><a href="/NETCONVERT" title="wikilink">NETCONVERT</a> allows to import road networks from different third-party formats. By now, the following formats are supported:</p>
+
+<ul>
+  <li>OpenStreetMap databases, see <a href="/Networks/Import/OpenStreetMap" title="wikilink">Networks/Import/OpenStreetMap</a></li>
+  <li>PTV VISUM (a macroscopic traffic simulation package), see <a href="/Networks/Import/VISUM" title="wikilink">Networks/Import/VISUM</a></li>
+  <li>PTV VISSIM (a microscopic traffic simulation package), see <a href="/Networks/Import/Vissim" title="wikilink">Networks/Import/Vissim</a></li>
+  <li>OpenDRIVE networks, see <a href="/Networks/Import/OpenDRIVE" title="wikilink">Networks/Import/OpenDRIVE</a></li>
+  <li>MATsim networks, see <a href="/Networks/Import/MATsim" title="wikilink">Networks/Import/MATsim</a></li>
+  <li>ArcView-data base files, see <a href="/Networks/Import/ArcView" title="wikilink">Importing ArcView networks (shapefiles)</a></li>
+  <li>Elmar Brockfelds unsplitted and splitted NavTeq-data, see <a href="/Networks/Import/DlrNavteq" title="wikilink">Networks/Import/DlrNavteq</a></li>
+  <li>RoboCup Rescue League folders, see <a href="/Networks/Import/RoboCup" title="wikilink">Networks/Import/RoboCup</a></li>
+</ul>
+
+<p>In most of these cases, <a href="/NETCONVERT" title="wikilink">NETCONVERT</a> needs only two parameter: the option named as the source application/format followed by the name of the file to convert and the name of the output file (using the option). In the case, a VISUM network shall be imported, the following code will convert it into a SUMO-network:</p>
+
+<p><code class="highlighter-rouge">netconvert --visum=MyVisumNet.inp --output-file=MySUMONet.net.xml</code></p>
+
+<p>The import can be influenced using <a href="/Networks/Further_Options" title="wikilink">further NETCONVERT options</a>.</p>
+
+<p>The native format comes in the variant of <a href="/Networks/Building_Networks_from_own_XML-descriptions#Node_Descriptions" title="wikilink"><em>plain-xml</em></a> which is designed as a simple input format for <a href="/NETCONVERT" title="wikilink">NETCONVERT</a> and in <em>.net.xml</em> which is the output format of <a href="/NETCONVERT" title="wikilink">NETCONVERT</a> and which is enriched with heuristically derived data such as right-of-way rules and junction geometry. Both formats can be converted into each other without data loss.</p>

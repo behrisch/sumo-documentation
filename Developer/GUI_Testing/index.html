@@ -1,0 +1,57 @@
+<p>We are using <a href="http://sikulix.com/">SikuliX</a></p>
+
+<h2 id="setup">Setup</h2>
+
+<ul>
+  <li>Java (at least 1.7) should be installed</li>
+  <li>Linux only: Install dependencies (openSUSE 42.1: <code class="highlighter-rouge">zypper in libopencv2_4 libtesseract3 wmctrl xdotool</code>)
+    <ul>
+      <li>openSUSE 42.2 does not have libopencv2_4, you can try this libopencv2 from <a href="https://build.opensuse.org/package/binaries/home:tokoyami/opencv2-qt5?repository=openSUSE_Leap_42.2">this repo</a> but you will need manual symlinks in /usr/lib64</li>
+    </ul>
+  </li>
+</ul>
+
+<p><code class="highlighter-rouge">cd /usr/lib64/</code>
+<code class="highlighter-rouge">ln -s libopencv_core.so.5.4 libopencv_core.so.2.4</code>
+<code class="highlighter-rouge">ln -s libopencv_highgui.so.5.4 libopencv_highgui.so.2.4</code>
+<code class="highlighter-rouge">ln -s libopencv_imgproc.so.5.4 libopencv_imgproc.so.2.4</code></p>
+
+<ul>
+  <li>Download from <a href="https://launchpad.net/sikuli/+download">here</a> and move the jar to a separate dir (e.g. $HOME/sikulix).</li>
+  <li>run setup <code class="highlighter-rouge">java -jar sikulix/sikulixsetup-1.1.0.jar</code>
+    <ul>
+      <li>enable the first option and python scripting</li>
+    </ul>
+  </li>
+  <li>Define environment variable, e.g. <code class="highlighter-rouge">export RUN_SIKULIX=$HOME/sikulix/runsikulix</code>
+    <ul>
+      <li>on Windows <code class="highlighter-rouge">set RUN_SIKULIX=C:\sikulix\runsikulix.cmd</code></li>
+    </ul>
+  </li>
+  <li>see also <a href="http://sikulix.com/quickstart/">http://sikulix.com/quickstart/</a></li>
+</ul>
+
+<h2 id="startup">Startup</h2>
+
+<ul>
+  <li>run $SUMO_HOME/tests/runNeteditTests.sh (Linux) or %SUMO_HOME%\tests\runNeteditTests.bat (Windows)
+    <ul>
+      <li>when getting an error about “server not running” double check whether the environment variable is set and try to run the script <code class="highlighter-rouge">RUN_SIKULIX</code> points to manually, looking for error messages.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="setting-up-a-test">Setting up a test</h2>
+
+<p>All tests start are written in Python using the Jython scripting interface of Sikulix. All of them start with the same header:</p>
+
+<p><code class="highlighter-rouge">import os</code>
+<code class="highlighter-rouge">import sys</code>
+<code class="highlighter-rouge">testRoot = os.path.join(os.environ.get('SUMO_HOME', '.'), 'tests')</code>
+<code class="highlighter-rouge">neteditTestRoot = os.path.join(os.environ.get('TEXTTEST_HOME', testRoot), 'netedit')</code>
+<code class="highlighter-rouge">sys.path.append(neteditTestRoot)</code>
+<code class="highlighter-rouge">import neteditTestFunctions as netedit</code>
+<code class="highlighter-rouge"># Open netedit</code>
+<code class="highlighter-rouge">neteditProcess, match = netedit.setupAndStart(neteditTestRoot, True)</code></p>
+
+<p>This code will find the directory with the netedit tests using the TEXTTEST_HOME variable and SUMO_HOME as a fallback. This enables the start of the tests even outside of Texttest using the runsikulix call directly with the test.sikuli dir. You should not use relative directories here because this makes copying and moving tests harder.</p>

@@ -1,0 +1,57 @@
+<h1 id="bicycle-simulation">Bicycle Simulation</h1>
+
+<p>This page describes simulations of bicycles in SUMO. To build an intermodal simulation scenario with bicycles, additional steps have to be take in comparison to a plain vehicular simulation.</p>
+
+<h1 id="approaches-to-bicycle-modelling">Approaches to bicycle modelling</h1>
+
+<p>Currently, no exclusive movement model for bicycles is implemented. Existing models need to be re-purposed</p>
+
+<h2 id="bicycles-as-slow-vehicles">Bicycles as slow vehicles</h2>
+
+<p>In this case, vehicles are specified as vehicles with the appropriate type:</p>
+
+<vType id="bike" vClass="bicycle" />
+
+<p>&lt;vehicle type=”bike” …/&gt;</p>
+
+<p>Note, that that the along with <a href="/Vehicle_Type_Parameter_Defaults" title="wikilink">sensible default parameters</a> are automatically used when specifying . By adapating <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicle_Types" title="wikilink">vType-parameters for acceleration,deceleration,maximumSpeed,etc..</a> different cyclist types can be modelled.</p>
+
+<h3 id="problems-and-workarounds">Problems and workarounds</h3>
+
+<ul>
+  <li>Turning left by crossing twice does not work. Extra edges need to be added to accommodate these trajectories.</li>
+  <li>No bi-directional movements on bicycle lanes</li>
+  <li>No shared space for bicycles and pedestrians</li>
+  <li>No overtaking by vehicles on a single-lane road. This can be fixed by using the <a href="/Simulation/SublaneModel" title="wikilink">Sublane Model</a>.</li>
+  <li>The intersection model has no special adaptations for bicycles. This results in unrealistic (large) safety gaps when bicycles are approaching a large priority intersection from a prioritized road</li>
+  <li>The road speed limit is not meaningful for bicycles. To <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Speed_Distributions" title="wikilink">model a speed distribution for bicycles with a single vehicle type</a>, a speed limit corresponding to the median speed of the bicycles should be set for the cycling lanes.</li>
+</ul>
+
+<p>One way for overcoming most of these problems is to control bicycle movements at intersections with an <a href="/TraCI" title="wikilink">external control script</a>. This approach is described in <a href="https://www.researchgate.net/publication/302909195_Integration_of_an_External_Bicycle_Model_in_SUMO">Integration of an external bicycle model in SUMO, Heather Twaddle 2016</a>.</p>
+
+<h2 id="bicyles-as-fast-pedestrians">Bicyles as fast pedestrians</h2>
+
+<p>In this case, persons walking at high speed are used.</p>
+
+<h3 id="problems-and-workarounds-1">Problems and workarounds</h3>
+
+<ul>
+  <li>No support for proper visualization</li>
+  <li>Movement model is not validated</li>
+</ul>
+
+<h1 id="building-a-network-for-bicycle-simulation">Building a network for bicycle simulation</h1>
+
+<h2 id="automatic-import">Automatic import</h2>
+
+<p>The import of bicycle lanes from OpenStreetMap is supported since version 0.24.0. To use this, <a href="/Networks/Import/OpenStreetMap#Recommended_Typemaps" title="wikilink">an appropriate typemap</a> must be loaded.</p>
+
+<h3 id="explicity-specification">Explicity specification</h3>
+
+<p>Bike lanes may be defined explicitly in plain XML input when describing <a href="/Networks/Building_Networks_from_own_XML-descriptions#Lane-specific_Definitions" title="wikilink">edges (plain.edg.xml)</a>. This is done by defining an additional lane which only permits the vClass “bicycle” and setting the appropriate width. In this case it is important to disallow bicycles on all other lanes. Also, any pre-exisiting connection definitions must be modified to account for the new sidewalk lane.</p>
+
+<h2 id="notes-on-right-of-way-rules">Notes on Right-of-Way rules</h2>
+
+<p>When using bicycle lanes in a network, right-turning vehicles must yield for straight-going bicycles. The intersection model supports these right-of-way rules and builds internal junctions where appropriate.</p>
+
+<p>Likewise, left-turning bicycles one a bicycle lane (on the right side of the road) must yield to straight-going vehicles.</p>

@@ -1,0 +1,84 @@
+<p>The vehicle dynamics at intersection are governed by the intersection model described in <a href="/http://elib.dlr.de/93669/1/LNCS_SUMOIntersections.pdf" title="wikilink"><em>Road Intersection Model in SUMO, Krajzewicz et al</em></a>. Of course, the model in the latest revision may deviate somewhat due to the ongoing evolution of the model. This page gives an overview over the configuration options governing the intersection model.</p>
+
+<h1 id="internal-links">Internal links</h1>
+
+<p>The most important configuration aspect is whether the dynamics within an intersection shall be modelled or not. This is configured using the following options</p>
+
+<h2 id="netconvert-option"><a href="/NETCONVERT" title="wikilink">NETCONVERT</a>-option</h2>
+
+<p>When set to <strong>true</strong>, the network will not contain <em>internal lanes</em>, that is lanes within an intersection. Instead, vehicles will <em>jump</em> across the intersection. To avoid a systematic shortening of route lengths, the length of all edges is set artificially to the length between junction centers without changing their appearance. When set to <strong>false</strong> (the default), The network will contain lanes within intersections on which vehicles will drive just as on normal lanes, albeit subject to some blocking constraints.</p>
+
+<h2 id="sumo-option"><a href="/SUMO" title="wikilink">SUMO</a>-option</h2>
+
+<p>Whenn set to <strong>true</strong>, lanes within intersections are ignored. This option is not needed when the network does not contain them in the first place. Note, that route lengths will be wrong when ignoring internal lanes in a network that includes them.</p>
+
+<h1 id="waiting-before-the-intersection">Waiting before the Intersection</h1>
+
+<p>Vehicles wait with a context dependent offset before the end of their lane where it meets the intersection. The exact position depends on several factors explained below.</p>
+
+<h2 id="lane-shape">Lane Shape</h2>
+
+<p>Usually the lane ends exactly where the intersection shape starts. One way to customize the exact position for each lane is to <a href="/NETEDIT#Junction" title="wikilink">edit the intersection shape</a>. An alternative method is to <a href="/NETEDIT#Specifying_the_complete_geometry_of_an_edge_including_endpoints" title="wikilink">set a custom endpoint for an edge</a>.</p>
+
+<p>Antoher possibility is the set the <em>endOffset</em> attribute for either the or or element. This will shorten the edge/lane by a set amount.</p>
+
+<h2 id="right-of-way">Right-Of-Way</h2>
+
+<p>Vehicles from a minor road wait exactly at the end of the lane in order to minimize the distance they have to cover when a suitable gap in traffic is found. Vehicles waiting at at a traffic light wait with an offset of 1m ahead of the lane end.</p>
+
+<h2 id="vehicle-class">Vehicle Class</h2>
+
+<h1 id="waiting-within-the-intersection">Waiting Within the Intersection</h1>
+
+<p>In some situations, drivers are permitted to wait within the intersection for a gap in foe traffic. Typical cases are left-turning vehicles from the prioritized direction that wait for oncoming traffic or right-turning vehicles that have to wait for straight-going pedestrians. In SUMO this is modeled with <a href="/Networks/SUMO_Road_Networks#Internal_Junctions" title="wikilink">internal junctions</a>. An internal junction splits the internal lane in two parts. Upon reaching the intersection, drivers may enter the intersection and drive up to the end of the first part despite approaching foe vehicles. They are not permitted to enter the intersection if it is blocked by vehicles already on the intersection or if there is a red traffic light.</p>
+
+<p>When building networks, <a href="/NETCONVERT" title="wikilink">NETCONVERT</a> automatically recognizes common cases for waiting within the intersection and creates internal junctions as necessary. At intersections which are controlled by a traffic light, internal junctions are built for every stream that has a <em>green minor</em> phase (dark green). Thus, loading custom traffic light plans during network building may influence the building of internal junctions.</p>
+
+<p>Since version 0.25.0 the user also has the option for <a href="/Networks/Building_Networks_from_own_XML-descriptions#Explicitly_setting_which_Edge_.2F_Lane_is_connected_to_which" title="wikilink">customizing the presence and location of internal junctions</a>.</p>
+
+<h1 id="junction-blocking">Junction Blocking</h1>
+
+<p>In most jurisdictions, drivers are forbidden to enter an intersection if the outbound road is jammed to prevent them from blocking the intersection. By default, vehicles in SUMO try to prevent blocking intersections. This is accomplished by the <strong>no-block-heuristic</strong> which prevents them from driving onto the intersection if they are likely to become stuck there. This heuristic may be disabled by modifying the simulation network ahead of the simulation. .</p>
+
+<h2 id="netconvert-options-for-allowing-drivers-to-drive-onto-an-intersections"><a href="/NETCONVERT" title="wikilink">NETCONVERT</a> options for allowing drivers to drive onto an intersections</h2>
+
+<ul>
+  <li>setting option (default <em>true</em>) will cause the <strong>no-block-heuristic</strong> to be disabled for all intersections.</li>
+  <li>setting <a href="/Networks/Building_Networks_from_own_XML-descriptions#Node_Descriptions" title="wikilink">-attribute</a></li>
+  <li>setting <a href="/Networks/Building_Networks_from_own_XML-descriptions#Connection_Descriptions" title="wikilink">-attribute</a> will cause the <strong>no-block-heuristic</strong> to be disabled for vehicles entering the intersection via that connection</li>
+</ul>
+
+<h2 id="junction-model-attributes-for-allowing-drivers-to-drive-onto-an-intersection">Junction model attributes for allowing drivers to drive onto an intersection</h2>
+
+<p>By setting the junction model parameter <em>jmIgnoreKeepClearTime</em> in a -definition, drivers of that type will ignore the <strong>no-block-heuristic</strong> after their accumulated waiting time exceeds the parameter value (in seconds).</p>
+
+<h2 id="ignoring-blocking-vehicles-after-some-time">Ignoring blocking vehicles after some time</h2>
+
+<p>When vehicles in SUMO are unable to move for some time they will be <a href="/Simulation/Why_Vehicles_are_teleporting#Waiting_too_long.2C_aka_Grid-locks" title="wikilink">teleported</a> to resolve dead-lock. If this is not desired, <a href="/SUMO" title="wikilink">SUMO</a>-option may be used to ignore vehicles which are blocking the intersection on an intersecting lane after the specified time. This can be used to model the real-life behaviour of eventually finding a way around the offending vehicle that is blocking the intersection.</p>
+
+<h1 id="customizing-behavior-at-junctions">Customizing Behavior at Junctions</h1>
+
+<h2 id="traci">TraCI</h2>
+
+<p>The speed of a vehicle may be set using the <a href="/TraCI/Change_Vehicle_State#Command_0xc4:_Change_Vehicle_State" title="wikilink">speed command</a>. When combined with <a href="/TraCI/Change_Vehicle_State#speed_mode_.280xb3.29" title="wikilink">speed mode command</a> various safety-related rules can be disabled. Among them are flags for</p>
+
+<ul>
+  <li>overriding save speed in regard to leader vehicles, or vehicles already on the intersection</li>
+  <li>ignoring right-of-way rules</li>
+  <li>ignore red lights</li>
+</ul>
+
+<h2 id="driver-parameters">Driver Parameters</h2>
+
+<p>The behavior at intersections can be configured with <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Junction_Model_Parameters" title="wikilink">junction model parameters</a>. The following aspects can be affected</p>
+
+<ul>
+  <li>aggressiveness when merging from a unprioritized road (<em>impatience</em>)</li>
+  <li>distance-keeping to pedestrians</li>
+  <li>driving onto an intersection inspite of <a href="/#Junction_Blocking" title="wikilink">#Junction_Blocking</a> rules</li>
+  <li>ignoring red lights
+    <ul>
+      <li>speed when ignoring red lights</li>
+    </ul>
+  </li>
+</ul>

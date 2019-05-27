@@ -1,0 +1,40 @@
+<p>SUMO allows loading and saving simulation state since version 0.18.0.</p>
+
+<h1 id="saving">Saving</h1>
+
+<p>To save the state at specified times during the simulation add the option</p>
+
+<p><code class="highlighter-rouge"> sumo --save-state.times TIME1,TIME2,TIME3</code></p>
+
+<p>Alternatively, the option can be used to save states periodically.</p>
+
+<p>By default the state will be written to files named *<PREFIX>_&lt; TIME&gt;<SUFFIX>* where *<PREFIX>* can be set via option (default *state*), *<TIME>* is the simulation time and *<SUFFIX>* is either one of *.sbx* or *.xml* as controlled by the option (default *.sbx*).</SUFFIX></TIME></PREFIX></SUFFIX></PREFIX></p>
+
+<p>When using the option , output files can also be specified by using the option</p>
+
+<p><code class="highlighter-rouge">sumo --save-state.files FILE1,FILE2,FILE3 </code></p>
+
+<p>to set the file names explicitly. In particular if a plain text xml-file is desired as output (instead of the binary format .sbx) the file names should be given (with suffix .xml).</p>
+
+<h1 id="loading">Loading</h1>
+
+<p>The option is used to initialize the simulation with the given state file. It is recommended to start the simulation with the same input files that were used when saving the state file and set option to the time when the state was saved. Additional files (i.e. more vehicles) can be added without problems.</p>
+
+<p>When the option is set all, times loaded from the simulation state will be shifted by the given amount. This can be used to reset the simulation second to 0 after midnight and still have the loaded vehicles function properly.</p>
+
+<p>The option allows removing vehicles from a loaded state. This opens up the possibility for re-positioning selected vehicles by inserting them again with a <em>.rou.xml</em> file.</p>
+
+<h1 id="details">Details</h1>
+
+<p>Vehicles that have not yet departed are not included in the simulation state and must be loaded from input files. When loading vehicles from an input file that are already present in the simulation state, these vehicles are automatically ignored and loading proceeds without errors.</p>
+
+<h1 id="know-issues">Know Issues</h1>
+
+<ul>
+  <li>The state of the random number generate is not saved. Thus, simulations will behave differently from the original after being reloaded from a state.</li>
+  <li>Persons are not saved</li>
+</ul>
+
+<h1 id="older-versions-of-sumo">Older Versions of SUMO</h1>
+
+<p>On versions before 0.18.0 a possible workaround is to run SUMO within a virtual machine (VM) as the state of a VM can be saved at any time. Tests with VirtualBox on Linux have shown that SUMO does not run significantly slower in a VM as directly on the host if enough hardware resources are assigned to the VM (for example if you run another program simultaneously to communicate to SUMO via TraCI you should assign enough CPU-cores to the VM).</p>

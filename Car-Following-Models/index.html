@@ -1,0 +1,25 @@
+<h1 id="car-following-models">Car-Following Models</h1>
+
+<p>This overview page collects information regarding car-following models in <a href="/SUMO" title="wikilink">SUMO</a>. It is still a stub and needs be expanded.</p>
+
+<h2 id="links">Links</h2>
+
+<ul>
+  <li><a href="/Publications#Car-Following_Models" title="wikilink">Publications on car-following models</a></li>
+  <li><a href="/Developer/How_To/Car-Following_Model" title="wikilink">How to implement a new car-following model</a></li>
+  <li><a href="/Developer/Implementation_Notes/Vehicle_Models" title="wikilink">More implementation notes on car-following models</a></li>
+</ul>
+
+<h2 id="model-parameters">Model Parameters</h2>
+
+<p>Most car-following models have their own set of parameters. Because some models have a common ancestry they share some parameters. These are described below.</p>
+
+<h3 id="actionsteplength">actionStepLength</h3>
+
+<p>This parameter is used to decouple the simulation step length (option ) from the frequency of driver decision making. It can be set either in the -definition as attribute <em>actionStepLength</em> or by setting a default value for all vTypes using option .</p>
+
+<p>By default, the action step length is equal to the simulation step length which works well for the default step length of 1s. When performing sub-second simulation by setting a lower step-length value, it may be useful to maintain a higher action step length in order to model reaction times and also in order to reduce computational demand and thus speed up the simulation.</p>
+
+<h3 id="tau">tau</h3>
+
+<p>This parameter is intended to model a drivers desired time headway (in seconds). It is used by all models. Drivers attempt to maintain a minimum time gap of tau between the rear bumper of their leader and their own front-bumper + minGap to assure the possibility to brake in time when their leader starts braking and they need tau seconds reaction time to start breaking as well. The real reaction time is fundamentally limited by the simulation step size (<a href="/SUMO" title="wikilink">SUMO</a> option ), resp. the action step length (option , parameter ). For that reason a value of tau below this step-size may lead to collisions if the leader suddenly starts braking hard. If tau is larger then step-size the situation is safe but drivers will still react during each simulation step unless the option is used.</p>

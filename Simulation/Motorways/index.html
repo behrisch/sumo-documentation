@@ -1,0 +1,48 @@
+<h1 id="motorway-simulation">Motorway Simulation</h1>
+
+<p>This page describes simulations of motorways in SUMO. It aims to collect best practices when modelling motorway networks and traffic.</p>
+
+<h1 id="building-a-network-for-motorway-simulation">Building a network for motorway simulation</h1>
+
+<p>Networks can be imported from any supported data source or created from scratch with <a href="/NETEDIT" title="wikilink">NETEDIT</a>. Depending on the level of detail special processing may be necessary</p>
+
+<h2 id="motorway-ramps">Motorway ramps</h2>
+
+<p>If the network does not contain detailed ramp data, <a href="/NETCONVERT" title="wikilink">NETCONVERT</a> can be <a href="/Networks/Further_Options#Guessing_On-_and_Off-Ramps" title="wikilink">configured to add them heuristically</a>. This basically adds acceleration at on-ramps and deceleration lanes at off-ramps.</p>
+
+<h3 id="reduction-in-the-number-of-lanes">Reduction in the number of lanes</h3>
+
+<p>The usual way to set up a lane-number reduction is to configure the rightmost lane as a dead-end (no connection to the next edge) and force vehicles to change-lanes to the left. In some situations it may be appropriate to declare the node where the lane number changes as a <a href="/Networks/Building_Networks_from_own_XML-descriptions#Node_types" title="wikilink">zipper node</a> instead.</p>
+
+<h3 id="combined-on-off-ramps">Combined On-Off-Ramps</h3>
+
+<p>Combined ramps are those where the acceleration lane from an on-ramp becomes the deceleration lane for a nearby off-ramp. This forces vehicles into a weaving pattern where entering and exiting vehicles need to swap lanes. This type of situation may cause deadlocks in <a href="/SUMO" title="wikilink">SUMO</a> unless preventive measures are taking. The problem is exacerbated if the acceleration/deceleration lane is short or traffic is very dense.</p>
+
+<p>To prevent deadlocks the connection pattern shown in the following image should be used. Note, that the off-ramp is targeted by the two rightmost lanes of the preceding edge and lane 0 has priority over lane 1. Vehicles exiting the motorway will attempt to move to the rightmost lane if possible but can still continue their route if that lane is occupied.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Image:onOffRamp.png</td>
+      <td>Connectivity at on-off-ramp</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="vehicle-class-specific-speed-limits">Vehicle class specific speed limits</h2>
+
+<p>In some jurisdictions, certain vehicle classes have specific speed limits (i.e. Trucks which may not drive faster than 90km/h on German motorways). This should be modelled as described here: <a href="/Networks/Building_Networks_from_own_XML-descriptions#vehicle-class_specific_speed_limits" title="wikilink">Networks/Building_Networks_from_own_XML-descriptions#vehicle-class_specific_speed_limits</a></p>
+
+<h2 id="lane-changing-prohibitions">Lane-changing prohibitions</h2>
+
+<p>Symmetrical lane-changing prohibitions between two lanes can be modelled by adding a thin lane with attribute between them.</p>
+
+<h1 id="defining-motorway-traffic">Defining Motorway Traffic</h1>
+
+<h2 id="speed-distributions">Speed Distributions</h2>
+
+<p>To achieve a realistic scenario, the desired vehicle speeds should be heterogeneous. This can be achieved by setting the <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Speed_Distributions" title="wikilink">vType-attributes speedFactor and speedDev</a>. Since a vehicle <em>speedFactor</em> defines desired speed relative to the speed limit of each edge, <a href="/#Vehicle_class_specific_speed_limits" title="wikilink">#Vehicle_class_specific_speed_limits</a> should be taken into account.</p>
+
+<h2 id="high-flows">High Flows</h2>
+
+<p>Some tips on how to achieve high flows are described <a href="/FAQ#How_do_I_get_high_flows.2Fvehicle_densities.3F" title="wikilink">in the FAQ</a></p>

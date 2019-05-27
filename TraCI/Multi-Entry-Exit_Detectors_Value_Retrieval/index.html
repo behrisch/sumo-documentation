@@ -1,0 +1,112 @@
+<h2 id="command-0xa1-get-memedetector-variable">Command 0xa1: Get MeMeDetector Variable</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">string</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Variable</td>
+      <td style="text-align: center">Multi-Entry/Multi-Exit Detector ID</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Asks for the value of a certain variable of the named <a href="/Simulation/Output/Multi-Entry_Multi-Exit_Detectors_(E3)" title="wikilink">multi-entry/multi-exit (e3) detector</a>. The value returned is the state of the asked variable/value within the last simulation step. Please note that for asking values from your <a href="/Simulation/Output/Multi-Entry_Multi-Exit_Detectors_(E3)" title="wikilink">multi-entry/multi-exit detectors</a> with TraCI, you have to define them in an additional input file (see <a href="/Simulation/Output/Multi-Entry_Multi-Exit_Detectors_(E3)" title="wikilink">multi-entry/multi-exit (e3) detectors</a>) and cannot add them via TraCI (yet). The following variable values can be retrieved, the type of the return value is also shown in the table.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>ValueType</th>
+      <th>Description</th>
+      <th><a href="/TraCI/Interfacing_TraCI_from_Python" title="wikilink">Python Method</a></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id list (0x00)</td>
+      <td>stringList</td>
+      <td>Returns a list of ids of all multi-entry/multi-exit detectors within the scenario (the given DetectorID is ignored)</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._multientryexit.html#MultiEntryExitDomain-getIDList">getIDList</a></td>
+    </tr>
+    <tr>
+      <td>count (0x01)</td>
+      <td>int</td>
+      <td>Returns the number of multi-entry/multi-exit detectors within the scenario (the given DetectorID is ignored)</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._multientryexit.html#MultiEntryExitDomain-getIDCount">getIDCount</a></td>
+    </tr>
+    <tr>
+      <td>last step vehicle number (0x10)</td>
+      <td>int</td>
+      <td>Returns the number of vehicles that have been within the named multi-entry/multi-exit detector within the last simulation step [#];</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._multientryexit.html#MultiEntryExitDomain-getLastStepVehicleNumber">getLastStepVehicleNumber</a></td>
+    </tr>
+    <tr>
+      <td>last step mean speed (0x11)</td>
+      <td>double</td>
+      <td>Returns the mean speed of vehicles that have been within the named multi-entry/multi-exit detector within the last simulation step [m/s]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._multientryexit.html#MultiEntryExitDomain-getLastStepMeanSpeed">getLastStepMeanSpeed</a></td>
+    </tr>
+    <tr>
+      <td>last step vehicle ids (0x12)</td>
+      <td>stringList</td>
+      <td>Returns the list of ids of vehicles that have been within the named multi-entry/multi-exit detector in the last simulation step</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._multientryexit.html#MultiEntryExitDomain-getLastStepVehicleIDs">getLastStepVehicleIDs</a></td>
+    </tr>
+    <tr>
+      <td>last step halting vehicles number (0x14)</td>
+      <td>int</td>
+      <td>Returns the number of vehicles which were halting during the last time step</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._multientryexit.html#MultiEntryExitDomain-getLastStepHaltingNumber">getLastStepHaltingNumber</a></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="response-0xb1-memedetector-variable">Response 0xb1: MeMeDetector Variable</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center"><return_type></return_type></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Variable</td>
+      <td style="text-align: center">Multi-Entry/Multi-Exit Detector ID</td>
+      <td style="text-align: center">Return type of the variable</td>
+      <td style="text-align: center"><VARIABLE_VALUE></VARIABLE_VALUE></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The respond to a <strong>“Command Get MeMeDetector Variable”</strong>.</p>
+
+<h2 id="notes">Notes</h2>
+
+<ul>
+  <li>You can find <a href="/Simulation/Output/Multi-Entry_Multi-Exit_Detectors_(E3)" title="wikilink">some further description on multi-entry/multi-exit detectors</a></li>
+</ul>

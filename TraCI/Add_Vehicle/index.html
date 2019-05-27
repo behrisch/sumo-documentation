@@ -1,0 +1,73 @@
+<h2 id="command-0x74-add-vehicle">Command 0x74: Add Vehicle</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">double</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">vehicle ID</td>
+      <td style="text-align: center">vehicle type ID</td>
+      <td style="text-align: center">route ID</td>
+      <td style="text-align: center">lane ID</td>
+      <td style="text-align: center">insertion position</td>
+      <td style="text-align: center">insertion speed</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>This command adds a new vehicle to the simulation.</p>
+
+<h3 id="parameters">Parameters</h3>
+
+<ol>
+  <li>vehicle ID
+    <ul>
+      <li>identifier to assign to the newly created vehicle (must be unique)</li>
+    </ul>
+  </li>
+  <li>vehicle type ID
+    <ul>
+      <li>identifier of pre-registered vehicle type to use</li>
+    </ul>
+  </li>
+  <li>route ID
+    <ul>
+      <li>identifier of pre-registered route the vehicle should follow</li>
+    </ul>
+  </li>
+  <li>lane ID
+    <ul>
+      <li>identifier of lane the vehicle should start on, or an empty string. If an empty string is passed, the first lane of the route’s first edge is used. Note that the lane ID, if given, must be on the first edge of the vehicle’s route.</li>
+    </ul>
+  </li>
+  <li>insertion position
+    <ul>
+      <li>offset in meters from the start of the lane where the vehicle should be added</li>
+    </ul>
+  </li>
+  <li>insertion speed
+    <ul>
+      <li>maximum initial velocity of the vehicle, or -1. If a negative insertion speed is passed, the vehicle will depart at maximum speed.</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="return-value">Return value</h3>
+
+<p>As usual, successful execution of this command is indicated with a RTYPE_OK response. If, for any reason, the vehicle could not be added (most commonly, because the lane is blocked), RTYPE_ERR is returned instead.</p>

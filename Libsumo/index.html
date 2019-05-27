@@ -1,0 +1,35 @@
+<p>The main way to interact with a running simulation is <a href="/TraCI" title="wikilink">TraCI</a> which gives the complete flexibility of doing cross-platform, cross-language, and networked interaction with <a href="/SUMO" title="wikilink">SUMO</a> acting as a server. One major drawback is the communication overhead due to the protocol and the socket communication. To have a more efficient coupling without the need to dive deep into the SUMO internals an interface called libsumo is being defined, having the following properties:</p>
+
+<ul>
+  <li>C++ interface based on static functions and a few simple wrapper classes for results</li>
+  <li>Function signatures similar to <a href="/TraCI" title="wikilink">TraCI</a></li>
+  <li>Language bindings for at least Java and Python</li>
+  <li>Based on <a href="http://www.swig.org/">SWIG</a></li>
+</ul>
+
+<p>libsumo is still under development but several basic parts are already functional</p>
+
+<ul>
+  <li>loading a simulation</li>
+  <li>doing simulation steps</li>
+  <li>retrieving data from single vehicles, detectors, edges etc.</li>
+</ul>
+
+<p>What does not work yet:</p>
+
+<ul>
+  <li>running with sumo-gui</li>
+  <li>subscriptions</li>
+  <li>vehicle state notifications (getting the number of departed vehicles etc.)</li>
+  <li>testing the whole stuff</li>
+</ul>
+
+<h2 id="building-it">Building it</h2>
+
+<p>It currently requires cmake and swig being installed together with the developer packages for Python (and Java if needed), for Windows see <a href="/Installing/Windows_CMake" title="wikilink">Installing/Windows_CMake</a>. You need to (re-)compile sumo yourself under Windows following the remarks above, under Linux it is probably just a matter of calling cmake and make. For the python bindings you will get a libsumo.py and a _libsumo.so (or .pyd on Windows). If you place them somewhere on your python path you should be able to use them like that:</p>
+
+<p><code class="highlighter-rouge">import libsumo</code>
+<code class="highlighter-rouge">libsumo.Simulation.load([</code>“<code class="highlighter-rouge">-c</code>”<code class="highlighter-rouge">, </code>“<code class="highlighter-rouge">test.sumocfg</code>”<code class="highlighter-rouge">])</code>
+<code class="highlighter-rouge">libsumo.Simulation.simulationStep()</code></p>
+
+<p>Further descriptions will follow.</p>

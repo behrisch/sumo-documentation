@@ -1,0 +1,108 @@
+<h2 id="command-0xa8-get-polygon-variable">Command 0xa8: Get Polygon Variable</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">string</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Variable</td>
+      <td style="text-align: center">Polygon ID</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Asks for the value of a certain variable of the named polygon.</p>
+
+<p>The following variable values can be retrieved, the type of the return value is also shown in the table.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>ValueType</th>
+      <th>Description</th>
+      <th><a href="/TraCI/Interfacing_TraCI_from_Python" title="wikilink">Python Method</a></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id list (0x00)</td>
+      <td>stringList</td>
+      <td>Returns a list of ids of all polygons (the given polygon ID is ignored)</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._polygon.html#PolygonDomain-getIDList">getIDList</a></td>
+    </tr>
+    <tr>
+      <td>count (0x01)</td>
+      <td>int</td>
+      <td>Returns the number of polygons (the given polygon ID is ignored)</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._polygon.html#PolygonDomain-getIDCount">getIDCount</a></td>
+    </tr>
+    <tr>
+      <td>type (0x4f)</td>
+      <td>string</td>
+      <td>Returns the (abstract) type of the polygon</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._polygon.html#PolygonDomain-getType">getType</a></td>
+    </tr>
+    <tr>
+      <td>color (0x45)</td>
+      <td>ubyte,ubyte,ubyte,ubyte</td>
+      <td>Returns the color of this polygon (rgba)</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._polygon.html#PolygonDomain-getColor">getColor</a></td>
+    </tr>
+    <tr>
+      <td>shape (0x4e)</td>
+      <td>2D-polygon</td>
+      <td>Returns the shape (list of 2D-positions) of this polygon</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._polygon.html#PolygonDomain-getShape">getShape</a></td>
+    </tr>
+    <tr>
+      <td>filled (0x55)</td>
+      <td>ubyte</td>
+      <td>Returns whether this polygon is filled (1) or not (0)</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._polygon.html#PolygonDomain-getFilled">getFilled</a></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="response-0xb8-polygon-variable">Response 0xb8: Polygon Variable</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center"><return_type></return_type></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Variable</td>
+      <td style="text-align: center">Polygon ID</td>
+      <td style="text-align: center">Return type of the variable</td>
+      <td style="text-align: center"><VARIABLE_VALUE></VARIABLE_VALUE></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The respond to a <strong>“Command Get Polygon Variable”</strong>.</p>

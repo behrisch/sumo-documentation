@@ -1,0 +1,96 @@
+<h2 id="command-0xa9-get-junction-variable">Command 0xa9: Get Junction Variable</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">string</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Variable</td>
+      <td style="text-align: center">Junction ID</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Asks for the value of a certain variable of the named junction.</p>
+
+<p>The following variable values can be retrieved, the type of the return value is also shown in the table.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>ValueType</th>
+      <th>Description</th>
+      <th><a href="/TraCI/Interfacing_TraCI_from_Python" title="wikilink">Python Method</a></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id list (0x00)</td>
+      <td>stringList</td>
+      <td>Returns a list of ids of all junctions within the scenario (the given Junction ID is ignored)</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._junction.html#JunctionDomain-getIDList">getIDList</a></td>
+    </tr>
+    <tr>
+      <td>count (0x01)</td>
+      <td>int</td>
+      <td>Returns the number of junctions within the scenario (the given Junction ID is ignored)</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._junction.html#JunctionDomain-getIDCount">getIDCount</a></td>
+    </tr>
+    <tr>
+      <td>position (0x42)</td>
+      <td>position</td>
+      <td>Returns the position of the named junction [m,m]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._junction.html#JunctionDomain-getPosition">getPosition</a></td>
+    </tr>
+    <tr>
+      <td>shape (0x4e)</td>
+      <td>2D-polygon</td>
+      <td>Returns the shape (list of 2D-positions) of the named junction</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._junction.html#JunctionDomain-getShape">getShape</a></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="response-0xb9-junction-variable">Response 0xb9: Junction Variable</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center"><return_type></return_type></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Variable</td>
+      <td style="text-align: center">Junction ID</td>
+      <td style="text-align: center">Return type of the variable</td>
+      <td style="text-align: center"><VARIABLE_VALUE></VARIABLE_VALUE></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The respond to a <strong>“Command Get Junction Variable”</strong>.</p>

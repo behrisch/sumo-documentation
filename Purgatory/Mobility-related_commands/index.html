@@ -1,0 +1,161 @@
+<h1 id="mobility-related-commands">Mobility-related commands</h1>
+
+<h2 id="command-0x11-set-maximum-speed">Command 0x11: Set Maximum Speed</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center">float</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">NodeId</td>
+      <td style="text-align: center">MaxSpeed</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The vehicle identified by <em>NodeId</em> limits its speed to an individual maximum of <em>MaxSpeed</em>.
+When the command is called with a negative value for <em>MaxSpeed</em>, the individual speed of a vehicle is reset to its original value.</p>
+
+<h2 id="command-0x12-stop-node">Command 0x12: Stop Node</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center">position</td>
+      <td style="text-align: center">float</td>
+      <td style="text-align: center">integer</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">NodeId</td>
+      <td style="text-align: center">StopPosition</td>
+      <td style="text-align: center">Radius</td>
+      <td style="text-align: center">WaitTime [ms]</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Use this command to stop a vehicle at a predetermined position. Whenever the vehicle given by <em>NodeId</em> reaches <em>StopPosition</em>, it sets its maximum speed to 0 and waits for the amount of time specified by <em>WaitTime</em>. After that, it continues on its way.
+Though <em>StopPosition</em> can be given in any position format, the <em>Road Map</em> format should be preferred, as it is used internally by sumo. For any other format, sumo will compute the nearest road map position and stop the vehicle there.
+In any case, a <em>Stop Node</em> command containing the final road map position used by sumo to stop the vehicle is added to the response command. Please note that <em>Radius</em> has an epsilon of 0.1m.</p>
+
+<h2 id="command-0x14-slow-down">Command 0x14: Slow Down</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center">float</td>
+      <td style="text-align: center">integer</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">NodeId</td>
+      <td style="text-align: center">MinSpeed</td>
+      <td style="text-align: center">TimeIntervall [ms]</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Tells the node identified by <em>NodeId</em> to reduce its driving speed down to <em>MinSpeed</em> within the given <em>TimeIntervall</em>. The speed reduction will be linear. This command is provided to simulate different methods of slowing down, like instant breaking or coasting.</p>
+
+<h2 id="command-0x13-change-lane">Command 0x13: Change Lane</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center">byte</td>
+      <td style="text-align: center">integer</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">NodeId</td>
+      <td style="text-align: center">Lane</td>
+      <td style="text-align: center">Time [ms]</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The vehicle identified by <em>NodeId</em> tries to move to another <em>Lane</em> for the duration of <em>Time</em>. (Lanes are numbered sequentially starting with 0 at the right most lane)
+After <em>Time</em> has expired, the constraint is removed. It’s not guaranteed that the vehicle will actually change the lane, e.g. the defined route my require it to hold the lane or change to another one. If the vehicle passes a junction while on a fixed lane, it gets fixed to the corresponding lane on the succeeding road segment. If such a lane doesn’t exist, the constraint is removed and all lanes may be used again by the vehicle.</p>
+
+<h2 id="command-0x30-change-route">Command 0x30: Change Route</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">double</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">NodeId</td>
+      <td style="text-align: center">RoadId</td>
+      <td style="text-align: center">TravelTime</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Usually, each road within a simulation has an assigned travel time based on its length and allowed speed. To allow for dynamic rerouting, this command assigns an individual <em>TravelTime</em> to a specific road segment identified by <em>RoadId</em>.
+The set travel time is only visible to the appointed vehicle (<em>NodeId</em>). Setting a negative travel time will restore a typical travel time as mentioned above for the road segment.
+Before the simulation continues, a new route is calculated for the vehicle.
+<strong>Note</strong>: this command conflicts with routes that contain one or more edges of the road network multiple times. When rerouting a vehicle, SUMO determines a direct path between the vehicle’s current edge and the target edge (end of route), thus the original route may be truncated!</p>
+
+<h2 id="command-0x31-change-destination">Command 0x31: Change Destination</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center">string</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">NodeId</td>
+      <td style="text-align: center">RoadId</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The destination of the vehicle identified by <em>NodeId</em> is changed to a new road segment (<em>RoadId</em>). The simulation continues after a route to the new target has been calculated.</p>
