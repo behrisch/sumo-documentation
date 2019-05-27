@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Models Electric | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Models Electric" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Models/Electric/" />
+<meta property="og:url" content="/sumo-documentation/Models/Electric/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Models/Electric/","headline":"Models Electric","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Models Electric</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Models/Electric.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="overview">Overview</h1>
+
+<p>Since version 0.24.0 SUMO includes a model for electric vehicles. It was implemented by Tamás Kurczveil and Pablo Álvarez López from the <a href="https://www.tu-braunschweig.de/">TU-Braunschweig</a>. The core of the model is implemented in the <a href="/Developer/How_To/Device" title="wikilink">vehicle device</a> <em>device.battery</em>. Additional features are a charging station (which can be placed on any lane in the network) and a new output option .</p>
+
+<p>You can find a test case for these implementations at <a href="http://sumo.dlr.de/trac.wsgi/browser/trunk/sumo/tests/sumo/extended/electric/braunschweig">1</a></p>
+
+<h2 id="defining-electric-vehicles">Defining Electric Vehicles</h2>
+
+<p>To define an electric vehicle, it must be equipped with a battery device. This may be done using the option or simply setting to equip all vehicles. Alternatively, the device may be specified using <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Devices" title="wikilink">Generic vehicle parameters</a>.</p>
+
+<p>Additional properties of the vehicle and its electrical components must then be defined via <a href="/Simulation/GenericParameters" title="wikilink">parameters of the vehicle or its type</a>.</p>
+
+<p>These values have the following meanings:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>key</th>
+      <th>Value Type</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>maximumBatteryCapacity</td>
+      <td>float</td>
+      <td>0 (Wh)</td>
+      <td>Maximum battery capacity <em>E<sub>max</sub></em></td>
+    </tr>
+    <tr>
+      <td>maximumPower</td>
+      <td>float</td>
+      <td>0 (W)</td>
+      <td>Maximum power which the vehicle can reach</td>
+    </tr>
+    <tr>
+      <td>vehicleMass</td>
+      <td>float</td>
+      <td>0 (kg)</td>
+      <td>Vehicle mass <em>m<sub>veh</sub></em></td>
+    </tr>
+    <tr>
+      <td>frontSurfaceArea</td>
+      <td>float</td>
+      <td>0 (m2)</td>
+      <td>Front surface area <em>A<sub>veh</sub></em></td>
+    </tr>
+    <tr>
+      <td>airDragCoefficient</td>
+      <td>float</td>
+      <td>0</td>
+      <td>Air drag coefficient <em>c<sub>w</sub></em></td>
+    </tr>
+    <tr>
+      <td>internalMomentOfInertia</td>
+      <td>float</td>
+      <td>0 (kg·m2)</td>
+      <td>Mom. of inertia of int. rot. elements <em>J<sub>int</sub></em></td>
+    </tr>
+    <tr>
+      <td>radialDragCoefficient</td>
+      <td>float</td>
+      <td>0</td>
+      <td>Radial drag coefficient c<sub>rad</sub></td>
+    </tr>
+    <tr>
+      <td>rollDragCoefficient</td>
+      <td>float</td>
+      <td>0</td>
+      <td>Rolling resistance coefficient <em>c<sub>roll</sub></em></td>
+    </tr>
+    <tr>
+      <td>constantPowerIntake</td>
+      <td>float</td>
+      <td>0 (W)</td>
+      <td>Avg. (constant) power of consumers <em>P<sub>const</sub></em></td>
+    </tr>
+    <tr>
+      <td>propulsionEfficiency</td>
+      <td>float</td>
+      <td>0</td>
+      <td>Drive efficiency <em>η<sub>prop</sub></em></td>
+    </tr>
+    <tr>
+      <td>recuperationEfficiency</td>
+      <td>float</td>
+      <td>0</td>
+      <td>Recuperation efficiency <em>η<sub>recup</sub></em></td>
+    </tr>
+    <tr>
+      <td>stoppingTreshold</td>
+      <td>float</td>
+      <td>0.1 (km/h)</td>
+      <td>Minimum velocity to start charging</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>An example of a vehicle with electric attribute:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;routes&gt;
+   &lt;vType id="ElectricBus" accel="1.0" decel="1.0" lenght="12" maxSpeed="100.0" sigma="0.0" minGap="2.5" color="1,1,1"&gt;
+      &lt;param key="maximumBatteryCapacity" value="2000"/&gt;
+      &lt;param key="maximumPower" value="1000"/&gt;
+      &lt;param key="vehicleMass" value="10000"/&gt;
+      &lt;param key="frontSurfaceArea" value="5"/&gt;
+      &lt;param key="airDragCoefficient" value="0.6"/&gt;
+      &lt;param key="internalMomentOfInertia" value="0.01"/&gt;
+      &lt;param key="radialDragCoefficient" value="0.5"/&gt;
+      &lt;param key="rollDragCoefficient" value="0.01"/&gt;
+      &lt;param key="constantPowerIntake" value="100"/&gt;
+      &lt;param key="propulsionEfficiency" value="0.9"/&gt;
+      &lt;param key="recuperationEfficiency" value="0.9"/&gt;
+      &lt;param key="stoppingTreshold" value="0.1"/&gt;
+   &lt;/vType&gt;
+&lt;/routes&gt;
+</code></pre></div></div>
+
+<p>The initial energy content of the battery (by default MaxBatKap/2) can be set in the vehicle definitions</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;routes&gt;
+   &lt;vehicle id="0" type="type1" depart="0" color="1,0,0"&gt;
+      &lt;param key="actualBatteryCapacity" value="500"/&gt;
+   &lt;/vehicle&gt;
+&lt;/routes&gt;
+</code></pre></div></div>
+
+<h2 id="charging-stations">Charging Stations</h2>
+
+<p>A charging station is a surface defined on a lane in which the vehicles equipped with a battery are charged. The basic structure and parameters of bus stops were used for the implementation of charging stations.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>key</th>
+      <th>Value Type</th>
+      <th>Value range</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>id</strong></td>
+      <td>string</td>
+      <td>id</td>
+      <td> </td>
+      <td>Charging station ID (Must be unique)</td>
+    </tr>
+    <tr>
+      <td><strong>lane</strong></td>
+      <td>string</td>
+      <td>valid lane id</td>
+      <td> </td>
+      <td>Lane of the charging station location</td>
+    </tr>
+    <tr>
+      <td><strong>startPos</strong></td>
+      <td>float</td>
+      <td>lane.length &lt; x &lt; lane.length (negative values count backwards from the end of the lane)</td>
+      <td>0</td>
+      <td>Begin position in the specified lane</td>
+    </tr>
+    <tr>
+      <td><strong>endPos</strong></td>
+      <td>float</td>
+      <td>lane.length &lt; x &lt; lane.length (negative values count backwards from the end of the lane)</td>
+      <td> </td>
+      <td>End position in the specified lane</td>
+    </tr>
+    <tr>
+      <td><strong>power</strong></td>
+      <td>float</td>
+      <td>power &gt; 0</td>
+      <td>22000(Wh)</td>
+      <td>Charging power <em>P<sub>chrg</sub></em></td>
+    </tr>
+    <tr>
+      <td><strong>efficiency</strong></td>
+      <td>float</td>
+      <td>0 &lt;= efficiency &lt;= 1</td>
+      <td>0.95</td>
+      <td>Charging efficiency <em>η<sub>chrg</sub></em></td>
+    </tr>
+    <tr>
+      <td><strong>chargeInTransit</strong></td>
+      <td>bool</td>
+      <td>0 or 1</td>
+      <td>0</td>
+      <td>Enable or disable charge in transit, i.e. vehicle is forced/not forced to stop for charging</td>
+    </tr>
+    <tr>
+      <td><strong>chargeDelay</strong></td>
+      <td>float</td>
+      <td>chargeDelay &gt; 0</td>
+      <td>0</td>
+      <td>Time delay after the vehicles have reached / stopped on the charging station, before the energy transfer (charging) is starting</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>string</td>
+      <td>simple String</td>
+      <td> </td>
+      <td>Charging station name. This is only used for visualization purposes.</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Charging stations are defined in additional using the following format:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;additional&gt;
+   &lt;chargingStation chargeDelay="2" chargeInTransit="0" chrgpower="200000" efficiency="0.95" endPos="25" id="cS_2to19_0a" lane="2to19_0" startPos="10"/&gt;
+&lt;/additional&gt;
+</code></pre></div></div>
+
+<p>And are represented in the simulation as shown:</p>
+
+<File:chargingStation.png>| Representation of chargingStation in GUI <File:chargingStationCharging.png>| Color of chargingStation during charge
+
+### Stopping at a Charging Station
+
+A stop at a charging station may occur due to traffic conditions, stopping at a defined location or stopping at an explicit chargingStation as defined below:
+
+    <routes>
+        <vehicle id="v0" route="route0" depart="0">
+            <stop chargingStation="myChargingStationID" until="50" />
+        </vehicle>
+    </routes>
+
+### Charging Station output
+
+Option --chargingstations-output “nameOfFile.xml” generates a full report of energy charged by charging stations:
+
+    <output>
+        <battery-output value="battery.xml" />
+        <chargingstations-output value="chargingstations.xml" />
+    </output>
+
+File chargingstations.xml has the following structure:
+
+    <chargingstations-export>
+        <chargingStation id="CS1" totalEnergyCharged="71.25" chargingSteps="27">
+            <vehicle id="veh0" type="ElectricVehicle1" totalEnergyChargedIntoVehicle="15.83" chargingBegin="12.00" chargingEnd="17.00">
+                <step time="12.00" chargingStatus="chargingStopped" energyCharged="2.64" partialCharge="2.64" power="10000.00" efficiency="0.95" actualBatteryCapacity="12962.97" maximumBatteryCapacity="35000.00" />
+                <step time="13.00" chargingStatus="chargingStopped" energyCharged="2.64" partialCharge="5.28" power="10000.00" efficiency="0.95" actualBatteryCapacity="12965.59" maximumBatteryCapacity="35000.00" />
+                <step time="14.00" chargingStatus="chargingStopped" energyCharged="2.64" partialCharge="7.92" power="10000.00" efficiency="0.95" actualBatteryCapacity="12968.22" maximumBatteryCapacity="35000.00" />
+            </vehicle>
+            <vehicle id="veh1" type="ElectricVehicle2" totalEnergyChargedIntoVehicle="5.28" chargingBegin="17000" chargingEnd="18000">
+                <step time="17.00" chargingStatus="chargingStopped" energyCharged="2.64" partialCharge="18.47" power="10000.00" efficiency="0.95" actualBatteryCapacity="11967.35" maximumBatteryCapacity="35000.00" />
+                <step time="18.00" chargingStatus="chargingStopped" energyCharged="2.64" partialCharge="21.11" power="10000.00" efficiency="0.95" actualBatteryCapacity="12978.72" maximumBatteryCapacity="35000.00" />
+            </vehicle>
+           ...
+        </chargingStation>
+            ...
+
+        ...
+    </chargingstations-export>
+
+For the entire ChargingStation:
+
+| Name               | Type   | Description                                                 |
+|--------------------|--------|-------------------------------------------------------------|
+| id                 | string | ChargingStation ID                                          |
+| totalEnergyCharged | float  | Total energy charged in W during the entire simulation      |
+| chargingSteps      | int    | Number of steps in which charginStation was charging energy |
+
+For the current charging vehicle
+
+| Name                          | Type   | Description                                                   |
+|-------------------------------|--------|---------------------------------------------------------------|
+| id                            | string | ID of vehicle that is charging in these charging stop         |
+| type                          | string | type of vehicle                                               |
+| totalEnergyChargedIntoVehicle | double | Energy charged during these charging stop                     |
+| chargingBegin                 | float  | TimeStep in which vehicle starts with the charge (in seconds) |
+| chargingEnd                   | float  | TimeStep in which vehicle ends with the charge (in seconds)   |
+
+For every charging timeStep:
+
+| Name                   | Type   | Description                                                                 |
+|------------------------|--------|-----------------------------------------------------------------------------|
+| time                   | float  | Current timestep (s)                                                        |
+| chargingStatus         | string | Current charging status (Charging, waiting to charge o not charging)        |
+| energyCharged          | float  | Energy charged in current timeStep                                          |
+| partialCharge          | float  | Energy charged by ChargingStation from begin of simulation to this timeStep |
+| power                  | float  | Current power of ChargingStation                                            |
+| efficiency             | float  | Current efficiency of ChargingStation                                       |
+| actualBatteryCapacity  | string | Current battery capacity of vehicle                                         |
+| maximumBatteryCapacity | string | Current maximum battery capacity of vehicle                                 |
+
+battery-output
+--------------
+
+There are three output parameters to be set in the SUMO configuration to use the battery device:
+
+    <configuration>
+        <input />
+            <net-file value="netFile.xml" />
+            <route-files value="routeFile.xml" />
+            <additional-files value="additionalFile.xml" />
+        &lt;/input&gt;
+        <output>
+            <battery-output value="Battery.out.xml" />
+            <battery-output.precision value="4" />
+            <device.battery.probability value="1" />
+            <summary-output value="summary_100.xml" />
+        </output>
+    </configuration>
+
+The battery-output generates a file with this structure:
+
+    <battery-export>
+        <timestep time="0.00">
+            <vehicle id="vehicle01" Consum="0.00" actualBatteryCapacity="17500.00" maximumBatteryCapacity="35000.00" chargingStationId="NULL" energyCharge="0.00" energyChargedInTransit="0.00" energyChargedStopped="0.00" speed="12.92" acceleration="0.00" x="1428.27" y="25.57" lane="01to02_0" posOnLane="0.00" timeStopped="0" />
+            &lt;vehicle id=..... */
+        </timestep>
+        <timestep time="1.00">
+            &lt;vehicle id=.....
+        </timestep>
+        &lt;timestep time=...
+        ...
+        &lt;/timestep&gt;
+    </battery-export>
+
+| Name                   | Type   | Description                                                                                                              |
+|------------------------|--------|--------------------------------------------------------------------------------------------------------------------------|
+| time                   | int    | Current timestep                                                                                                         |
+| id                     | string | id of vehicle                                                                                                            |
+| energyConsumed         | double | energy consumption in this timestep in **Wh**                                                                            |
+| actualBatteryCapacity  | double | energy content of the battery in this timestep                                                                           |
+| maximumBatteryCapacity | double | Max energy capacity of the battery                                                                                       |
+| chargingStationId      | string | If vehicle is exactly at a charging station, this value is the id of the charging station, in other case, is NULL        |
+| energyCharged          | double | Charge received in the current time step from a charging station (Only != 0 if vehicle is exactly at a charging station) |
+| energyChargedInTransit | double | Charge that a vehicle in transit received in the current time step from a charging station                               |
+| energyChargedStopped   | double | Charge that a stopped vehicle received in the current time step from a charging station                                  |
+| speed                  | double | Speed of vehicle in this timestep                                                                                        |
+| acceleration           | double | Acceleration of vehicle in this timestep                                                                                 |
+| x                      | double | absolute position x of vehicle in the map                                                                                |
+| y                      | double | absolute position y of vehicle in the map                                                                                |
+| lane                   | string | id of the lane that the vehicle is currently on                                                                          |
+| posOnLane              | double | Position of vehicle on its current lane                                                                                  |
+| timeStopped            | int    | Counter with the number of timesteps that the vehicle has remained standing                                              |
+
+Emission Output
+---------------
+
+The [Emission model](/Models/Emissions#Outputs "wikilink")-outputs of SUMO can be used together with the battery device when setting the -parameter .
+
+TraCI
+-----
+
+The internal state of the battery device can be accessed directly using [*traci.vehicle.getParameter*](/TraCI/Vehicle_Value_Retrieval#Supported_Device_Parameters "wikilink") and [*traci.vehicle.setParameter*](/TraCI/Change_Vehicle_State#Supported_Device_Parameters "wikilink").
+
+Furthermore, the function [*traci.vehicle.getElectricityConsumption()*](/TraCI/Vehicle_Value_Retrieval#Command_0xa4:_Get_Vehicle_Variable "wikilink") can be used to access the consumption of the vehicle if the [is declared.](/#Emission_Output "wikilink").
+
+Model Details
+-------------
+
+All information about the implemented device (including details on the vehicle energy consumption and charging model) can be found in the following publication.
+
+### Publications
+
+-   [Kurczveil, T., López, P.A., Schnieder, E., Implementation of an Energy Model and a Charging Infrastructure in SUMO. In: Behrisch, M., Krajzewicz, D., Weber, M. (eds.) Simulation of Urban Mobility. Lecture Notes in Computer Science, vol. 8594 , pp. 33--43. Springer, Heidelberg (2014)](http://elib.dlr.de/93885/1/Proceeding_SUMO2013_15-17May%202013_Berlin-Adlershof.pdf)
+</File:chargingStationCharging.png></File:chargingStation.png>
+
+  </div><a class="u-url" href="/sumo-documentation/Models/Electric/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

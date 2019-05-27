@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Tools Misc | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Tools Misc" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Tools/Misc/" />
+<meta property="og:url" content="/sumo-documentation/Tools/Misc/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Tools/Misc/","headline":"Tools Misc","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Tools Misc</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Tools/Misc.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><strong>FORCETOC</strong></p>
+
+<h1 id="createvehtypedistributionspy">createVehTypeDistributions.py</h1>
+
+<p>Creates a vehicle type distribution by sampling from configurable value distributions for the <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicle_Types" title="wikilink">desired -parameters</a>.</p>
+
+<p>Example use</p>
+
+<p><code class="highlighter-rouge"> </code><code class="highlighter-rouge">/tools/createVehTypeDistributions.py config.txt</code></p>
+
+<p>The only required parameter is the configuration file in the format shown below (<em>example config.txt</em>):</p>
+
+<p><code class="highlighter-rouge"> tau; normal(0.8,0.1)</code>
+<code class="highlighter-rouge"> sigma; normal(0.5,0.2)</code>
+<code class="highlighter-rouge"> length; normal(4.9,0.2); [3.5,5.5]</code>
+<code class="highlighter-rouge"> vClass; passenger</code>
+<code class="highlighter-rouge"> carFollowModel; Krauss</code></p>
+
+<p>In the config file, one line is used per vehicle type attribute. The syntax is: nameOfAttribute; valueOfAttribute [; limits]</p>
+
+<p>ValueOfAttribute can be a string, a scalar value or a distribution definition. Available distributions and its syntax are: “normal(mu,sd)” with mu and sd being floating numbers: Normal distribution with mean mu and standard deviation sd. “uniform(a,b)” with limits a and b being floating numbers: Uniform distribution between a and b. “gamma(alpha,beta)” with parameters alpha and beta: Gamma distribution.</p>
+
+<p>Limits are optional and defined as the allowed interval: e.g. “[0,1]” or “[3.5,5.0]”. By default, no negative values are accepted but may be enabled by setting a negative lower limit.</p>
+
+<p>Additional options:</p>
+
+<ul>
+  <li>
+    <p>configures the name of the output file to be written</p>
+  </li>
+  <li>
+    <p>Name of the created distribution</p>
+  </li>
+  <li>
+    <p>Number of s to be sampled for filling the distribution</p>
+  </li>
+  <li>
+    <p>Set the seed for the random number generator</p>
+  </li>
+</ul>
+
+<h2 id="retrieving-parameters-from-measurements-of-individual-vehicles">Retrieving parameters from measurements of individual vehicles</h2>
+
+<p>To obtain mean and deviation a number of values must be obtained from the data set. The following is recommenced:</p>
+
+<ul>
+  <li><strong>accel</strong>: the maximum (or high percentile) acceleration for each vehicle</li>
+  <li><strong>deccel</strong>: the maximum (or high percentile) deceleration for each vehicle</li>
+  <li><strong>speedFactor</strong>: the maximum (or high percentile) quotient of speed/speedLimit for each vehicle</li>
+</ul>
+
+<h1 id="generateturndefspy">generateTurnDefs.py</h1>
+
+<p>This script allows generation of the turn definitions based on the number of lanes allowing particular turns. The basic functionality distributes the traffic uniformly, that is:</p>
+
+<ol>
+  <li>distribute the incoming traffic uniformly across the lanes forming the road</li>
+  <li>distribute the amount of traffic assigned to each lane uniformly among the destinations that the lane allows turns to.</li>
+  <li>sum up the values for each of the destinations that the road being processed allows turning to.</li>
+</ol>
+
+<p>Example use</p>
+
+<p><code class="highlighter-rouge"> </code><code class="highlighter-rouge">/tools/turn-defs/generateTurnDefs.py --connections-file connections.con.xml --turn-definitions-file output.turndefs.xml</code></p>
+
+<p>The script allows to be extended with new traffic distribution policies (for example, based on Gaussian distribution) easily. See the <em>DestinationWeightCalculator</em> class for details.</p>
+
+<p>The script processes the connections given in the provided <em>*.con.xml</em> file. For usage details, execute the <em>generateTurnDefs.py</em> script with <em>–help</em> option.</p>
+
+<h1 id="generateparkinglotspy">generateParkingLots.py</h1>
+
+<p>This skript generats parking lots.</p>
+
+<p>Example use</p>
+
+<p><code class="highlighter-rouge"> </code><code class="highlighter-rouge">/tools/generateParkingLots.py -b </code>&lt;xmin, ymin, xmax, ymax&gt;<code class="highlighter-rouge"> -c </code><connecting edge="">
+` [-i `<parking-id>` -n `<number of="" parking="" spaces="">` -l `<space-length>` -a `<space-angle>` ...]`</space-angle></space-length></number></parking-id></connecting></p>
+
+<p>or</p>
+
+<p><code class="highlighter-rouge"> </code><code class="highlighter-rouge">/tools/generateParkingLots.py -x </code><x-pos>` -y `<y-pos>` -c `<connecting edge="">
+` [-i `<parking-id>` -n `<number of="" parking="" spaces="">` -l `<space-length>` -a `<space-angle>` ...]`</space-angle></space-length></number></parking-id></connecting></y-pos></x-pos></p>
+
+<p>The required parameter are the shape (–bounding-box) or the position (–x-axis and –y-axis) of the parking lot and the connecting edge (–connecting-edge). More options can be obtained by calling <SUMO_HOME>/tools/generateParkingLots.py --help.</SUMO_HOME></p>
+
+<p>Additional options:</p>
+
+<ul>
+  <li>
+    <p>defines the name/id of the parking lot</p>
+  </li>
+  <li>
+    <p>defines the number of the parking spaces</p>
+  </li>
+  <li>
+    <p>defines the begin position of the enterance/exit of the parking lot</p>
+  </li>
+  <li>
+    <p>defines the end position of the enterance/exit of the parking lot</p>
+  </li>
+  <li>
+    <p>defines the length of each parking space</p>
+  </li>
+  <li>
+    <p>defines the angle of the parking spaces</p>
+  </li>
+  <li>
+    <p>defines the lateral distance (x-direction) between the locations of two parking spaces</p>
+  </li>
+  <li>
+    <p>defines the longitudinal distance (y-direction) between the locations of two parking spaces</p>
+  </li>
+  <li>
+    <p>defines the rotation degree of the parking lot</p>
+  </li>
+  <li>
+    <p>defines the modification rate of x-axis if the rotation exists</p>
+  </li>
+  <li>
+    <p>defines the modification rate of y-axis if the rotation exists</p>
+  </li>
+  <li>
+    <p>output suffix</p>
+  </li>
+  <li>
+    <p>full name of parking area</p>
+  </li>
+  <li>
+    <p>tell me what you are doing</p>
+  </li>
+</ul>
+
+
+  </div><a class="u-url" href="/sumo-documentation/Tools/Misc/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

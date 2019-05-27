@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>XMLValidation | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="XMLValidation" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/XMLValidation/" />
+<meta property="og:url" content="/sumo-documentation/XMLValidation/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/XMLValidation/","headline":"XMLValidation","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">XMLValidation</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/XMLValidation.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><strong>TOC</strong></p>
+
+<h1 id="validation-of-xml-inputs">Validation of XML inputs</h1>
+
+<p>All <a href="/Sumo_at_a_Glance#Included_Applications" title="wikilink">SUMO applications</a> support XML validation for their inputs. To enable this, the following options can be used:</p>
+
+<table>
+<thead>
+<tr class="header">
+<th><p>Option</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>Set schema validation scheme of XML inputs (“never”, “auto” or “always”); <em>default: <strong>auto</strong></em></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>Set schema validation scheme of SUMO network inputs (“never”, “auto” or “always”); <em>default: <strong>never</strong></em></p></td>
+</tr>
+<tr class="odd">
+</tr>
+</tbody>
+</table>
+
+<p>Validation is performed by activating <a href="https://xerces.apache.org/xerces-c/schema-3.html">XML schema processing</a> in the XML parser. This catches many common input errors such as spelling mistakes and attributes which should have been placed within another element.</p>
+
+<p>Another prerequisite for validation is a schema deceleration within the root element of the input file such as</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd"&gt;
+</code></pre></div></div>
+
+<p>When setting the validation options to <em>always</em> it is an error to omit this declaration.</p>
+
+<p>Schema validation may slowdown XML parsing considerably and is therefore disabled for the network input by default (because networks should not be edited by hand and therefore be valid anyway).</p>
+
+<p>.</p>
+
+<h1 id="adding-a-schema-declaration">Adding a schema declaration</h1>
+
+<p>Files that are written by one of the SUMO applications automatically receive the appropriate schema declaration. When writing an input file from scratch the schema declaration must be added manually to the root element as follows:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;ROOT_ELEMENT xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/SCHEMA_FILE"&gt;
+</code></pre></div></div>
+
+<p>where <em>ROOT_ELEMENT</em> and <em>SCHEMA_FILE</em> should be set according to the following table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Application Option</th>
+      <th>ROOT_ELEMENT</th>
+      <th>SCHEMA_FILE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>}, , ,</td>
+      <td>routes</td>
+      <td>routes_file.xsd</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>add</td>
+      <td>additional_file.xsd</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>nodes</td>
+      <td>nodes_file.xsd</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>edges</td>
+      <td>edges_file.xsd</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>connections</td>
+      <td>connections_file.xsd</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>tlLogics</td>
+      <td>tllogic_file.xsd</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>types</td>
+      <td>types_file.xsd</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>meandata</td>
+      <td>meandata_file.xsd</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="schema-files">Schema Files</h1>
+
+<p>The schema files can be found in the /data/xsd directory of your SUMO installation. If the <a href="/Basics/Basic_Computer_Skills#Additional_Environment_Variables" title="wikilink">environment variable <em>SUMO_HOME</em> is set</a>, these files will be used when validation inputs.</p>
+
+<p>Otherwise, the files are loaded from <em><a href="http://sumo.dlr.de/xsd/SCHEMA_FILE">http://sumo.dlr.de/xsd/SCHEMA_FILE</a></em> which may slow down the application (or fail if there is no internet connection).</p>
+
+<h1 id="sumo-file-types">SUMO File Types</h1>
+
+<p>A complete listing of file extensions used by <a href="/Sumo_at_a_Glance#Included_Applications" title="wikilink">SUMO Applications</a> is given at <a href="/Other/File_Extensions" title="wikilink">File_Extensions</a>.</p>
+
+  </div><a class="u-url" href="/sumo-documentation/XMLValidation/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

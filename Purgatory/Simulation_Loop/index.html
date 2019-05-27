@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Purgatory Simulation Loop | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Purgatory Simulation Loop" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Purgatory/Simulation_Loop/" />
+<meta property="og:url" content="/sumo-documentation/Purgatory/Simulation_Loop/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Purgatory/Simulation_Loop/","headline":"Purgatory Simulation Loop","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Purgatory Simulation Loop</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Purgatory/Simulation_Loop.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Each simulation time step, the following procedures are performed. Please note that this is description for the current (since 12.01.2010) SVN version; earlier versions differ.</p>
+
+<ul>
+  <li>Process TraCI Commands (if TraCI is not disabled)</li>
+  <li>Save Simulation State if needed (currently only in mesosim)</li>
+  <li>Execute “Begin of Time Step” Events</li>
+  <li>Check for Collisions</li>
+  <li>Reset Junction Requests</li>
+  <li>Check Traffic Light Changes</li>
+  <li>Set Traffic Light Signals on Links</li>
+  <li>Assure all not-free Lanes are known</li>
+  <li>Compute Vehicle Movement (iterating over all not-free lanes)</li>
+  <li>Determine which Vehicles have Right-of-way</li>
+  <li>Move Vehicles</li>
+  <li>Change Lanes</li>
+  <li>Check for Collisions</li>
+  <li>Progress Vehicles Loading</li>
+  <li>Insert Vehicles</li>
+  <li>Execute “End of Time Step” Events</li>
+  <li>Save Output</li>
+  <li>Increment current Time Step</li>
+</ul>
+
+<h1 id="compute-vehicle-movement-iterating-over-all-not-free-lanes">Compute Vehicle Movement (iterating over all not-free lanes)</h1>
+
+<p>A vehicle’s (<strong>EGO</strong>’s) speed during the next time step is constrained by: a) the leading vehicle (<strong>LEADER</strong>), b) a vehicle on the lane left to <strong>EGO</strong>’s lane in some cases, c) right-of-way rules at approached intersections, d) speed limits at approached lanes.</p>
+
+<h2 id="interaction-with-the-leading-vehicle">Interaction with the leading Vehicle</h2>
+
+<p>Using a car-following model, and having an <strong>EGO</strong> vehicle, we need its <strong>LEADER</strong> which parameter are used within the model’s equations. Its pretty easy to determine one on a circular road, but things get more complicated when moving to real-world road networks:</p>
+
+<ul>
+  <li>we have to consider leading vehicles on the next lanes that may be approached</li>
+</ul>
+
+<h3 id="interaction-with-leader-on-same-lane">Interaction with LEADER on same lane</h3>
+
+<p>We go through the (sorted) list of a lane’s vehicles and use the next one as <strong>LEADER</strong>. This is the first check in computing the next speed. We do this only for the next vehicle in front (<strong>LEADER</strong>), discarding further vehicles in fron (<strong>LEADER+n</strong>) - assuming the <strong>LEADER</strong>’s model would be responsible for keeping <strong>EGO</strong> collision free by using a safe velocity in respect to his (<strong>LEADER</strong>’s) <strong>LEADER</strong>.</p>
+
+<p>Obviously, the first vehicle on the lane (the one nearest to the lane’s end) does not have a leading vehicle on this lane. Now, one assumption is that if a vehicle is on a lane which does not allow to continue its route, it brakes so that it does not leave it. This means that for the last vehicle we do not need a <strong>LEADER</strong> if this last vehicle is on a false lane. Nonetheless, an additional problem may occur for the last vehicle: a vehicle which is only partially at the lane; vehicles are administrated by the lanes and the lane stores and moves only vehicles which front is on the lane - the vehicle’s back may nonetheless be (still) on a predecessing lane. We have to check this even in the case a vehicle will not leave the lane.</p>
+
+<h3 id="interaction-with-leader-on-consecutive-lanes">Interaction with LEADER on consecutive lanes</h3>
+
+<p>In the case <strong>EGO</strong> is on a “correct” lane, we have to look into consequent lanes for <strong>LEADER</strong>s. The reason is quite simple: assume <strong>EGO</strong> is turning left, but his <strong>LEADER</strong> - being on the same lane - goes straight and has no <strong>LEADER</strong> itself. The <strong>LEADER</strong> may progress at high speed, but <strong>EGO</strong> has to watch out for the situation on subsequent lanes.</p>
+
+<h1 id="explaining-sumo">Explaining SUMO</h1>
+
+<ul>
+  <li>if the speed for a vehicle is computed, the leader has to have the position/speed from the last time step (rule for most car-following models)
+    <ul>
+      <li>–&gt; we have to ensure, that this applies for leaders on subsequent lanes as well. But: we can not sort edges/lanes due to possible cyclic dependencies</li>
+      <li>–&gt; we have to do two steps
+        <ul>
+          <li>a) compute next speed</li>
+          <li>b) move vehicles</li>
+        </ul>
+      </li>
+      <li>dkrajzew: <em>OK, ok, we could do this in one step, too, by keeping the last position on the lane. Maybe in the future…</em></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="second-try-for-vehicle-movement">Second try for vehicle movement…</h3>
+
+<h4 id="compute-next-speeds">compute next speed(s)</h4>
+
+<p><strong>step#1: examine current lane</strong></p>
+
+<p>At first, we look at the current lane and whether the vehicle is able to leave it. If not, as it is on a false lane, we may have to brake so that we stay on this lane. We then would try to leave the lane to reach a possible continuation lane afterwards. Actually, this distinction between leaving/not leaving a lane is pretty old and contains several code duplications. Probably the distinction should be removed…</p>
+
+<p>In: no information</p>
+
+<p>Out: speed bound by leader on current lane, the lane itself if not appropriate, stops on the current edge, arrivalspeed if current lane; if the lane is not appropriate, an according drive item which only allows to move to the end of the lane is generated.</p>
+
+<ul>
+  <li>we <strong>remove</strong> all information about <strong>approaching a link</strong>, will be reset in this step, see below</li>
+  <li>vBeg is the maximum speed after acceleration</li>
+  <li>if vehicle <strong>can not use its current lane</strong> to continue the ride
+    <ul>
+      <li>let the vehicle halt at the end of the lane</li>
+    </ul>
+  </li>
+</ul>
+
+<p>–&gt; vBeg depends on edge interaction</p>
+
+<p><strong>todo:</strong> check whether maxDecel/maxAccel is followed is missing</p>
+
+<ul>
+  <li>if it is his last edge
+    <ul>
+      <li>compute allowed speed in dependence of the arrivalspeed definition</li>
+    </ul>
+  </li>
+  <li>check interaction with a leading vehicle
+    <ul>
+      <li>if existing: the leader on the vehicle’s lane</li>
+      <li>otherwise: a maybe in-lapping leader on a consecutive lane (is stored in the lane)</li>
+      <li>otherwise: no leader, keep speed</li>
+    </ul>
+  </li>
+</ul>
+
+<p>–&gt; vBeg additionally depends on the leader, if existing</p>
+
+<ul>
+  <li>do not overtake right</li>
+</ul>
+
+<p>–&gt; vBeg additionally depends on the left-lane leader, if existing</p>
+
+<ul>
+  <li>check stops on current edge</li>
+</ul>
+
+<p>–&gt; vBeg additionally depends on current edge’s stop, if existing</p>
+
+<ul>
+  <li>assure vBeg&gt;=0</li>
+</ul>
+
+<p><strong>todo:</strong> why is it done this way? Should be a part of the model or - less nice - assure here that vBeg&gt;=v-maxDecel*dt</p>
+
+<ul>
+  <li>if vehicle <strong>can not use its current lane</strong> to continue the ride
+    <ul>
+      <li>save as a drive item; use vWish for speed, the vehicle will not move across the next link…</li>
+    </ul>
+  </li>
+  <li>else (vehicle can continue its drive)
+    <ul>
+      <li>jump to <em>vsafeCriticalCont</em> for evaluating how speed depends on subsequent lanes/edges</li>
+      <li>jump to <em>checkRewindLinkLanes</em> for a roll-back of possible continuation due to not having enough space on them…</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>step#2: examine subsequent lanes</strong></p>
+
+<p>We are now going through the next lanes, and compute possible influences on the vehicle’s speed.</p>
+
+<p>In: speed bound by leader on current lane, the lane itself if not appropriate, stops on the current edge, arrivalspeed if current lane</p>
+
+<p>Out: a list of speed decision points in myLFLinkLanes; each contains the link (if valid) that will be crossed, the speed if the vehicle will be later allowed to cross it and the speed if crossing is not allowed, and some additional parameter.</p>
+
+<ul>
+  <li>seen = myLane-&gt;getLength() - myState.myPos; (the place in front of the vehicle on his current lane, what we have seen so far)</li>
+  <li>we can abort if the vehicle will not enter the next lane (as we have already seen the leader, stops, and stuff); it is assumed that the following conditions must be fulfilled:
+    <ul>
+      <li><em>this!=myLane-&gt;getFirstVehicle()</em> (it is not the first vehicle; <strong>todo:</strong> why? This is pretty old, too. As the vehicle will not reach the next lane, we can ignore it!!!</li>
+      <li><em>&amp;&amp; seen - cfModel.brakeGap(myState.mySpeed) &gt; 0</em> (if the vehicle brakes, it will not enter the next lane; <strong>recheck</strong> don’t get it)</li>
+      <li><em>&amp;&amp; seen - SPEED2DIST(boundVSafe) - ACCEL2DIST(cfModel.getMaxAccel()) &gt; 0</em> (the vehicle will not enter next lane even if it accelerates; hmph. ok)</li>
+      <li>if so:
+        <ul>
+          <li>save as a drive item; use vWish for speed, the vehicle will not move across the next link…</li>
+          <li>return</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>nextLane = myLane; (currently examined lane)</li>
+  <li>maxV = cfModel.maxNextSpeed(myState.mySpeed); (<strong>recheck:</strong> we have bound the speed already!?)</li>
+  <li>dist = SPEED2DIST(maxV) + cfModel.brakeGap(maxV); (the distance that interests us; <strong>recheck:</strong> is this really the upper bound?)</li>
+  <li>vLinkPass = boundVSafe; (for the following computations, this will be the max. speed we can take if we may continue the drive)</li>
+  <li>vLinkWait = vLinkPass; (for the following computations, this will be the max. speed we can take if we have to brake)</li>
+  <li>view = 1; (how many lanes we’ve seen so far)</li>
+  <li>go along subsequent edges, following the “best lane continuation”
+    <ul>
+      <li>if we have to handle a stop on this edge
+        <ul>
+          <li>adapt speed to the stop (min between current value and stopping speed for both, vLinkPass and vLinkWait)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>speeds are bound by the stop</p>
+
+<p><strong>todo:</strong> we did this for the current lane already!!!</p>
+
+<ul>
+  <li>
+    <ul>
+      <li>if the lane does not allow to continue the drive:
+        <ul>
+          <li>as in step#1</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>todo:</strong> we did this for the current lane already!!!</p>
+
+<ul>
+  <li>
+    <ul>
+      <li>we may quit, here…</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>todo:</strong> we did not take into regard the vehicles on this lane, yet!!</p>
+
+<ul>
+  <li>
+    <ul>
+      <li>the current lane is no boundary; vLinkWait = vLinkPass (<strong>haeh</strong>, I know it’s right, but the explanation’s odd)</li>
+      <li>nextLane = next (subsequent) lane; keep whether it is an internal one, increment view</li>
+      <li>vmaxNextLane = MAX2(cfModel.ffeV(this, seen, nextLane-&gt;getMaxSpeed()), nextLane-&gt;getMaxSpeed()); (the maximum speed for the next lane; <strong>recheck:</strong> why so complicated? Don’t we just need the next lane’s allowed speed?</li>
+      <li>vsafePredNextLane = interaction with leader on subsequent lane; <strong>recheck:</strong> here a strange “assertion” is done for the case the distance to leader is &lt;0 - the vehicle’s speed is bound to the end of the lane; odd</li>
+      <li>vLinkPass = MIN3(vLinkPass, vmaxNextLane, vsafePredNextLane); (not faster than already bound, keep car-following, not faster than the next lane allows)</li>
+      <li>vLinkWait = MIN3(vLinkPass, vLinkWait, cfModel.ffeS(this, seen)); (not faster than already bound, let vehicle decelerate up to the lane’s end)</li>
+      <li>process stops</li>
+    </ul>
+  </li>
+</ul>
+
+<p><em>todo:</em> Again? Why?</p>
+
+<ul>
+  <li>
+    <ul>
+      <li>adapt speed to arrivalspeed</li>
+    </ul>
+  </li>
+</ul>
+
+<p><em>todo:</em> Recheck, have not validated, yet</p>
+
+<ul>
+  <li>
+    <ul>
+      <li>compute whether the request to pass to the next lane shall be set (setRequest)
+        <ul>
+          <li>
+            <table>
+              <tbody>
+                <tr>
+                  <td>setRequest</td>
+                  <td>= ((*link)-&gt;getState()!=MSLink::LINKSTATE_TL_RED&amp;&amp;(vLinkPass&gt;0&amp;&amp;dist-seen&gt;0)); (if not in front of red, and passing speed&gt;0 and the end of the lane is not beyond what we have seen; <strong>check:</strong> is</td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>dist-seen&gt;0 secure?</p>
+
+<ul>
+  <li>
+    <ul>
+      <li>if we are in front of yellow/green and we can brake, then use vLinkWait, set no request</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>todo:</strong> why don’t we stop in this case? The vehicle will not pass the intersection…</p>
+
+<ul>
+  <li>
+    <ul>
+      <li>once again, check for dist-seen&gt;0; <strong>todo:</strong> why? we did this already!?</li>
+    </ul>
+  </li>
+  <li>
+    <ul>
+      <li>save as a drive item; use vLinkPass and vLinkWait for speeds, and the computed setRequest</li>
+      <li>add the currently investigated lane’s length to seen</li>
+    </ul>
+  </li>
+</ul>
+
+
+  </div><a class="u-url" href="/sumo-documentation/Purgatory/Simulation_Loop/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

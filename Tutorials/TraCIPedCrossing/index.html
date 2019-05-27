@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Tutorials TraCIPedCrossing | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Tutorials TraCIPedCrossing" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Tutorials/TraCIPedCrossing/" />
+<meta property="og:url" content="/sumo-documentation/Tutorials/TraCIPedCrossing/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Tutorials/TraCIPedCrossing/","headline":"Tutorials TraCIPedCrossing","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Tutorials TraCIPedCrossing</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Tutorials/TraCIPedCrossing.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>This tutorial shows how to use the Traffic Control Interface (in short TraCI) for building a pedestrian-actuated crossing. It assumes familiarity with <a href="/Tutorials/TraCI4Traffic_Lights" title="wikilink">Tutorials/TraCI4Traffic_Lights</a> which builds a vehicle-actuated controller. Additional information in regard to pedestrian modelling can be found at <a href="/Simulation/Pedestrians" title="wikilink">Simulation/Pedestrians</a>.</p>
+
+<p>All files mentioned here can also be found in the <em>/docs/tutorial/traci_pedestrian</em> directory of your installation. The most recent version can be found in the repository at .</p>
+
+<h1 id="example-description">Example description</h1>
+
+<p>The scenario consists of a single road which is crossed by a footpath. The crossing is controlled by a traffic light and should switch when triggered by the pedestrians via push-button. To model the button-pushing behavior, it is assumed that a pedestrian which arrives at a red light activates the button if it is not yet activated. To prevent undue interference with vehicular traffic, there is a minimum green duration of 15 seconds for the vehicular green phase.</p>
+
+<p><a href="/Image:ScreenshotPedCross.png" title="wikilink">Image:ScreenshotPedCross.png</a></p>
+
+<p>To run the example you need to execute the script <em>runner.py</em> with python</p>
+
+<p><code class="highlighter-rouge"> python runner.py</code></p>
+
+<h2 id="code">Code</h2>
+
+<p>The control logic resides in the python script <em>runner.py</em>. It builds the network (via <a href="/NETCONVERT" title="wikilink">NETCONVERT</a>) generates the pedestrian routes (via <a href="/http://sumo.dlr.de/wiki/Tools/Trip#randomTrips.py" title="wikilink">randomTrips.py</a>, and interacts with the simulation to controls the traffic light. It makes use of the TraCI python API bundled with SUMO. A description of the API can be found at <a href="/TraCI/Interfacing_TraCI_from_Python" title="wikilink">TraCI/Interfacing_TraCI_from_Python</a>. For a detailed list of available functions see the <a href="http://sumo.dlr.de/daily/pydoc/traci.html">pydoc generated documentation</a>.</p>
+
+<h2 id="traffic-light-control">Traffic light control</h2>
+
+<p>The traffic light follows a fixed cycle of phases of as defined below. The definition below is taken from <a href="http://sumo.dlr.de/trac.wsgi/browser/trunk/sumo/tests/complex/tutorial/traci_pedestrian_crossing/data/pedcrossing.tll.xml">pedcrossing.tll.xml</a></p>
+
+<p><code class="highlighter-rouge"> </code><tlLogic id="C" type="static" programID="custom" offset="0">
+`    `<phase duration="100000" state="GGGGr"></phase>` `
+`    `<phase duration="4" state="yyyyr"></phase>
+`    `<phase duration="10" state="rrrrG"></phase>
+`    `<phase duration="10" state="rrrrr"></phase>` `
+` `</tlLogic></p>
+
+<p>The duration of phase 0 is set to a very large value. This is the green phase for vehicles and should be prolonged indefinitely in the absence of pedestrians. When waiting pedestrians are detected while in phase 0, the traffic light is switched into the next phase and then continues its cycle automatically. The only traffic light related TraCI functions used are <em>traci.trafficlights.getPhase()</em> and traci.trafficlights.setPhase().</p>
+
+<h2 id="person-related-traci-functions">Person related traci functions</h2>
+
+<p>To simulate the push button it must be known whether pedestrians are waiting to cross the intersection. The following TraCI functions are used:</p>
+
+<ul>
+  <li><em>traci.edge.getLastStepPersonIDs()</em> : to find pedestrians at the intersection</li>
+  <li><em>traci.person.getNextEdge()</em>: to determine whether pedestrians are about to pass the crossing or are already leaving the intersection</li>
+  <li><em>traci.person.getWaitingTime()</em>: to determine whether the pedestrian has arrived at the crossing and is forced to wait</li>
+</ul>
+
+<p>The input to <em>traci.edge.getLastStepPersonIDs()</em> as well as the output of <em>traci.person.getNextEdge()</em> references network elements which are specific to pedestrian simulation. In the script <em>runner.py</em> these are defined as</p>
+
+<p><code class="highlighter-rouge">WALKINGAREAS = [':C_w0', ':C_w1']</code>
+<code class="highlighter-rouge">CROSSINGS = [':C_c0']</code></p>
+
+<p>For a description of pedestrian network elements see <a href="/Simulation/Pedestrians" title="wikilink">Simulation/Pedestrians</a>.</p>
+
+  </div><a class="u-url" href="/sumo-documentation/Tutorials/TraCIPedCrossing/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

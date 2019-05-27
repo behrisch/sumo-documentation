@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Simulation Motorways | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Simulation Motorways" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Simulation/Motorways/" />
+<meta property="og:url" content="/sumo-documentation/Simulation/Motorways/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Simulation/Motorways/","headline":"Simulation Motorways","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Simulation Motorways</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Simulation/Motorways.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="motorway-simulation">Motorway Simulation</h1>
+
+<p>This page describes simulations of motorways in SUMO. It aims to collect best practices when modelling motorway networks and traffic.</p>
+
+<h1 id="building-a-network-for-motorway-simulation">Building a network for motorway simulation</h1>
+
+<p>Networks can be imported from any supported data source or created from scratch with <a href="/NETEDIT" title="wikilink">NETEDIT</a>. Depending on the level of detail special processing may be necessary</p>
+
+<h2 id="motorway-ramps">Motorway ramps</h2>
+
+<p>If the network does not contain detailed ramp data, <a href="/NETCONVERT" title="wikilink">NETCONVERT</a> can be <a href="/Networks/Further_Options#Guessing_On-_and_Off-Ramps" title="wikilink">configured to add them heuristically</a>. This basically adds acceleration at on-ramps and deceleration lanes at off-ramps.</p>
+
+<h3 id="reduction-in-the-number-of-lanes">Reduction in the number of lanes</h3>
+
+<p>The usual way to set up a lane-number reduction is to configure the rightmost lane as a dead-end (no connection to the next edge) and force vehicles to change-lanes to the left. In some situations it may be appropriate to declare the node where the lane number changes as a <a href="/Networks/Building_Networks_from_own_XML-descriptions#Node_types" title="wikilink">zipper node</a> instead.</p>
+
+<h3 id="combined-on-off-ramps">Combined On-Off-Ramps</h3>
+
+<p>Combined ramps are those where the acceleration lane from an on-ramp becomes the deceleration lane for a nearby off-ramp. This forces vehicles into a weaving pattern where entering and exiting vehicles need to swap lanes. This type of situation may cause deadlocks in <a href="/SUMO" title="wikilink">SUMO</a> unless preventive measures are taking. The problem is exacerbated if the acceleration/deceleration lane is short or traffic is very dense.</p>
+
+<p>To prevent deadlocks the connection pattern shown in the following image should be used. Note, that the off-ramp is targeted by the two rightmost lanes of the preceding edge and lane 0 has priority over lane 1. Vehicles exiting the motorway will attempt to move to the rightmost lane if possible but can still continue their route if that lane is occupied.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Image:onOffRamp.png</td>
+      <td>Connectivity at on-off-ramp</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="vehicle-class-specific-speed-limits">Vehicle class specific speed limits</h2>
+
+<p>In some jurisdictions, certain vehicle classes have specific speed limits (i.e. Trucks which may not drive faster than 90km/h on German motorways). This should be modelled as described here: <a href="/Networks/Building_Networks_from_own_XML-descriptions#vehicle-class_specific_speed_limits" title="wikilink">Networks/Building_Networks_from_own_XML-descriptions#vehicle-class_specific_speed_limits</a></p>
+
+<h2 id="lane-changing-prohibitions">Lane-changing prohibitions</h2>
+
+<p>Symmetrical lane-changing prohibitions between two lanes can be modelled by adding a thin lane with attribute between them.</p>
+
+<h1 id="defining-motorway-traffic">Defining Motorway Traffic</h1>
+
+<h2 id="speed-distributions">Speed Distributions</h2>
+
+<p>To achieve a realistic scenario, the desired vehicle speeds should be heterogeneous. This can be achieved by setting the <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Speed_Distributions" title="wikilink">vType-attributes speedFactor and speedDev</a>. Since a vehicle <em>speedFactor</em> defines desired speed relative to the speed limit of each edge, <a href="/#Vehicle_class_specific_speed_limits" title="wikilink">#Vehicle_class_specific_speed_limits</a> should be taken into account.</p>
+
+<h2 id="high-flows">High Flows</h2>
+
+<p>Some tips on how to achieve high flows are described <a href="/FAQ#How_do_I_get_high_flows.2Fvehicle_densities.3F" title="wikilink">in the FAQ</a></p>
+
+  </div><a class="u-url" href="/sumo-documentation/Simulation/Motorways/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

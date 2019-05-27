@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>OD2TRIPS | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="OD2TRIPS" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/OD2TRIPS/" />
+<meta property="og:url" content="/sumo-documentation/OD2TRIPS/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/OD2TRIPS/","headline":"OD2TRIPS","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">OD2TRIPS</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/OD2TRIPS.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="from-30000-feet">From 30.000 feet</h1>
+
+<p><strong>OD2TRIPS</strong> imports O/D-matrices and splits them into single vehicle trips.</p>
+
+<p><strong>Purpose:</strong> Conversion of O/D-matrices to single vehicle trips</p>
+
+<p><strong>System:</strong> portable (Linux/Windows is tested); runs on command line</p>
+
+<p><strong>Input (mandatory):</strong>
+A) O/D-Matrix</p>
+
+<p>B) a set of districts</p>
+
+<p><strong>Output:</strong> A list of vehicle trip definitions</p>
+
+<p><strong>Programming Language:</strong> C++</p>
+
+<h1 id="usage-description">Usage Description</h1>
+
+<p>OD2TRIPS maps traffic that is defined via origin and destination zones onto the edges of a network. For details, see <a href="/Demand/Importing_O/D_Matrices" title="wikilink">Demand/Importing_O/D_Matrices</a>.</p>
+
+<h2 id="options">Options</h2>
+
+<p>You may use a XML schema definition file for setting up a OD2TRIPS configuration: <a href="http://sumo.dlr.de/xsd/od2tripsConfiguration.xsd">od2tripsConfiguration.xsd</a>.</p>
+
+<h3 id="configuration">Configuration</h3>
+
+<p>All applications of the <strong>SUMO</strong>-suite handle configuration options the same way. These options are discussed at <a href="/Basics/Using_the_Command_Line_Applications#Configuration_Files" title="wikilink">Basics/Using the Command Line Applications#Configuration Files</a>.</p>
+
+<table>
+<thead>
+<tr class="header">
+<th><p>Option</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>Loads the named config on startup</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>Saves current configuration into FILE</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>Saves a configuration template (empty) into FILE</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>Saves the configuration schema into FILE</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>Adds comments to saved template, configuration, or schema; <em>default: <strong>false</strong></em></p></td>
+</tr>
+<tr class="even">
+</tr>
+</tbody>
+</table>
+
+<h3 id="input">Input</h3>
+
+<table>
+<thead>
+<tr class="header">
+<th><p>Option</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>Loads TAZ (districts; also from networks) from FILE(s)</p></td>
+</tr>
+<tr class="even">
+<td>
+<p><br />
+</p></td>
+<td><p>Loads O/D-files from FILE(s)</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>Loads O/D-matrix in Amitran format from FILE(s)</p></td>
+</tr>
+<tr class="even">
+</tr>
+</tbody>
+</table>
+
+<h3 id="output">Output</h3>
+
+<table>
+<thead>
+<tr class="header">
+<th><p>Option</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td><p>Prefix which is applied to all output files. The special string 'TIME' is replaced by the current time.</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>Defines the number of digits after the comma for floating point output; <em>default: <strong>2</strong></em></p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>Defines the number of digits after the comma for lon,lat output; <em>default: <strong>6</strong></em></p></td>
+</tr>
+<tr class="even">
+<td>
+<p><br />
+</p></td>
+<td><p>Writes trip definitions into FILE</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>Writes flow definitions into FILE</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>Writes probabilistic flow instead of evenly spaced flow; <em>default: <strong>false</strong></em></p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>Writes pedestrians instead of vehicles; <em>default: <strong>false</strong></em></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>Writes persontrips instead of vehicles; <em>default: <strong>false</strong></em></p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>Does not save vtype information; <em>default: <strong>false</strong></em></p></td>
+</tr>
+<tr class="even">
+</tr>
+</tbody>
+</table>
+
+<h3 id="time">Time</h3>
+
+<table>
+<thead>
+<tr class="header">
+<th><p>Option</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>Defines the begin time; Previous trips will be discarded; <em>default: <strong>0</strong></em></p></td>
+</tr>
+<tr class="even">
+<td>
+<p><br />
+</p></td>
+<td><p>Defines the end time; Later trips will be discarded; Defaults to the maximum time that SUMO can represent; <em>default: <strong>9223372036854774</strong></em></p></td>
+</tr>
+<tr class="odd">
+</tr>
+</tbody>
+</table>
+
+<h3 id="processing">Processing</h3>
+
+<table>
+<thead>
+<tr class="header">
+<th><p>Option</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>Scales the loaded flows by FLOAT; <em>default: <strong>1</strong></em></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>Spreads trips uniformly over each time period; <em>default: <strong>false</strong></em></p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>Always choose source and sink edge which are not identical; <em>default: <strong>false</strong></em></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>Defines the name of the vehicle type to use</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>Defines the prefix for vehicle names</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>Uses STR as a timeline definition</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>Uses STR as a 24h-timeline definition; <em>default: <strong>false</strong></em></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>Continue on broken input; <em>default: <strong>false</strong></em></p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>Disable console output of current time step; <em>default: <strong>false</strong></em></p></td>
+</tr>
+<tr class="even">
+</tr>
+</tbody>
+</table>
+
+<h3 id="defaults">Defaults</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td>Assigns a default depart lane; <em>default: <strong>free</strong></em></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Assigns a default depart position</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Assigns a default depart speed; <em>default: <strong>max</strong></em></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Assigns a default arrival lane</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Assigns a default arrival position</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Assigns a default arrival speed</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="report">Report</h3>
+
+<p>All applications of the <strong>SUMO</strong>-suite handle most of the reporting options the same way. These options are discussed at <a href="/Basics/Using_the_Command_Line_Applications#Reporting_Options" title="wikilink">Basics/Using the Command Line Applications#Reporting Options</a>.</p>
+
+<table>
+<thead>
+<tr class="header">
+<th><p>Option</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>Switches to verbose output; <em>default: <strong>false</strong></em></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>Prints option values before processing; <em>default: <strong>false</strong></em></p></td>
+</tr>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>Prints this screen; <em>default: <strong>false</strong></em></p></td>
+</tr>
+<tr class="even">
+<td>
+<p><br />
+</p></td>
+<td><p>Prints the current version; <em>default: <strong>false</strong></em></p></td>
+</tr>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>Set schema validation scheme of XML inputs (“never”, “auto” or “always”); <em>default: <strong>auto</strong></em></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>Set schema validation scheme of SUMO network inputs (“never”, “auto” or “always”); <em>default: <strong>never</strong></em></p></td>
+</tr>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>Disables output of warnings; <em>default: <strong>false</strong></em></p></td>
+</tr>
+<tr class="even">
+<td>
+<p><br />
+</p></td>
+<td><p>Writes all messages to FILE (implies verbose)</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>Writes all non-error messages to FILE (implies verbose)</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>Writes all warnings and errors to FILE</p></td>
+</tr>
+<tr class="odd">
+</tr>
+</tbody>
+</table>
+
+<h3 id="random-number">Random Number</h3>
+
+<p>All applications of the <strong>SUMO</strong>-suite handle randomisation options the same way. These options are discussed at <a href="/Basics/Using_the_Command_Line_Applications#Random_Number_Options" title="wikilink">Basics/Using the Command Line Applications#Random Number Options</a>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td>Initialises the random number generator with the current system time; <em>default: <strong>false</strong></em></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Initialises the random number generator with the given value; <em>default: <strong>23423</strong></em></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="notes">Notes</h1>
+
+<p>The option –vtype only works when “–od-matrix-files” is used. For “Amitran” format, this is given by the “id” property of “actorConfig”.</p>
+
+<hr />
+
+<p><a href="/Category:ApplicationDescription" title="wikilink">Category:ApplicationDescription</a></p>
+
+  </div><a class="u-url" href="/sumo-documentation/OD2TRIPS/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

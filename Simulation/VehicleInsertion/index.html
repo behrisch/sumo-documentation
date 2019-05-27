@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Simulation VehicleInsertion | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Simulation VehicleInsertion" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Simulation/VehicleInsertion/" />
+<meta property="og:url" content="/sumo-documentation/Simulation/VehicleInsertion/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Simulation/VehicleInsertion/","headline":"Simulation VehicleInsertion","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Simulation VehicleInsertion</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Simulation/VehicleInsertion.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><strong>FORCETOC</strong></p>
+
+<h1 id="loading">Loading</h1>
+
+<p>Vehicles are either loaded <a href="/SUMO_User_Documentation#Demand_Modelling" title="wikilink">from XML inputs</a> or <a href="/TraCI" title="wikilink">added at runtime via TraCI</a>. When loading from XML, not all vehicles are loaded at once. Instead, vehicles are loaded in chunks, the size of which can be configured with the option . This is done to conserve memory when performing long simulations.</p>
+
+<p>Once vehicles are loaded they can be accessed and manipulated via TraCI (to some degree). Using the functions ‘move to’ or ‘move to XY’ they can even be forcefully inserted into the network.</p>
+
+<h1 id="insertion-departure">Insertion (Departure)</h1>
+
+<p>In order for a vehicle to be inserted into the road network, some necessary constraints must be fulfilled:</p>
+
+<ul>
+  <li>The vehicle (from its rear to its front position + <em>minGap</em>) must not intersect with other vehicles (including their <em>minGap</em></li>
+  <li>The vehicle must be at a safe distance to any leader vehicles according to its <em>carFollowModel</em></li>
+  <li>Any follower vehicles must be at a safe distance according to their <em>carFollowModel</em></li>
+  <li>The vehicle must be able to brake for any upcoming non-prioritized intersections along its route</li>
+  <li>The vehicle must be able to brake for any scheduled stops along its route</li>
+</ul>
+
+<p>If a vehicle cannot be inserted due to any of the above reasons it’s insertion is delayed (see below). This <em>departDelay</em> is recorded in the <a href="/Simulation/Output/TripInfo" title="wikilink">tripinfo-output</a> and can also be inspected in <a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a> via the vehicle parameter dialog.</p>
+
+<p>The precise nature of insertion in regard to position, speed and depart time depend on <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicles_and_Routes" title="wikilink">many parameters</a> as well as on the current state of the road network.</p>
+
+<h2 id="delayed-departure">Delayed Departure</h2>
+
+<p>If there is insufficient space for inserting the vehicle at it’s designated departure time, that vehicle is put into an insertion queue and insertion is repeatedly attempted in subsequent simulation steps. If the option is used, vehicles are discarded if they could not be inserted after the specified in seconds.</p>
+
+<p>There are two methods for inserting vehicles into the simulation:</p>
+
+<ol>
+  <li>try to insert every vehicle in every simulation step</li>
+  <li>for every edge with vehicles to insert, abort trying to insert vehicles after one of the vehicles could not be inserted</li>
+</ol>
+
+<p>In an uncongested networks these methods behave similar but in a congested network with lots of vehicles which cannot be inserted variant 2) is much faster. In older version of sumo 1) was the default and one could switch to 2) using the option Since version 0.18.0, variant 2) is the default and one may switch to 1) using the option .</p>
+
+<h2 id="investigating-insertion-delay">Investigating insertion delay</h2>
+
+<p>Using <a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a> several options exist for showing insertion delay:</p>
+
+<ul>
+  <li>Color vehicles <em>by insertion delay</em></li>
+  <li>Color Streets <em>by insertion backlog</em></li>
+  <li>Opening Vehicle statistics lists the number of <em>insertion-backloged vehicles</em> for the whole network.</li>
+</ul>
+
+<h2 id="global-options-that-affect-departure">Global options that affect Departure</h2>
+
+<p>-
+    randomly delays departure time for all vehicles</p>
+
+<p>-
+    limits the total amount of vehicles that may exist in the networ. Setting this may cause delayed insertion</p>
+
+<p>-
+    removes vehicles from the insertion queue after a set amount of time</p>
+
+<p>-
+    tries to insert all vehicles that are insertion-delayed on each edge. By default, insertion on an edge stops after the first failure in each time step</p>
+
+<h1 id="miscellaneous">Miscellaneous</h1>
+
+<ul>
+  <li>For tips on how to achieve high insertion flows see <a href="/FAQ#How_do_I_get_high_flows.2Fvehicle_densities.3F" title="wikilink">the FAQ</a></li>
+  <li>Vehicles can also be inserted through the use of <a href="/Simulation/Calibrator" title="wikilink">calibrators</a></li>
+  <li>Vehicle rerouting may be triggered even before departure <a href="/Demand/Automatic_Routing" title="wikilink">when using device.rerouting</a></li>
+  <li>The departure edge can be determined at run-time when using <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Traffic_assignement_zones_.28TAZ.29" title="wikilink">Traffic Assignment Zones (TAZ)</a></li>
+</ul>
+
+  </div><a class="u-url" href="/sumo-documentation/Simulation/VehicleInsertion/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

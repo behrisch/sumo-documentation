@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Tutorials Output Parsing | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Tutorials Output Parsing" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Tutorials/Output_Parsing/" />
+<meta property="og:url" content="/sumo-documentation/Tutorials/Output_Parsing/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Tutorials/Output_Parsing/","headline":"Tutorials Output Parsing","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Tutorials Output Parsing</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Tutorials/Output_Parsing.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>In this tutorial you will learn how to</p>
+
+<ul>
+  <li>set up an abstract network using edge types,</li>
+  <li>create repeatedly identical vehicles using flows,</li>
+  <li>reroute vehicles dynamically such that they drive endlessly,</li>
+  <li>analyze output files using the <a href="/Tools/Sumolib" title="wikilink">sumolib python library</a>,</li>
+</ul>
+
+<p>and as a bonus how to</p>
+
+<ul>
+  <li>use socket output for online evaluation and saving disk space.</li>
+</ul>
+
+<p>Despite the keywords online, socket, and python API, this tutorial does <em>not</em> cover any TraCI related content.</p>
+
+<h2 id="network-setup">Network setup</h2>
+
+<p>The goal is to build a simple network where the vehicles drive in circles so we setup four nodes for the corners as follows (circular.nod.xml):</p>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes version="0.13" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.sf.net/xsd/nodes_file.xsd">
+`    `<node id="bottom-left" x="0" y="0" />
+`    `<node id="bottom-right" x="1250" y="0" />
+`    `<node id="top-right" x="1250" y="1250" />
+`    `<node id="top-left" x="0" y="1250" />
+</nodes>
+
+<p>All edges connecting the nodes should have the same number of lanes and the same maximum speed. In order to save on typing we define the edge type in a separate file (circular.typ.xml):</p>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.sf.net/xsd/types_file.xsd">
+`    `<type id="edgeType" numLanes="2" speed="36.1" />
+</types>
+
+<p>Finally we define the edges connecting the nodes (circular.edg.xml):</p>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<edges version="0.13" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.sf.net/xsd/edges_file.xsd">
+`    `<edge from="bottom-left" id="bottom" to="bottom-right" type="edgeType" />
+`    `<edge from="bottom-right" id="right" to="top-right" type="edgeType" />
+`    `<edge from="top-right" id="top" to="top-left" type="edgeType" />
+`    `<edge from="top-left" id="left" to="bottom-left" type="edgeType" />
+</edges>
+
+<p>The netconvert call is very straightforward</p>
+
+<p><code class="highlighter-rouge">netconvert -n circular.nod.xml -t circular.typ.xml -e circular.nod.xml -o circular.net.xml</code></p>
+
+<p>In order to simplify the resulting net (and get the highest speed out of the simulation) we omit turnarounds and simplify the movement over junctions by removing the junction internal lanes. The complete netconvert configuration file (circular.netccfg):</p>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.sf.net/xsd/netconvertConfiguration.xsd">
+`   `<input />
+`       `<node-files value="circular.nod.xml" />
+`       `<edge-files value="circular.edg.xml" />
+`       `<type-files value="circular.typ.xml" />
+`   `&lt;/input&gt;
+`   `
+
+<output>
+`       `<output-file value="circular.net.xml" />
+`   `
+
+</output>
+`   `<processing>
+`       `<no-internal-links value="true" />
+`       `<no-turnarounds value="true" />
+`   `</processing>
+</configuration>
+
+<p>Try</p>
+
+<p><code class="highlighter-rouge">sumo-gui -n circular.net.xml</code></p>
+
+<p>for a look at the final network.</p>
+
+<h2 id="route-and-flow-setup">Route and flow setup</h2>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.sf.net/xsd/routes_file.xsd">
+`    `<vType accel="1.5" decel="4.5" id="car" length="5" maxSpeed="36.1" />
+`    `<vType accel="0.4" decel="4.5" id="truck" length="12" maxSpeed="22.2" />
+`    `<route id="routeRight" edges="bottom right top left" />
+`    `<route id="routeLeft" edges="top left bottom right" />
+`    `<route id="routeTop" edges="left bottom right top" />
+`    `<route id="routeBottom" edges="bottom right top left" />
+`    `<flow begin="0" departPos="free" id="carRight" period="1" number="70" route="routeRight" type="car" />
+`    `<flow begin="0" departPos="free" id="carTop" period="1" number="70" route="routeTop" type="car" />
+`    `<flow begin="0" departPos="free" id="carLeft" period="1" number="70" route="routeLeft" type="car" />
+`    `<flow begin="0" departPos="free" id="carBottom" period="1" number="70" route="routeBottom" type="car" />
+`    `<flow begin="0" departPos="free" id="truckRight" period="1" number="30" route="routeRight" type="truck" />
+`    `<flow begin="0" departPos="free" id="truckTop" period="1" number="30" route="routeTop" type="truck" />
+`    `<flow begin="0" departPos="free" id="truckLeft" period="1" number="30" route="routeLeft" type="truck" />
+`    `<flow begin="0" departPos="free" id="truckBottom" period="1" number="30" route="routeBottom" type="truck" />
+</routes>
+
+<h2 id="rerouters">Rerouters</h2>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.sf.net/xsd/additional_file.xsd">
+`    `<route id="routeRight" edges="bottom right top left" />
+`    `<route id="routeLeft" edges="top left bottom right" />
+`    `<route id="routeTop" edges="left bottom right top" />
+`    `<route id="routeBottom" edges="bottom right top left" />
+`    `<rerouter id="rerouterBottom" edges="bottom">
+`        `<interval begin="0" end="100000">
+`            `<routeProbReroute id="routeRight" />
+`        `</interval>
+`    `</rerouter>
+`    `<rerouter id="rerouterTop" edges="top">
+`        `<interval begin="0" end="100000">
+`            `<routeProbReroute id="routeLeft" />
+`        `</interval>
+`    `</rerouter>
+</additional>
+
+<h2 id="putting-it-all-together">Putting it all together</h2>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.sf.net/xsd/sumoConfiguration.xsd">
+`    `<input />
+`        `<net-file value="circular.net.xml" />
+`        `<route-files value="circular.rou.xml" />
+`        `<additional-files value="circular.add.xml" />
+`    `&lt;/input&gt;
+`    `
+
+<output>
+`        `<netstate-dump value="dump.xml" />
+`    `
+
+</output>
+`    `<time>
+`        `<begin value="0" />
+`        `<end value="10000" />
+`    `</time>
+</configuration>
+
+<h2 id="analyzing-the-output">Analyzing the output</h2>
+
+<h2 id="bonus-socket-communication">Bonus: Socket communication</h2>
+
+  </div><a class="u-url" href="/sumo-documentation/Tutorials/Output_Parsing/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

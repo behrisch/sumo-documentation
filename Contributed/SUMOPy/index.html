@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Contributed SUMOPy | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Contributed SUMOPy" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Contributed/SUMOPy/" />
+<meta property="og:url" content="/sumo-documentation/Contributed/SUMOPy/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Contributed/SUMOPy/","headline":"Contributed SUMOPy","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Contributed SUMOPy</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Contributed/SUMOPy.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>This document describes the capabilities and basic usage of the software SUMOPy. SUMOPy is intended to expand the user-base of the traffic micro-simulator SUMO by providing a user-friendly, yet flexible simulation suite. The original publication related to SUMOPy can be found at the <a href="http://campus.unibo.it/200538/1/Research-A-Choudhry-657079-.pdf">University of Bologna</a> and in the <a href="http://sumo.dlr.de/2013/SUMO2013_15-17May%202013_Berlin-Adlershof.pdf">proceedings of the SUMO2013</a>.</p>
+
+<p>A further scope of SUMOPy is to manage the huge amount of data necessary to run complex multi-modal simulations. This includes different demand generation methods such as support for OD matrices, trurnflows and a syntetic (or virtual population. Also different services such as Personal Rapid Transit (PRT) or self-driving taxis are supported.</p>
+
+<p>Essentially, SUMOPy consists of a GUI interface, network editor as well as a simple to use scripting language which facilitates the use of SUMO.</p>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>SUMO rapidly developed into a flexible and powerful open-source micro-simulator for multi-modal urban traffic networks . The features and the number of tools provided are constantly increasing, making simulations ever more realistic. However, the different functionalities consist at the present state of a large number of binaries and scripts that act upon a large number of files, containing information on the network, the vehicles, districts, trips routes, configurations, and many other parameters. Scripts (mostly written in Python), binaries and data files exist in a dispersed manner. In practice, a master script is necessary to hold all processes and data together in order run a simulation of a specific scenario in a controlled way. This approach is extremely flexible, but it can become very time consuming and error prone to find the various tools, combine their input and output and generate the various configuration files. Furthermore, it reduces the user-base of SUMO to those familiar with scripting and command line interfaces. Instead, SUMO has the potential to become a multi-disciplinary simulation platform if it becomes more accessible to disciplines and competences.Scripts (mostly written in Python), binaries and data files exist in a dispersed manner.</p>
+
+<p>This problem has been recognized and different graphical user interfaces have been developed. The <em>traffic modeller</em> (also named <em>traffic generator</em>) is a tool written in Java which helps to manage files, to configure simulations and to evaluate and visualize results.</p>
+
+<p><em>SUMOPy</em> is written entirely in the object-oriented script language <em>Python</em>, it uses <em>wxWindows</em> with <em>PyOPENGL</em> as GUI interface and <em>NumPy</em> for fast numerical array-type calculations. It is similar to the <em>traffic generator</em> in that it simplifies the use of SUMO through a GUI. But SUMOPy is more than just a GUI, it is a <em>suite</em> that allows to access SUMO tools and binaries in a simple unified fashion. The distinguishing features are:</p>
+
+<ul>
+  <li>SUMOPy has Python instances that can make direct use of tools already available as Python code.</li>
+  <li>SUMOPy has a Python command line interface that allows direct and interactive manipulation of SUMOPy instances.</li>
+  <li>SUMOPy provides a library that greatly simplifies the scripting.</li>
+</ul>
+
+<h1 id="installation">Installation</h1>
+
+<p>SUMOPy is a directory with python scripts. It is sufficient to unzip the latest version and copy it in a directory of your choice. Since SUMO-0.28, SUMOPy is inside the SUMO distribution and located in <code class="highlighter-rouge">SUMOHOME/tools/contributed</code>.</p>
+
+<p>However, SUMOPy makes extensive use of Python packages which need to be installed before. The <em>required</em> packages to be installed are:</p>
+
+<ol>
+  <li>Python 2.7</li>
+  <li>numpy-1.10 or newer</li>
+  <li>wxPython2.8 or wxPython2.9 (wxPython3.x is currently not properly working with PyOpenGL-3.0.x)</li>
+  <li>PyOpenGL-3.0.x</li>
+</ol>
+
+<p>The following packages are optional:</p>
+
+<ol>
+  <li>matplotlib-1.4 or newer, for high quality graphical output in different file formats.</li>
+  <li>PIL-1.1.7 or newer and basemap-1.0 (or pyproj) for downloading backround maps from mapservers.</li>
+</ol>
+
+<p>The exact choice of package-versions and installation methods depend on the operating system. Below we give short recommendations regarding the choice of packages for different operating systems. In general, the 32-bit version is preferred as there are more pre-compiled packages available, but this may change over time.</p>
+
+<ul>
+  <li><a href="/Contributed/SUMOPy/Installation/Windows" title="wikilink">Installation requirements for Windows</a></li>
+  <li><a href="/Contributed/SUMOPy/Installation/Linux" title="wikilink">Installation requirements for Linux</a></li>
+</ul>
+
+<h1 id="the-graphical-user-interface">The graphical user interface</h1>
+
+<p>The graphical user interface of SUMOPY cane be launched by running the script sumopy_gui.py, which is located in SUMOPy’s main directory. The following documents describe the basic functioning of the GUI.</p>
+
+<ul>
+  <li><a href="/Contributed/SUMOPy/GUI/Getting_Started" title="wikilink">Getting started!</a></li>
+  <li><a href="/Contributed/SUMOPy/GUI/Demand_Modelling" title="wikilink">Demand modelling with GUI</a>
+    <ul>
+      <li><a href="/Contributed/SUMOPy/Demand/Zone_To_Zone" title="wikilink">Zone to zone demand flows</a></li>
+      <li><a href="/Contributed/SUMOPy/Demand/Turn_Flows" title="wikilink">Turn flows</a></li>
+      <li><a href="/Contributed/SUMOPy/Demand/Virtual_Population" title="wikilink">Virtual Population</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="simulation-processes">Simulation processes</h1>
+
+<p>This section addresses the different simulation methods.</p>
+
+<ul>
+  <li><a href="/Contributed/SUMOPy/Simulation/Sublanes" title="wikilink">Simulating Sublanes</a></li>
+</ul>
+
+<h1 id="tutorials">Tutorials</h1>
+
+<p><a href="/Contributed/SUMOPy/Tutorials/Open_and_Simulate" title="wikilink">Opening and simulating a scenario</a></p>
+
+<references />
+
+
+  </div><a class="u-url" href="/sumo-documentation/Contributed/SUMOPy/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Purgatory JoiningNetworksWithDemands | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Purgatory JoiningNetworksWithDemands" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Purgatory/JoiningNetworksWithDemands/" />
+<meta property="og:url" content="/sumo-documentation/Purgatory/JoiningNetworksWithDemands/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Purgatory/JoiningNetworksWithDemands/","headline":"Purgatory JoiningNetworksWithDemands","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Purgatory JoiningNetworksWithDemands</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Purgatory/JoiningNetworksWithDemands.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="step1-build-joined-network">Step1: Build joined Network</h2>
+
+<h3 id="step11-make-network-parts-unique">Step1.1: Make Network Parts unique</h3>
+
+<p>Both networks must have distinct ids. The most straight forward approach seemed to be to use a prefix. The edges and nodes of both networks were changed by adding an “a” and a “b”, respectively. This was done using a text editor. Because edges reference nodes and connections, all three files - edges, nodes, and connections - must have been changed. The following replacements were done:</p>
+
+<ul>
+  <li>in nodes:
+    <ul>
+      <li>id=” to id=”a</li>
+    </ul>
+  </li>
+  <li>in edges:
+    <ul>
+      <li>id=” to id=”a
+        <ul>
+          <li>watch out - replacing the id also replaces lane ids; this must be reset afterwards</li>
+        </ul>
+      </li>
+      <li>from=” to from=”a</li>
+      <li>to=” to to=”a</li>
+    </ul>
+  </li>
+  <li>in connections:
+    <ul>
+      <li>from=” to from=”a</li>
+      <li>to=” to to=”a</li>
+      <li>additionally, the prohibitions were searched and changed</li>
+      <li>watch out - some to-definitions are empty (dead ends) must be reset to these afterwards</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="step12-find-and-remove-overlapping-parts">Step1.2: Find and remove overlapping Parts</h3>
+
+<p>For the used networks, their overlapping parts, edges, and nodes were determined. For each combination, it was decided which shall be kept - the other one will be not included in the final network. I decided to set up a map for edges as following:</p>
+
+<p><code class="highlighter-rouge">a86-&gt;b2[0]</code>
+<code class="highlighter-rouge">a85-&gt;b1[1]</code>
+<code class="highlighter-rouge">b44-&gt;a67</code>
+<code class="highlighter-rouge">b81-&gt;a11</code>
+<code class="highlighter-rouge">b43-&gt;a68</code>
+<code class="highlighter-rouge">b40[0]-&gt;a72[0],a72[1]</code>
+<code class="highlighter-rouge">b41-&gt;a17</code>
+<code class="highlighter-rouge">b42-&gt;a71</code>
+<code class="highlighter-rouge">b40[1]-&gt;a69</code>
+<code class="highlighter-rouge">b48-&gt;a181,a18</code>
+<code class="highlighter-rouge">b54-&gt;a224[1]</code>
+<code class="highlighter-rouge">a136-&gt;b49[0]</code>
+<code class="highlighter-rouge">a135-&gt;b50[1]a</code>
+<code class="highlighter-rouge">a179-&gt;b47</code>
+<code class="highlighter-rouge">a180-&gt;b46</code>
+<code class="highlighter-rouge">a84-&gt;b38[0],b38[0]a</code>
+<code class="highlighter-rouge">a12-&gt;b45</code>
+<code class="highlighter-rouge">a83-&gt;b39[1][1][1]</code>
+<code class="highlighter-rouge">a137-&gt;b36</code>
+<code class="highlighter-rouge">a138-&gt;b37</code>
+<code class="highlighter-rouge">a121-&gt;b35[1][1][1][1]</code>
+<code class="highlighter-rouge">a114-&gt;b12</code></p>
+
+<p>The meaning is that the edge in front of the “-&gt;” will be later replaced by the one after the “-&gt;”. One may note that in some places, two edges were found, where in the other network, only one existed.</p>
+
+<p>The edges in front of the “-&gt;” were removed from the according edges file. They of course must also be replaced within the connections file. Due to the relatively large effort, this was done using a tiny script. “mapEdgesInConnections.py” obtains the map-file (assuming it is named “edgemap.txt”, and a connections file and simply replaces all occurrences of the edges’ to replace ids by the ids of the corresponding edges to keep. The connections file must be given as first parameter, as output a file with the given file name with appended “.mod.xml” is generated.</p>
+
+<p>Corresponding junctions were also determined and written as above. The last entry is in brackets, because it was assumed to be not participating in the later following re-projection of one of the networks.</p>
+
+<p><code class="highlighter-rouge">b1-&gt;a9</code>
+<code class="highlighter-rouge">b36-&gt;a15</code>
+<code class="highlighter-rouge">a81-&gt;b39</code>
+<code class="highlighter-rouge">(a57-&gt;b32)</code></p>
+
+<p>Of course, the from/to information within the edges file must be mapped, too. Due to the small number of replacements to be done, this was done using a text editor. Also, the information about “controlled inner edges” was patched.</p>
+
+<h3 id="step13-determine-and-apply-the-network-offsets">Step1.3: Determine and apply the Network Offsets</h3>
+
+<p>As both networks have their origin at around (0,0), we have to apply an offset to one of the networks, so that they are not over each other. We use the previously built road networks and the positions of the overlapping nodes found in step 1.2.</p>
+
+<p><code class="highlighter-rouge">a9/b1: 583.69,1061.56  /  929.79,278.76   --&gt; -346.1,782.8</code>
+<code class="highlighter-rouge">a15/b36: 798.63,985.75  /  1161.21,244.44 --&gt; -362.58,741.31</code>
+<code class="highlighter-rouge">a81/b39: 852.00,1127.00  / 1199.56,342.43 --&gt; -347.56,784.57</code></p>
+
+<p>As may be noted, the a15/b36 combination diverges from the others. A visual inspection proves that the nodes’ positions differ from their actual shapes. That’s why the middle node is removed from the computation. The mean offset (a-b) is then:</p>
+
+<p><code class="highlighter-rouge">-346.83,783.685</code></p>
+
+<p>This offset must be applied to one network’s node positions and edge shapes. Due to large number, again two scripts were prepared, xmlnodes_applyOffset.py and xmledges_applyOffset.py.</p>
+
+<h3 id="step14-join-networks">Step1.4: Join Networks</h3>
+
+<p>Simply call netconvert using all generated files.</p>
+
+<h2 id="step2-join-routes">Step2: Join Routes</h2>
+
+<hr />
+
+<p>583,69-929,79=-346,1 1061,56-278,76=782,8 798,63-1161,21=-362,58 985,75-244,44=741,31 852,00-1199,56=-347,56 1127,00-342,43=784,57</p>
+
+<p>(-346,1+-347,56)/2=-346,83 (782,8+784,57)/2=783,685</p>
+
+  </div><a class="u-url" href="/sumo-documentation/Purgatory/JoiningNetworksWithDemands/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

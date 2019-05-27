@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Tools Sumolib | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Tools Sumolib" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Tools/Sumolib/" />
+<meta property="og:url" content="/sumo-documentation/Tools/Sumolib/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Tools/Sumolib/","headline":"Tools Sumolib","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Tools Sumolib</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Tools/Sumolib.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><strong>sumolib</strong> is a set of python modules for working with sumo networks, simulation output and other simulation artifacts. For a detailed list of available functions see the <a href="http://sumo.dlr.de/daily/pydoc/sumolib.html">pydoc generated documentation</a>. You can <a href="https://github.com/DLR-TS/sumo/tree/master/tools/sumolib">browse the code here</a>.</p>
+
+<p><strong>TOC</strong></p>
+
+<h1 id="importing-sumolib-in-a-script">importing <strong>sumolib</strong> in a script</h1>
+
+<p>To use the library, the /tools directory must be on the python load path. This is typically done with a stanza like this:</p>
+
+<p><code class="highlighter-rouge"> import os, sys</code>
+<code class="highlighter-rouge"> if 'SUMO_HOME' in os.environ:</code>
+<code class="highlighter-rouge">     tools = os.path.join(os.environ['SUMO_HOME'], 'tools')</code>
+<code class="highlighter-rouge">     sys.path.append(tools)</code>
+<code class="highlighter-rouge"> else:   </code>
+<code class="highlighter-rouge">     sys.exit(</code>“<code class="highlighter-rouge">please</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">declare</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">environment</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">variable</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">'SUMO_HOME'</code>”<code class="highlighter-rouge">)</code></p>
+
+<h1 id="usage-examples">usage examples</h1>
+
+<h2 id="import-a-network-and-retrieve-nodes-and-edges">import a network and retrieve nodes and edges</h2>
+
+<p><code class="highlighter-rouge"> # import the library</code>
+<code class="highlighter-rouge"> import sumolib</code>
+<code class="highlighter-rouge"> # parse the net</code>
+<code class="highlighter-rouge"> net = sumolib.net.readNet('myNet.net.xml')</code></p>
+
+<p><code class="highlighter-rouge"> # retrieve the coordinate of a node based on its ID</code>
+<code class="highlighter-rouge"> print net.getNode('myNodeID').getCoord()</code></p>
+
+<p><code class="highlighter-rouge"> # retrieve the successor node ID of an edge</code>
+<code class="highlighter-rouge"> nextNodeID = net.getEdge('myEdgeID').getToNode().getID()</code></p>
+
+<h2 id="compute-the-average-and-median-edge-length-in-a-plain-xml-edge-file">compute the average and median edge length in a <em>plain xml</em> edge file</h2>
+
+<p><code class="highlighter-rouge"> # compute the average length</code>
+<code class="highlighter-rouge"> lengthSum = 0.0</code>
+<code class="highlighter-rouge"> edgeCount = 0</code>
+<code class="highlighter-rouge"> for edge in sumolib.output.parse('myNet.edg.xml', ['edge']):</code>
+<code class="highlighter-rouge">     lengthSum += float(edge.length)</code>
+<code class="highlighter-rouge">     edgeCount += 1</code>
+<code class="highlighter-rouge"> avgLength = lengthSum / edgeCount</code></p>
+
+<p><code class="highlighter-rouge"> # compute the median length using the </code><a href="http://sumo-sim.org/daily/pydoc/sumolib.miscutils.html#Statistics"><code class="highlighter-rouge">Statistics</code></a><code class="highlighter-rouge"> module</code>
+<code class="highlighter-rouge"> edgeStats = sumolib.miscutils.Statistics(</code>“<code class="highlighter-rouge">edge</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">lengths</code>”<code class="highlighter-rouge">)</code>
+<code class="highlighter-rouge"> for edge in sumolib.output.parse('myNet.edg.xml', ['edge']):</code>
+<code class="highlighter-rouge">     edgeStats.add(float(edge.length))</code>
+<code class="highlighter-rouge"> avgLength = edgeStats.median()</code></p>
+
+<h2 id="locate-nearby-edges-based-on-the-geo-coordinate">locate nearby edges based on the geo-coordinate</h2>
+
+<p><code class="highlighter-rouge"> # (requires module </code><a href="https://code.google.com/p/pyproj/"><code class="highlighter-rouge">pyproj</code></a><code class="highlighter-rouge"> to be installed)</code>
+<code class="highlighter-rouge"> # for larger networks </code><a href="https://pypi.org/project/Rtree/"><code class="highlighter-rouge">rtree</code></a><code class="highlighter-rouge"> is also strongly recommended</code>
+<code class="highlighter-rouge"> radius = 0.1</code>
+<code class="highlighter-rouge"> x, y = net.convertLonLatXY(lon, lat)</code>
+<code class="highlighter-rouge"> edges = net.getNeighboringEdges(x, y, radius)</code>
+<code class="highlighter-rouge"> # pick the closest edge</code>
+<code class="highlighter-rouge"> if len(edges) &gt; 0:</code>
+<code class="highlighter-rouge">   distancesAndEdges = sorted([(dist, edge) for edge, dist in edges])</code>
+<code class="highlighter-rouge">   dist, closestEdge = distancesAndEdges[0]</code></p>
+
+<h2 id="parse-all-edges-in-a-route-file">parse all edges in a route file</h2>
+
+<p><code class="highlighter-rouge"> for route in sumolib.output.parse_fast(</code>“<code class="highlighter-rouge">myRoutes.rou.xml</code>”<code class="highlighter-rouge">, 'route', ['edges']):</code>
+<code class="highlighter-rouge">     edge_ids = route.edges.split()</code>
+<code class="highlighter-rouge">     # do something with the vector of edge ids</code></p>
+
+<h2 id="coordinate-transformations">coordinate transformations</h2>
+
+<p><code class="highlighter-rouge"> x, y = traci.vehicle.getPosition(vehID)</code>
+<code class="highlighter-rouge"> lon, lat = traci.simulation.convertGeo(x, y)</code>
+<code class="highlighter-rouge"> x2, y2 = traci.simulation.convertGeo(lon, lat, fromGeo=True)</code></p>
+
+  </div><a class="u-url" href="/sumo-documentation/Tools/Sumolib/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

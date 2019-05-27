@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Demand Shortest or Optimal Path Routing | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Demand Shortest or Optimal Path Routing" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Demand/Shortest_or_Optimal_Path_Routing/" />
+<meta property="og:url" content="/sumo-documentation/Demand/Shortest_or_Optimal_Path_Routing/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Demand/Shortest_or_Optimal_Path_Routing/","headline":"Demand Shortest or Optimal Path Routing","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Demand Shortest or Optimal Path Routing</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Demand/Shortest_or_Optimal_Path_Routing.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="introduction">Introduction</h1>
+
+<p><a href="/DUAROUTER" title="wikilink">DUAROUTER</a> can be used to import demand data given by source and destination edges (so called <em>trips</em> and ‘‘flows ‘’). Furthermore, it can be used to repair an existing <em>route</em>-file i.e. if a given route has an unconnected edge list. To achieve dynamic user assignment, <a href="/DUAROUTER" title="wikilink">DUAROUTER</a> and <a href="/SUMO" title="wikilink">SUMO</a> must be called iteratively. This is described in <a href="/Demand/Dynamic_User_Assignment" title="wikilink">Demand/Dynamic User Assignment</a>. Beginning with version 0.29.0, <a href="/DUAROUTER" title="wikilink">DUAROUTER</a> also supports <a href="/IntermodalRouting" title="wikilink">IntermodalRouting</a>.</p>
+
+<h1 id="trip-definitions">Trip Definitions</h1>
+
+<p>Trip definitions that can be laid into the network may be supplied to the router using an XML-file. The syntax of a single trip definition is: <span class="inlxml">&lt;trip id=”<ID>" depart=“<TIME>” from=“<ORIGIN_EDGE_ID>” to=“<DESTINATION_EDGE_ID>” \[type=“<VEHICLE_TYPE>”\] \[color=“<COLOR>”\]/&gt;.</COLOR></VEHICLE_TYPE></DESTINATION_EDGE_ID></ORIGIN_EDGE_ID></TIME></ID></span></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute Name</th>
+      <th>Value Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>id (string)</td>
+      <td>The name of vehicles that will be generated using this trip definition (a running number if not given)</td>
+    </tr>
+    <tr>
+      <td><strong>depart</strong></td>
+      <td>int</td>
+      <td>The departure time of the (first) vehicle which is generated using this trip definition</td>
+    </tr>
+    <tr>
+      <td>from</td>
+      <td>edge id</td>
+      <td>The name of the edge the route starts at; the edge must be a part of the used network</td>
+    </tr>
+    <tr>
+      <td>to</td>
+      <td>edge id</td>
+      <td>The name of the edge the route ends at; the edge must be a part of the used network</td>
+    </tr>
+    <tr>
+      <td>via</td>
+      <td>edge ids</td>
+      <td>List of intermediate edge ids which shall be part of the route; the edges must be a part of the used network</td>
+    </tr>
+    <tr>
+      <td>fromTaz</td>
+      <td>district id</td>
+      <td>The name of the <a href="/Demand/Importing_O/D_Matrices#Describing_the_TAZ" title="wikilink">district</a> the route starts at. <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Traffic_assignement_zones_.28TAZ.29" title="wikilink">TAZ edges are selected so that travel time is minimized.</a></td>
+    </tr>
+    <tr>
+      <td>toTaz</td>
+      <td>district id</td>
+      <td>The name of the <a href="/Demand/Importing_O/D_Matrices#Describing_the_TAZ" title="wikilink">district</a> the route ends at. <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Traffic_assignement_zones_.28TAZ.29" title="wikilink">TAZ edges are selected so that travel time is minimized.</a></td>
+    </tr>
+    <tr>
+      <td>color</td>
+      <td>color</td>
+      <td>This generated vehicle’s color</td>
+    </tr>
+    <tr>
+      <td>departLane</td>
+      <td>int/string (≥0,“random”,“free”,“departlane”)</td>
+      <td>The lane on which the vehicle shall be inserted</td>
+    </tr>
+    <tr>
+      <td>departPos</td>
+      <td>float(m)/string (“random”,“free”,“random_free”,“base”)</td>
+      <td>The position at which the vehicle shall enter the net; “free” means the point closest to the start of the departlane where it is possible to insert the vehicle. “random_free” tries forcefully to find a free random position and if that fails, places the vehicle at the next “free” position. “base” sets the vehicle’s depart position to the vehicle’s length + eps (eps=.1m), this means the vehicle is completely at the begin of the depart lane.</td>
+    </tr>
+    <tr>
+      <td>departSpeed</td>
+      <td>float(m/s)/string (≥0,“random”,“max”)</td>
+      <td>The speed with which the vehicle shall enter the network.</td>
+    </tr>
+    <tr>
+      <td>arrivalLane</td>
+      <td>int/string (≥0,“current”)</td>
+      <td>The lane at which the vehicle shall leave the network</td>
+    </tr>
+    <tr>
+      <td>arrivalPos</td>
+      <td>float(m)/string (≥0<sup>(1)</sup>,“random”,“max”)</td>
+      <td>The position at which the vehicle shall leave the network</td>
+    </tr>
+    <tr>
+      <td>arrivalSpeed</td>
+      <td>float(m/s)/string (≥0,“current”)</td>
+      <td>The speed with which the vehicle shall leave the network</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>If any trips use the <span class="inlxml">type</span> attribute, the referenced <span class="inlxml">vType</span> element must be put into the <em>trip.xml</em> file or into an additionally loaded <em>rou.xml</em>-file or into an .</p>
+
+<h1 id="flow-definitions">Flow Definitions</h1>
+
+<p>Flow amounts share most of the parameter with trip definitions. The syntax is: <span class="inlxml">&lt;flow id=”<ID>" from=“<ORIGIN_EDGE_ID>” to=“<DESTINATION_EDGE_ID>” begin=“<INTERVAL_BEGIN>” end=“<INTERVAL_END>” number=“<VEHICLES_TO_INSERT>” \[type=“<VEHICLE_TYPE>”\] \[color=“<COLOR>”\]/&gt;&lt;/span&gt;. Notice the following differences: the vehicle does not take a certain departure time as not only one vehicle is described by this parameter, but a set of, given within the attribute “number”. The departure times are spread uniformly within the time interval described by <INTERVAL_BEGIN> and <INTERVAL_END>. All these three attributes must be integer values. Flow definitions can also be embedded into an interval tag. In this case one can (but does not have to) leave the tags <span class="inlxml">begin</span> and <span class="inlxml">end</span> out. So the following two snipples mean the same:</INTERVAL_END></INTERVAL_BEGIN></COLOR></VEHICLE_TYPE></VEHICLES_TO_INSERT></INTERVAL_END></INTERVAL_BEGIN></DESTINATION_EDGE_ID></ORIGIN_EDGE_ID></ID></span></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;flows&gt;
+    &lt;flow id="0" from="edge0" to="edge1" begin="0" end="3600" number="100"/&gt;
+&lt;/flows&gt;
+</code></pre></div></div>
+
+<p>and</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;flows&gt;
+    &lt;interval begin="0" end="3600"&gt;
+        &lt;flow id="0" from="edge0" to="edge1" number="100"/&gt;
+    &lt;/interval&gt;
+&lt;/flows&gt;
+</code></pre></div></div>
+
+<p>Let’s review flow parameter:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute Name</th>
+      <th>Value Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>id</strong></td>
+      <td>id (string)</td>
+      <td>The name of vehicles that will be generated using this trip definition; vehicles and routes will be named “<id>_<RUNNING>” where <RUNNING> is a number starting at 0 and increased for each vehicle.</RUNNING></RUNNING></id></td>
+    </tr>
+    <tr>
+      <td>from</td>
+      <td>edge id</td>
+      <td>The name of the edge the routes start at; the edge must be a part of the used network</td>
+    </tr>
+    <tr>
+      <td>to<sup>(1)</sup></td>
+      <td>edge id</td>
+      <td>The name of an the edge the routes end at; the edge must be a part of the used network</td>
+    </tr>
+    <tr>
+      <td>via</td>
+      <td>edge ids</td>
+      <td>List of intermediate edge ids which shall be part of the route; the edges must be a part of the used network</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>type id</td>
+      <td>The type id of the vehicles to generate</td>
+    </tr>
+    <tr>
+      <td><strong>begin</strong></td>
+      <td>int</td>
+      <td>The begin time for the described interval</td>
+    </tr>
+    <tr>
+      <td>end</td>
+      <td>int</td>
+      <td>The end time for the interval; must be greater than <begin>; vehicles will be inserted between <begin> and <end>-1</end></begin></begin></td>
+    </tr>
+    <tr>
+      <td>number</td>
+      <td>int</td>
+      <td>The number of vehicles that shall be inserted during this interval</td>
+    </tr>
+    <tr>
+      <td>color</td>
+      <td>color</td>
+      <td>Defines the color of the vehicles and their routes</td>
+    </tr>
+    <tr>
+      <td>departLane</td>
+      <td>int/string (≥0,“random”,“free”,“departlane”)</td>
+      <td>The lane on which the vehicle shall be inserted</td>
+    </tr>
+    <tr>
+      <td>departPos</td>
+      <td>float(m)/string (“random”,“free”,“random_free”,“base”)</td>
+      <td>The position at which the vehicle shall enter the net; “free” means the point closest to the start of the departlane where it is possible to insert the vehicle. “random_free” tries forcefully to find a free random position and if that fails, places the vehicle at the next “free” position. “base” sets the vehicle’s depart position to the vehicle’s length + eps (eps=.1m), this means the vehicle is completely at the begin of the depart lane.</td>
+    </tr>
+    <tr>
+      <td>departSpeed</td>
+      <td>float(m/s)/string (≥0,“random”,“max”)</td>
+      <td>The speed with which the vehicle shall enter the network.</td>
+    </tr>
+    <tr>
+      <td>arrivalLane</td>
+      <td>int/string (≥0,“current”)</td>
+      <td>The lane at which the vehicle shall leave the network</td>
+    </tr>
+    <tr>
+      <td>arrivalPos</td>
+      <td>float(m)/string (≥0<sup>(1)</sup>,“random”,“max”)</td>
+      <td>The position at which the vehicle shall leave the network</td>
+    </tr>
+    <tr>
+      <td>arrivalSpeed</td>
+      <td>float(m/s)/string (≥0,“current”)</td>
+      <td>The speed with which the vehicle shall leave the network</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><sup>(1)</sup> <a href="/JTRROUTER" title="wikilink">JTRROUTER</a> does not need this parameter, <a href="/DUAROUTER" title="wikilink">DUAROUTER</a> requires it</p>
+
+<h1 id="custom-edge-weights">Custom edge weights</h1>
+
+<p>The option can be used to affect the weights used during routing. The input format conforms to the output format of the <a href="/Simulation/Output/Lane-_or_Edge-based_Traffic_Measures" title="wikilink">edge based traffic measures</a>. By default this uses the <strong>traveltime</strong> attribute of edges. The option can be used to use other attributes for routing. Weight files that only contain some of the network edges are permitted. If undefined, the traveltime of an edge defaults to the free-flow traveltime. Also, only the <em>weight-attribute</em> must be defined:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;meandata&gt;
+   &lt;interval begin="0" end="3600" id="whatever"&gt;
+      &lt;edge id="edgeID1" traveltime="23"/&gt;
+      &lt;edge id="edgeID2" traveltime="1000"/&gt;
+   &lt;/interval&gt;
+&lt;/meandata&gt;
+</code></pre></div></div>
+
+<h1 id="usage-examples">Usage Examples</h1>
+
+<p><code class="highlighter-rouge">duarouter --trip-files trips.xml --net-file road.net.xml --output-file result.rou.xml</code></p>
+
+<p>the file ‘‘trips.xml ‘’ given below must contain edges contained in the network file ‘‘road.net.xml ‘’.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    &lt;trips&gt;
+        &lt;trip id="1625993_25" depart="25" from="-15229224#3" to="4474184"/&gt;
+        &lt;trip id="1542480_35" depart="35" from="-46771582"   to="-24038909#1"/&gt;
+        &lt;trip id="1544282_35" depart="35" from="20554351#2"  to="-4876083#5"/&gt;
+        &lt;trip id="1565407_35" depart="35" from="-25771472#1" to="-25160470#0"/&gt;
+        &lt;trip id="1620115_45" depart="45" from="11279351#3"  to="5198584#1"/&gt;
+        &lt;trip id="1647560_45" depart="45" from="54048879#0"  to="-52105434#0"/&gt;
+        &lt;trip id="3761248_45" depart="45" from="-31928311"   to="23792451#7"/&gt;
+    &lt;/trips&gt;
+</code></pre></div></div>
+
+<p>Trips may contain <a href="/Demand/Importing_O/D_Matrices#Describing_the_TAZ" title="wikilink">source and destination districts</a> as well as edges. If the districts shall be used for routing this has to be specified using the option “–with-taz”. Furthermore (if the net does not contain the districts) a districts file needs to be provided:</p>
+
+<p><code class="highlighter-rouge">duarouter --trip-files=</code><TRIP_DEFS>` --net-file=`<SUMO_NET>` \`
+`  --output-file=MySUMORoutes.rou.xml --taz-files=`<DISTRICTS>` --with-taz`</DISTRICTS></SUMO_NET></TRIP_DEFS></p>
+
+<p>As we have to read in the flow definitions completely into the memory - something we do not have to do necessarily with trips, an extra parameter (-f or –flows) is used to make them known by the router:</p>
+
+<p><code class="highlighter-rouge">duarouter --flows=</code><FLOW_DEFS>` --net=`<SUMO_NET>` \`
+`  --output-file=MySUMORoutes.rou.xml -b `<UINT>` -e `<UINT></UINT></UINT></SUMO_NET></FLOW_DEFS></p>
+
+<p>Remind that one can not insert flow descriptions into a trip definitions file. The opposite (some trip definitions within a flow descriptions file) is possible. You also can give both files at the input file, for example:</p>
+
+<p><code class="highlighter-rouge">duarouter --flows=</code><FLOW_DEFS>` --trip-files=`<TRIP_DEFS>` --net=`<SUMO_NET>` \`
+`  --output-file=MySUMORoutes.rou.xml -b `<UINT>` -e `<UINT></UINT></UINT></SUMO_NET></TRIP_DEFS></FLOW_DEFS></p>
+
+<h1 id="dealing-with-errors-during-routing">Dealing with Errors During Routing</h1>
+
+<p>When running <a href="/DUAROUTER" title="wikilink">DUAROUTER</a> you may encounter errors of the type</p>
+
+<p><code class="highlighter-rouge">Error: No connection between 'edge1' and 'edge2' found</code></p>
+
+<p>This is caused be an unconnected network. If your network has vehicle class restrictions it may be that the connectivity is only lacking for particular vehicle classes which is less obvious from the GUI. You can ignore these routes using the option . However, if a large proportion of your routes cause this error you should definitely investigate your network file for problems. The tool <a href="/Tools/Net#netcheck.py" title="wikilink">Tools/Net#netcheck.py</a> can be used to pin down the connectivity gaps in your network.</p>
+
+  </div><a class="u-url" href="/sumo-documentation/Demand/Shortest_or_Optimal_Path_Routing/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

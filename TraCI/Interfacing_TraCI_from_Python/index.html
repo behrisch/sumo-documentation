@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>TraCI Interfacing TraCI from Python | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="TraCI Interfacing TraCI from Python" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/TraCI/Interfacing_TraCI_from_Python/" />
+<meta property="og:url" content="/sumo-documentation/TraCI/Interfacing_TraCI_from_Python/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/TraCI/Interfacing_TraCI_from_Python/","headline":"TraCI Interfacing TraCI from Python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">TraCI Interfacing TraCI from Python</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/TraCI/Interfacing_TraCI_from_Python.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>The <a href="/TraCI#TraCI_Commands" title="wikilink">TraCI</a> commands are split into the 13 domains gui, lane, poi, simulation, trafficlight, vehicletype, edge, inductionloop, junction, multientryexit, polygon, route, person and vehicle, which correspond to individual modules. For a detailed list of available functions see the <a href="http://sumo-sim.org/daily/pydoc/traci.html">pydoc generated documentation</a>. The source code can be found at <a href="http://sumo.dlr.de/trac.wsgi/browser/trunk/sumo/tools/traci">1</a></p>
+
+<h2 id="importing-traci-in-a-script">importing <strong>traci</strong> in a script</h2>
+
+<p>To use the library, the /tools directory must be on the python load path. This is typically done with a stanza like this:</p>
+
+<p><code class="highlighter-rouge"> import os, sys</code>
+<code class="highlighter-rouge"> if 'SUMO_HOME' in os.environ:</code>
+<code class="highlighter-rouge">     tools = os.path.join(os.environ['SUMO_HOME'], 'tools')</code>
+<code class="highlighter-rouge">     sys.path.append(tools)</code>
+<code class="highlighter-rouge"> else:   </code>
+<code class="highlighter-rouge">     sys.exit(</code>“<code class="highlighter-rouge">please</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">declare</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">environment</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">variable</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">'SUMO_HOME'</code>”<code class="highlighter-rouge">)</code></p>
+
+<p>This assumes that the <a href="/Basics/Basic_Computer_Skills#Additional_Environment_Variables" title="wikilink">environment variable <strong>SUMO_HOME</strong></a> is set before running the script. Alternatively, you can declare the path to <em>sumo/tools</em> directly as in the line</p>
+
+<p><code class="highlighter-rouge"> sys.path.append(os.path.join('c:', os.sep, 'whatever', 'path', 'to', 'sumo', 'tools'))</code></p>
+
+<h2 id="first-steps">First Steps</h2>
+
+<p>In general it is very easy to interface with SUMO from Python (the following example is a modification of <a href="/Tutorials/TraCI4Traffic_Lights" title="wikilink">tutorial/traci_tls</a>):</p>
+
+<p>First you compose the command line to start either <a href="/SUMO" title="wikilink">SUMO</a> or <a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a> (leaving out the option which was needed before 0.28.0):</p>
+
+<p><code class="highlighter-rouge">sumoBinary = </code>“<code class="highlighter-rouge">/path/to/sumo-gui</code>”
+<code class="highlighter-rouge">sumoCmd = [sumoBinary, </code>“<code class="highlighter-rouge">-c</code>”<code class="highlighter-rouge">, </code>“<code class="highlighter-rouge">yourConfiguration.sumocfg</code>”<code class="highlighter-rouge">]</code></p>
+
+<p>Then you start the simulation and connect to it with your script:</p>
+
+<p><code class="highlighter-rouge">import traci</code>
+<code class="highlighter-rouge">traci.start(sumoCmd) </code>
+<code class="highlighter-rouge">step = 0</code>
+<code class="highlighter-rouge">while step &lt; 1000:</code>
+<code class="highlighter-rouge">   traci.simulationStep()</code>
+<code class="highlighter-rouge">   if traci.inductionloop.getLastStepVehicleNumber(</code>“<code class="highlighter-rouge">0</code>”<code class="highlighter-rouge">) &gt; 0:</code>
+<code class="highlighter-rouge">       traci.trafficlight.setRedYellowGreenState(</code>“<code class="highlighter-rouge">0</code>”<code class="highlighter-rouge">, </code>“<code class="highlighter-rouge">GrGr</code>”<code class="highlighter-rouge">)</code>
+<code class="highlighter-rouge">   step += 1</code>
+<code class="highlighter-rouge">traci.close()</code></p>
+
+<p>After connecting to the simulation, you can emit various commands and execute simulation steps until you want to finish by closing the connection. by default the close command will wait until the sumo process really finishes. You can disable this by calling</p>
+
+<p><code class="highlighter-rouge">traci.close(False)</code></p>
+
+<h2 id="subscriptions">Subscriptions</h2>
+
+<p>Subscriptions can be thought of as a batch mode for retrieving variables. Instead of asking for the same variables over and over again, you can retrieve the values of interest automatically after each time step. TraCI subscriptions are handled on a per module basis. That is you can ask the module for the result of all current subscriptions after each time step. In order to subscribe for variables you need to know their variable ids which can be looked up in the traci/constants.py file.</p>
+
+<p><code class="highlighter-rouge">import traci</code>
+<code class="highlighter-rouge">import traci.constants as tc</code>
+<code class="highlighter-rouge">traci.start([</code>“<code class="highlighter-rouge">sumo</code>”<code class="highlighter-rouge">, </code>“<code class="highlighter-rouge">-c</code>”<code class="highlighter-rouge">, </code>“<code class="highlighter-rouge">my.sumocfg</code>”<code class="highlighter-rouge">]) </code>
+<code class="highlighter-rouge">traci.vehicle.subscribe(vehID, (tc.VAR_ROAD_ID, tc.VAR_LANEPOSITION))</code>
+<code class="highlighter-rouge">print(traci.vehicle.getSubscriptionResults(vehID))</code>
+<code class="highlighter-rouge">for step in range(3):</code>
+<code class="highlighter-rouge">   print(</code>“<code class="highlighter-rouge">step</code>”<code class="highlighter-rouge">, step)</code>
+<code class="highlighter-rouge">   traci.simulationStep()</code>
+<code class="highlighter-rouge">   print(traci.vehicle.getSubscriptionResults(vehID))</code>
+<code class="highlighter-rouge">traci.close()</code></p>
+
+<p>The values retrieved are always the ones from the last time step, it is not possible to retrieve older values.</p>
+
+<h2 id="context-subscriptions">Context Subscriptions</h2>
+
+<p>Context subscriptions work like subscriptions in that they retrieve a list of variables automatically for every simulation stop. However, the do so by setting a reference object and a range and then retrieving variables for all objects of a given type within range of the reference object.</p>
+
+<p>TraCI context subscriptions are handled on a per module basis. That is you can ask the module for the result of all current subscriptions after each time step. In order to subscribe for variables you need to the domain id of the objects that shall be retrieved and the variable ids which can be looked up in the traci/constants.py file. The domain id always has the form CMD_GET_<DOMAIN>_VARIABLE. The following code retrieves all vehicle speeds and waiting times within range (42m) of a junction (the vehicle ids are retrieved implicitly).</DOMAIN></p>
+
+<p><code class="highlighter-rouge">import traci</code>
+<code class="highlighter-rouge">import traci.constants as tc</code>
+<code class="highlighter-rouge">traci.start([</code>“<code class="highlighter-rouge">sumo</code>”<code class="highlighter-rouge">, </code>“<code class="highlighter-rouge">-c</code>”<code class="highlighter-rouge">, </code>“<code class="highlighter-rouge">my.sumocfg</code>”<code class="highlighter-rouge">]) </code>
+<code class="highlighter-rouge">traci.junction.subscribeContext(junctionID, tc.CMD_GET_VEHICLE_VARIABLE, 42, [tc.VAR_SPEED, tc.VAR_WAITING_TIME])</code>
+<code class="highlighter-rouge">print(traci.junction.getContextSubscriptionResults(junctionID))</code>
+<code class="highlighter-rouge">for step in range(3):</code>
+<code class="highlighter-rouge">   print(</code>“<code class="highlighter-rouge">step</code>”<code class="highlighter-rouge">, step)</code>
+<code class="highlighter-rouge">   traci.simulationStep()</code>
+<code class="highlighter-rouge">   print(traci.junction.getContextSubscriptionResults(junctionID))</code>
+<code class="highlighter-rouge">traci.close()</code></p>
+
+<p>The values retrieved are always the ones from the last time step, it is not possible to retrieve older values.</p>
+
+<h2 id="adding-a-steplistener">Adding a StepListener</h2>
+
+<p>Often a function needs to be called each time when traci.simulationStep() is called, to let this happen automatically (always <em>after</em> each call to simulationStep()) it is possible to add a StepListener object ‘listener’ (more precisely an instance of a subclass of traci.StepListener) i.e.</p>
+
+<p><code class="highlighter-rouge"> class ExampleListener(traci.StepListener):</code>
+<code class="highlighter-rouge">    def step(self, t=0):</code>
+<code class="highlighter-rouge">        # do something at every simulaton step</code>
+<code class="highlighter-rouge">        print(</code>“<code class="highlighter-rouge">ExampleListener</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">called</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">at</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">time</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">%s</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">ms.</code>”<code class="highlighter-rouge"> % t)</code>
+<code class="highlighter-rouge">       </code>
+<code class="highlighter-rouge"> listener = ExampleListener()</code>
+<code class="highlighter-rouge"> traci.addStepListener(listener)</code></p>
+
+<h2 id="controlling-parallel-simulations-from-the-same-traci-script">Controlling parallel simulations from the same TraCI script</h2>
+
+<p>The TraCI python library can be used to control multiple simulations at the same time with a single script. The function <em>traci.start()</em> has an optional label argument which allows you to call it multiple times with different simulation instances and labels. The function <em>traci.switch()</em> can then be used to switch to any of the initialized labels:</p>
+
+<p><code class="highlighter-rouge"> traci.start([</code>“<code class="highlighter-rouge">sumo</code>”<code class="highlighter-rouge">, </code>“<code class="highlighter-rouge">-c</code>”<code class="highlighter-rouge">, </code>“<code class="highlighter-rouge">sim1.sumocfg</code>”<code class="highlighter-rouge">], label=</code>“<code class="highlighter-rouge">sim1</code>”<code class="highlighter-rouge">)</code>
+<code class="highlighter-rouge"> traci.start([</code>“<code class="highlighter-rouge">sumo</code>”<code class="highlighter-rouge">, </code>“<code class="highlighter-rouge">-c</code>”<code class="highlighter-rouge">, </code>“<code class="highlighter-rouge">sim2.sumocfg</code>”<code class="highlighter-rouge">], label=</code>“<code class="highlighter-rouge">sim2</code>”<code class="highlighter-rouge">)</code>
+<code class="highlighter-rouge"> traci.switch(</code>“<code class="highlighter-rouge">sim1</code>”<code class="highlighter-rouge">)</code>
+<code class="highlighter-rouge"> traci.simulationStep() # run 1 step for sim1</code>
+<code class="highlighter-rouge"> traci.switch(</code>“<code class="highlighter-rouge">sim2</code>”<code class="highlighter-rouge">)</code>
+<code class="highlighter-rouge"> traci.simulationStep() # run 1 step for sim2</code></p>
+
+<p>If you prefer a more object oriented approach you can also use connection objects to communicate with the simulation. They have the same interface as the static <em>traci.</em> calls but you will still need to start the simulation manually for them:</p>
+
+<p><code class="highlighter-rouge"> traci.start([</code>“<code class="highlighter-rouge">sumo</code>”<code class="highlighter-rouge">, </code>“<code class="highlighter-rouge">-c</code>”<code class="highlighter-rouge">, </code>“<code class="highlighter-rouge">sim1.sumocfg</code>”<code class="highlighter-rouge">], label=</code>“<code class="highlighter-rouge">sim1</code>”<code class="highlighter-rouge">)</code>
+<code class="highlighter-rouge"> traci.start([</code>“<code class="highlighter-rouge">sumo</code>”<code class="highlighter-rouge">, </code>“<code class="highlighter-rouge">-c</code>”<code class="highlighter-rouge">, </code>“<code class="highlighter-rouge">sim2.sumocfg</code>”<code class="highlighter-rouge">], label=</code>“<code class="highlighter-rouge">sim2</code>”<code class="highlighter-rouge">)</code>
+<code class="highlighter-rouge"> conn1 = traci.getConnection(</code>“<code class="highlighter-rouge">sim1</code>”<code class="highlighter-rouge">)</code>
+<code class="highlighter-rouge"> conn2 = traci.getConnection(</code>“<code class="highlighter-rouge">sim2</code>”<code class="highlighter-rouge">)</code>
+<code class="highlighter-rouge"> conn1.simulationStep() # run 1 step for sim1</code>
+<code class="highlighter-rouge"> conn2.simulationStep() # run 1 step for sim2</code></p>
+
+<h2 id="embedded-python">Embedded Python</h2>
+
+<p>As an experimental feature, it is also possible to link SUMO with python directly and have the scripts executed in SUMO. The syntax is completely the same, except that you leave out the calls to init and close and you need to start sumo with the option –python-script. This feature is considered deprecated and will be replaced by <a href="/libsumo" title="wikilink">libsumo</a>. It does currently <em>not</em> work with the GUI version of sumo.</p>
+
+<p>Since the feature is not well tested yet, you need to enable embedded python explicitly when building SUMO (it is <em>not</em> enabled in the release versions and the nightly build). In order to do so, follow the instructions below</p>
+
+<h3 id="linux">Linux</h3>
+
+<ul>
+  <li>install the python devel package files</li>
+  <li>call configure using the –with-python option</li>
+  <li>make &amp;&amp; make install as usual</li>
+</ul>
+
+<h3 id="windows">Windows</h3>
+
+<ul>
+  <li>make sure python is installed and is in your PATH</li>
+  <li>call tools\build\pythonPropsMSVC.py to generate / modify the build\msvc10\config.props file</li>
+  <li>build the Win32 Release version as usual</li>
+  <li>the debug build is somewhat more involved and is disabled by default, the following instructions are <a href="http://upp-mirror.googlecode.com/svn-history/r3552/trunk/bazaar/Py/install.txt">taken from here</a>
+    <ul>
+      <li>download the python source package fitting your python version</li>
+      <li>open the pcbuild.sln in the PCbuild subdir with Visual Studio</li>
+      <li>do the Win32 Debug build for python, it will have lots of errors but the main parts (hopefully) succeed</li>
+      <li>from the PCbuild dir copy
+        <ul>
+          <li>python27_d.dll to the Python dir (something like C:\Python27)</li>
+          <li>python27_d.lib, python27_d.pdb, python27_d.exp to the libs dir (C:\Python27\libs)</li>
+          <li>every *_d.pyd to the DLLs dir (C:\Python27\DLLs)</li>
+        </ul>
+      </li>
+      <li>enable the python debug build by editing build\msvc10\Win32.props</li>
+      <li>now you can do the Win32 Debug build for SUMO</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Earlier versions of Visual Studio and 64bit build are currently not directly supported (but the interested programmer should be able to modify the files accordingly).</p>
+
+<h2 id="additional-functions">Additional Functions</h2>
+
+<p>When using TraCI there are some common tasks which are not covered by the traci library such as</p>
+
+<ul>
+  <li>Analyzing the road network</li>
+  <li>Parsing simulation outputs</li>
+</ul>
+
+<p>For this functionality it is recommended to use <a href="/Tools/Sumolib" title="wikilink">Tools/Sumolib</a></p>
+
+<h2 id="pitfalls-and-solutions">Pitfalls and Solutions</h2>
+
+<ul>
+  <li>Note that strings, if exchanged, have to be ASCII-encoded.</li>
+  <li>If you start sumo from within your python script using subprocess.Popen, be sure to call wait() on the resulting process object before quitting your script. You might loose output otherwise.</li>
+</ul>
+
+<h2 id="usage-examples">Usage Examples</h2>
+
+<h3 id="run-a-simulation-until-all-vehicles-have-arrived">Run a simulation until all vehicles have arrived</h3>
+
+<p><code class="highlighter-rouge">  while traci.simulation.getMinExpectedNumber() &gt; 0: </code>
+<code class="highlighter-rouge">      traci.simulationStep()</code></p>
+
+<h3 id="add-trips-incomplete-routes-dynamically">Add trips (incomplete routes) dynamically</h3>
+
+<p>Define a vehicle type that carries a rerouting device in an and load this at the start of the simulation</p>
+
+<p><code class="highlighter-rouge">   </code><vType id="reroutingType">
+`       `<param key="has.rerouting.device" value="true" />
+`   `</vType></p>
+
+<p>Then via TraCI add your vehicle like so:</p>
+
+<p><code class="highlighter-rouge">   traci.route.add(</code>“<code class="highlighter-rouge">trip</code>”<code class="highlighter-rouge">, [</code>“<code class="highlighter-rouge">startEdge</code>”<code class="highlighter-rouge">, </code>“<code class="highlighter-rouge">endEdge</code>”<code class="highlighter-rouge">])</code>
+<code class="highlighter-rouge">   traci.vehicle.add(</code>“<code class="highlighter-rouge">newVeh</code>”<code class="highlighter-rouge">, </code>“<code class="highlighter-rouge">trip</code>”<code class="highlighter-rouge">, typeID=</code>“<code class="highlighter-rouge">reroutingType</code>”<code class="highlighter-rouge">)</code></p>
+
+<p>This will cause the vehicle to compute a new route from startEdge to endEdge according to the estimated travel times in the network at the time of departure. For details of this mechanism see <a href="/Demand/Automatic_Routing" title="wikilink">Demand/Automatic_Routing</a>.</p>
+
+  </div><a class="u-url" href="/sumo-documentation/TraCI/Interfacing_TraCI_from_Python/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

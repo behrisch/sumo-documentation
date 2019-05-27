@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Tutorials TraCI4Traffic Lights | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Tutorials TraCI4Traffic Lights" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Tutorials/TraCI4Traffic_Lights/" />
+<meta property="og:url" content="/sumo-documentation/Tutorials/TraCI4Traffic_Lights/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Tutorials/TraCI4Traffic_Lights/","headline":"Tutorials TraCI4Traffic Lights","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Tutorials TraCI4Traffic Lights</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Tutorials/TraCI4Traffic_Lights.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>This shows how to use the <a href="/TraCI" title="wikilink">Traffic Control Interface (in short TraCI)</a> on a simple example. TraCI gives the possibility to control a running road traffic simulation. TraCI uses a TCP-based client/server architecture where SUMO acts as a server and the external script (the “controller”) is the client. In this tutorial the “controller” is a Python-Script which receives informations about the simulation state from the server and then sends instructions back.</p>
+
+<p>It is assumed that road network building and routes definition is known from other tutorials, as <a href="/Tutorials/Hello_Sumo" title="wikilink">Tutorials/Hello Sumo</a>, <a href="/Tutorials/quick_start" title="wikilink">Tutorials/quick start</a> or <a href="/Tutorials/Quick_Start_old_style" title="wikilink">Tutorials/Quick Start old style</a>.</p>
+
+<p>All files mentioned here can also be found in the /docs/tutorial/traci_tls directory of your installation. The most recent version can be found in the repository at .</p>
+
+<h1 id="example-description">Example description</h1>
+
+<p>Our example plays on a simple signalized intersection with four approaches. We only have traffic on the horizontal axis and important vehicles (like trams, trains, fire engines, …) on the vertical axis from north to south. On the approach in the north we have an induction loop to recognize entering vehicles. While no vehicle enters from the north we give green on the horizontal axis all the time but when a vehicle enters the induction loop we switch the signal immediately so the vehicle can cross the intersection without a stop.</p>
+
+<p><a href="/Image:ScreenshotCross.gif" title="wikilink">Image:ScreenshotCross.gif</a></p>
+
+<h1 id="running-the-example">Running the example</h1>
+
+<p>To run the example you need to execute the script <em>runner.py</em> with python</p>
+
+<p><code class="highlighter-rouge"> python runner.py</code></p>
+
+<h1 id="data-preparation">Data preparation</h1>
+
+<p>The net-definition can be found in the files <code class="highlighter-rouge">cross.nod.xml</code>, <code class="highlighter-rouge">cross.edg.xml</code>, <code class="highlighter-rouge">cross.con.xml</code> and <code class="highlighter-rouge">cross.det.xml</code>. The route data is generated randomly by the script. The vehicles leave the source according to a Poisson process approximated here by a binomial distribution. So a parameter <code class="highlighter-rouge">p=1./30</code> in the script means that a vehicle is generated every 30 seconds in average.</p>
+
+<h1 id="code">Code</h1>
+
+<p>The control logic resides in the python script <em>runner.py</em>. It generates the routes, acts with the server and controls the traffic light. It makes use of the TraCI python API bundled with SUMO. A description of the API can be found at <a href="/TraCI/Interfacing_TraCI_from_Python" title="wikilink">TraCI/Interfacing_TraCI_from_Python</a>. For a detailed list of available functions see the <a href="http://sumo.dlr.de/daily/pydoc/traci.html">pydoc generated documentation</a>.</p>
+
+<h1 id="simulation">Simulation</h1>
+
+<p>The main program is implemented in the script <em>runner.py</em>. There, we first generate the routes as described above. Then <code class="highlighter-rouge">traci.start</code> is used to start <a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a> with the config file <code class="highlighter-rouge">cross.sumocfg</code>. The start call also connects our script with the <a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a> running as a server.</p>
+
+<p>Then we start to control the simulation. We let the server simulate one simulation step, read the induction loop and switch the phase of the traffic light until the end is reached where no vehicle exists on the road anymore. If we find a vehicle on the induction loop the phase is switched such that the north south direction gets green. If no vehicle is on the detector, and we are not already in the process of switching (so EW has still green), we try to keep this phase by simply setting it again. At the end we close the connection.</p>
+
+<h1 id="traci">TraCI</h1>
+
+<p>We want to run this simulation in SUMO, acting as a server, and control the signal dependent on the actual simulation state. For this task TraCI offers commands which are described in the corresponding article <a href="/TraCI" title="wikilink">TraCI</a> in detail. For this example we will use only four commands: <a href="/TraCI/Control-related_commands#Command_0x01:_Simulation_Step" title="wikilink">Simulation Step</a>, <a href="/TraCI/Induction_Loop_Value_Retrieval#Command_0xa0:_Get_Induction_Loop_Variable" title="wikilink">Get Induction Loop Variable</a>, <a href="/TraCI/Change_Traffic_Lights_State" title="wikilink">Change Traffic Lights State</a> and <a href="/TraCI/Control-related_commands#Command_0x7F:_Close_.28.29" title="wikilink">Close</a>.</p>
+
+<p>The commands are embedded in TCP messages but the direct client server communication is opaque to the user. The four commands needed in this tutorial are implemented in the methods <code class="highlighter-rouge">traci.simulationStep(step)</code>, <code class="highlighter-rouge">traci.inductionloop.getLastStepVehicleNumber(IndLoopID)</code>, <code class="highlighter-rouge">traci.trafficlight.setPhase(TLID, phase)</code> and <code class="highlighter-rouge">traci.close()</code>.</p>
+
+<h1 id="appendix">Appendix</h1>
+
+<p>The methods for sending and receiving the messages, <code class="highlighter-rouge">_recvExact()</code> and <code class="highlighter-rouge">_sendExact()</code>, respectively, are hidden in the script <code class="highlighter-rouge">traci/__init__.py</code> and there is no need to call them directly. In this section we will show the composition of a command using the example of <code class="highlighter-rouge">traci.trafficlight.setRedYellowGreenState</code>.</p>
+
+<h2 id="setphase">setPhase</h2>
+
+<p>This method sets the phase of a traffic light, so it gets the ID of the traffic light and the new phase as parameter. The phase definitions can be read from the sumo network and are described in <a href="/Simulation/Traffic_Lights#Loading_new_TLS-Programs" title="wikilink">Simulation/Traffic Lights#Loading new TLS-Programs</a>. If the phase is already the current one, it is restarted from the beginning. The command is described at <a href="/TraCI/Change_Traffic_Lights_State" title="wikilink">TraCI/Change Traffic Lights State</a>.</p>
+
+  </div><a class="u-url" href="/sumo-documentation/Tutorials/TraCI4Traffic_Lights/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

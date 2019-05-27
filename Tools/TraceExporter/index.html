@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Tools TraceExporter | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Tools TraceExporter" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Tools/TraceExporter/" />
+<meta property="og:url" content="/sumo-documentation/Tools/TraceExporter/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Tools/TraceExporter/","headline":"Tools TraceExporter","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Tools TraceExporter</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Tools/TraceExporter.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="from-30000-feet">From 30.000 feet</h1>
+
+<p><em>traceExporter.py</em> converts and filters SUMO <a href="/Simulation/Output/FCDOutput" title="wikilink">fcd output</a> to different “trace file” formats: OMNET, Shawn, ns2/ns3, PHEM.</p>
+
+<p><strong>Purpose:</strong> trace file conversion/generation</p>
+
+<p><strong>System:</strong> portable (Linux/Windows is tested); runs on command line</p>
+
+<p><strong>Input (mandatory):</strong> SUMO fcd-output</p>
+
+<p><strong>Output:</strong> One or more “trace file(s)” and other complementary files</p>
+
+<p><strong>Programming Language:</strong> Python</p>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>Different applications read “vehicular traces”, files containing mainly positions of vehicles over time. <a href="/Tools/TraceExporter" title="wikilink">traceExporter.py</a> generates such files by converting SUMO’s <a href="/Simulation/Output/FCDOutput" title="wikilink">fcd output</a> into several supported formats. Following files can be generated, sorted by application:</p>
+
+<ul>
+  <li>OMNET: mobility-traces (.xml)</li>
+  <li>Shawn: snapshot-files (.xml)</li>
+  <li>ns2/ns3: trace-files, activity-files, and mobility-files (all *.tcl)</li>
+  <li>PHEM: .dri-files, .str-files, .fzp-files, .flt-files</li>
+  <li>GPSDAT csv traces (id,date,x,y,status,speedKMH)</li>
+  <li><a href="http://en.wikipedia.org/wiki/GPS_eXchange_Format">GPX</a></li>
+  <li><a href="/Simulation/Shapes#POI_.28Point_of_interest.29_Definitions" title="wikilink">POIs</a> (can visualize GPS distortions and sampling in <a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a>)</li>
+  <li><a href="/Simulation/Output/FCDOutput" title="wikilink">fcd output</a> to restrict the file to certain regions or time intervals</li>
+</ul>
+
+<h1 id="installation">Installation</h1>
+
+<p><a href="/Tools/TraceExporter" title="wikilink">traceExporter.py</a> comes with SUMO and is located in /tools/. Python must be installed.</p>
+
+<h1 id="usage-description">Usage Description</h1>
+
+<p>You convert a given <a href="/Simulation/Output/FCDOutput" title="wikilink">fcd output</a> into a format using a command like this:</p>
+
+<p><code class="highlighter-rouge">traceExporter.py --fcd-input myFCDoutput.xml --omnet-output myOMNETfile.xml</code></p>
+
+<p>In the case given above, a file for <a href="http://www.omnetpp.org/">OMNET</a> will be built.</p>
+
+<p>In the following, the command line options are described.</p>
+
+<h2 id="input-options">Input Options</h2>
+
+<p><a href="/Tools/TraceExporter" title="wikilink">traceExporter.py</a> often needs only the <a href="/Simulation/Output/FCDOutput" title="wikilink">fcd output</a> as input. In some cases, the network used while obtaining the <a href="/Simulation/Output/FCDOutput" title="wikilink">fcd output</a> must be given. <a href="/Tools/TraceExporter" title="wikilink">traceExporter.py</a> gives an error message if the wanted output needs additional files, such as the network, but no such file is specified. The options for defining the input files are:</p>
+
+<table>
+<thead>
+<tr class="header">
+<th><p>Option</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>The fcd-output - file to convert (numeric value is interpreted as port to listen on)</p></td>
+</tr>
+<tr class="even">
+<td>
+<p><br />
+</p></td>
+<td><p>The network file used; Mainly used for exporting the network</p></td>
+</tr>
+<tr class="odd">
+</tr>
+</tbody>
+</table>
+
+<p>All outputs which need to read the input only once support reading from a socket. To do so just give a number as file name and the script will open a port to listen on. Afterwards you can start sumo with the corresponding port as output, e.g. traceExporter.py –fcd-input 43214 … needs to be followed by sumo –fcd-output localhost:43214. This should work at least with OMNET, Shawn, GPSDAT, GPX, POIs and fcd filtering.</p>
+
+<h2 id="output-options">Output Options</h2>
+
+<p>In the following, the output options of <a href="/Tools/TraceExporter" title="wikilink">traceExporter.py</a> are given, divided by the application,</p>
+
+<h3 id="phem">PHEM</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td>Generates a PHEM .dri-file named</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Generates a PHEM .str-file named ; note that the SUMO network used during the simulation must be given using the option</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Generates a PHEM .fzp-file named</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Generates a PHEM .flt-file named</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="omnet">OMNET</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td>Generates a OMNET mobility trace named</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="shawn">Shawn</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td>Generates a Shawn snaphot file named</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="ns2ns3">ns2/ns3</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td>Generates a ns2 configuration file named</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Generates a ns2 activity file named</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Generates a ns2 mobility file named</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="gpsdat">GPSDAT</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td>Generates a GPSDAT file named</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="gpx">GPX</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td>Generates a GPX file named</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="poi">PoI</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td>Generates a SUMO PoI file named</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="fcd">fcd</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td>Reads filter settings from</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Extra comments to include in fcd file</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Modify the vehicle type of all written vehicles to</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The filter file is a simple csv format giving begin;end;bounding_box;outfile where the bounding box is x1,y1,x2,y2 defining the lower left and the upper right corner of the area to extract. The coordinate format needs to fit the input format (so if the input has geo coordinates the bounding box needs to have geo coordinates as well). It is currently not possible to give the same output file for different filter lines.</p>
+
+<p>Example filter file:</p>
+
+<p><code class="highlighter-rouge">0;50;500,400,600,500;out.xml</code>
+<code class="highlighter-rouge">50;100;550,450,600,500;out2.xml</code></p>
+
+<h2 id="processing-options">Processing Options</h2>
+
+<p>Several options allow to fine-tune the processing.</p>
+
+<table>
+<thead>
+<tr class="header">
+<th><p>Option</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td><p>Whether persons should be included in the trace; <em>default: False</em></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>A float between 0 and 1, defining the probability of a vehicle to be included in the output; <em>default: 1</em></p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>A float defining a random offset applied on the vehicle positions before exporting them; <em>default: 0</em></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>Defines the bounding box as 'xmin,ymin,xmax,ymax'</p></td>
+</tr>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>Defines the time sampling, if given; only every  time step will be exported.</p></td>
+</tr>
+<tr class="even">
+<td>
+<p><br />
+</p></td>
+<td><p>Time steps before  are not exported.</p></td>
+</tr>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>Time steps after  are not exported. Please note that some issues are known, here.</p></td>
+</tr>
+<tr class="even">
+<td>
+<p><br />
+</p></td>
+<td><p>The randomizer seed to use.</p></td>
+</tr>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>The base date in seconds since the epoch (1970-01-01 00:00:00), the default is the current local time.</p></td>
+</tr>
+<tr class="even">
+</tr>
+</tbody>
+</table>
+
+<h2 id="additional-options">Additional Options</h2>
+
+<table>
+<thead>
+<tr class="header">
+<th><p>Option</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>Shows a help screen.</p></td>
+</tr>
+<tr class="even">
+</tr>
+</tbody>
+</table>
+
+<h1 id="see-also">See Also</h1>
+
+<ul>
+  <li>This <a href="/Tutorials/Trace_File_Generation" title="wikilink">tutorial on using TraceExporter</a></li>
+  <li><a href="/FAQ#traceExporter.py_fails_to_work_properly_in_verson_0.19.0" title="wikilink">working around bugs in version 0.19.0</a></li>
+</ul>
+
+  </div><a class="u-url" href="/sumo-documentation/Tools/TraceExporter/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

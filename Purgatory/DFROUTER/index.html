@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Purgatory DFROUTER | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Purgatory DFROUTER" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Purgatory/DFROUTER/" />
+<meta property="og:url" content="/sumo-documentation/Purgatory/DFROUTER/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Purgatory/DFROUTER/","headline":"Purgatory DFROUTER","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Purgatory DFROUTER</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Purgatory/DFROUTER.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="usage">Usage</h2>
+
+<p>See <a href="/DfRouterUsage" title="wikilink">DfRouterUsage</a> in the <a href="/SUMO_User_Documentation" title="wikilink">User Documentation</a>.</p>
+
+<h2 id="comments">Comments</h2>
+
+<h3 id="why-the-route-distribution-may-be-different-from-what-is-expected">Why the route distribution may be different from what is expected</h3>
+
+<ul>
+  <li>The time described by the detectors values may end before what shall be generated; if, for example, routes for a whole day shall be generated (b=0, e=86400, the defaults) but the detectors only contain information for one minute, the route distribution is still estimated for the whole day while detector values are missing. In this case, the distribution may differ from what is expected (being the one during the described time).</li>
+</ul>
+
+<h3 id="why-variable-speed-signs-show-velocities-of-200ms">Why variable speed signs show velocities of 200m/s</h3>
+
+<ul>
+  <li>If the DFROUTER finds a detector entry with v=0, it sets the allowed velocity in the according vss to 200km/h. The idea is not to set a limit when no valid value exists.</li>
+</ul>
+
+<h2 id="behaviour-to-define">Behaviour to define</h2>
+
+<ul>
+  <li>What shall be done if a detector value is missing?</li>
+</ul>
+
+<h2 id="tests">Tests</h2>
+
+<h3 id="tri_completely_defined">tri_completely_defined</h3>
+
+<p>Simple network:</p>
+
+<p><a href="http://sumo.sourceforge.net/wiki_images/dfrouter_tricomplete_net.gif">http://sumo.sourceforge.net/wiki_images/dfrouter_tricomplete_net.gif</a></p>
+
+<p>All detector values are supplied correctly</p>
+
+<ul>
+  <li>
+    <ul>
+      <li>tri_flows1_1step_straight: the straight direction has 10 vehicles running</li>
+      <li>tri_flows1_1step_left: the left direction has 10 vehicles running</li>
+      <li>tri_flows1_1step_right: the right direction has 10 vehicles running</li>
+      <li>tri_flows1_1step_equal: all directions have 10 vehicles running</li>
+      <li>tri_flows1_1step_more_straight: the straight direction has 20, left and right have 10 vehicles running</li>
+      <li>tri_flows1_1step_more_left: the left direction has 20, straight and right have 10 vehicles running</li>
+      <li>tri_flows1_1step_more_right: the right direction has 20, straight and left have 10 vehicles running</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Flows from tri_flows1_1step_more_left (the darker the more):</p>
+
+<p><a href="http://sumo.sourceforge.net/wiki_images/dfrouter_tricomplete_flow_more_left.gif">http://sumo.sourceforge.net/wiki_images/dfrouter_tricomplete_flow_more_left.gif</a></p>
+
+<h3 id="tri_no_first">tri_no_first</h3>
+
+<p>The first detectors of the left/right arms are missing</p>
+
+<p>This is meant to verify whether a detector may lie on a later edge.</p>
+
+<h3 id="tri_last_only">tri_last_only</h3>
+
+<p>Only the last detectors of the left/right arms exist.</p>
+
+<p>This is meant to verify whether a detector may lie on a later edge.</p>
+
+<h3 id="tri_missing_first_left_values">tri_missing_first_left_values</h3>
+
+<p>All detectors exist (as in tri_completely_defined) but the first detector to left has no value.</p>
+
+<p>The tests show that:</p>
+
+<ul>
+  <li>it is reported that this detector has no value as soon as the option “–report-empty-detectors” is set</li>
+  <li>the routes change as missing values for the first detector are interpreted as flow=0</li>
+</ul>
+
+<h3 id="tri_missing_first_left_noempty">tri_missing_first_left_noempty</h3>
+
+<p>Same as (as in tri_missing_first_left_values) but the option “–remove-empty-detectors” is used.</p>
+
+<p>The tests show that:</p>
+
+<ul>
+  <li>it is reported that the detector that has no values is removed from the list of known detectors</li>
+  <li>the original routes are restored (thos from tri_completely_defined) because the subsequent detectors on the left arm have correct flows</li>
+</ul>
+
+  </div><a class="u-url" href="/sumo-documentation/Purgatory/DFROUTER/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

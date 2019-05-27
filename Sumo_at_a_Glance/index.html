@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Sumo at a Glance | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Sumo at a Glance" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Sumo_at_a_Glance/" />
+<meta property="og:url" content="/sumo-documentation/Sumo_at_a_Glance/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Sumo_at_a_Glance/","headline":"Sumo at a Glance","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Sumo at a Glance</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Sumo_at_a_Glance.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="about">About</h2>
+
+<p>“<strong>S</strong>imulation of <strong>U</strong>rban <strong>MO</strong>bility”, or “SUMO” for short, is an open source, microscopic, multi-modal traffic simulation. It allows to simulate how a given traffic demand which consists of single vehicles moves through a given road network. The simulation allows to address a large set of traffic management topics. It is purely microscopic: each vehicle is modelled explicitly, has an own route, and moves individually through the network. Simulations are deterministic by default but there are various options for <a href="/Simulation/Randomness" title="wikilink">introducing randomness</a>.</p>
+
+<p>If you download the SUMO package, you will note that it contains further applications besides SUMO. These applications are used to import/prepare road networks and demand data for being used in SUMO, see <a href="/#Included_Applications" title="wikilink">#Included Applications</a> for a more verbose list.</p>
+
+<h2 id="features">Features</h2>
+
+<ul>
+  <li>Includes all applications needed to prepare and perform a traffic simulation (network and routes import, DUA, simulation)</li>
+  <li>Simulation
+    <ul>
+      <li>Space-continuous and time-discrete vehicle movement</li>
+      <li>Different vehicle types</li>
+      <li>Multi-lane streets with lane changing</li>
+      <li>Different right-of-way rules, traffic lights</li>
+      <li>A fast openGL graphical user interface</li>
+      <li>Manages networks with several 10.000 edges (streets)</li>
+      <li>Fast execution speed (up to 100.000 vehicle updates/s on a 1GHz machine)</li>
+      <li>Interoperability with other application at run-time</li>
+      <li>Network-wide, edge-based, vehicle-based, and detector-based outputs</li>
+      <li>Supports person-based inter-modal trips</li>
+    </ul>
+  </li>
+  <li>Network Import
+    <ul>
+      <li>Imports VISUM, Vissim, Shapefiles, OSM, RoboCup, MATsim, OpenDRIVE, and XML-Descriptions</li>
+      <li>Missing values are determined via heuristics</li>
+    </ul>
+  </li>
+  <li>Routing
+    <ul>
+      <li>Microscopic routes - each vehicle has an own one</li>
+      <li>Different Dynamic User Assignment algorithms</li>
+    </ul>
+  </li>
+  <li>High portability
+    <ul>
+      <li>Only standard C++ and portable libraries are used</li>
+      <li>Packages for Windows main Linux distributions exist</li>
+    </ul>
+  </li>
+  <li>High interoperability through usage of XML-data only</li>
+  <li>Open source (<a href="https://eclipse.org/legal/epl-v20.html">EPL</a>)</li>
+</ul>
+
+<h2 id="usage-examples">Usage Examples</h2>
+
+<p>Since 2001, the SUMO package has been used in the context of several national and international research <a href="/Other/Projects" title="wikilink">projects</a>. The applications included:</p>
+
+<ul>
+  <li>traffic lights evaluation</li>
+  <li>route choice and re-routing</li>
+  <li>evaluation of traffic surveillance methods</li>
+  <li><a href="/Topics/V2X" title="wikilink">simulation of vehicular communications</a></li>
+  <li>traffic forecast</li>
+</ul>
+
+<h2 id="included-applications">Included Applications</h2>
+
+<p>The package includes:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Application Name</th>
+      <th>Short Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="/SUMO" title="wikilink">SUMO</a></td>
+      <td>The microscopic simulation with no visualization; command line application</td>
+    </tr>
+    <tr>
+      <td><a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a></td>
+      <td>The microscopic simulation with a graphical user interface</td>
+    </tr>
+    <tr>
+      <td><a href="/NETCONVERT" title="wikilink">NETCONVERT</a></td>
+      <td>Network importer and generator; reads road networks from different formats and converts them into the SUMO-format</td>
+    </tr>
+    <tr>
+      <td><a href="/NETEDIT" title="wikilink">NETEDIT</a></td>
+      <td>A graphical network editor.</td>
+    </tr>
+    <tr>
+      <td><a href="/NETGENERATE" title="wikilink">NETGENERATE</a></td>
+      <td>Generates abstract networks for the SUMO-simulation</td>
+    </tr>
+    <tr>
+      <td><a href="/DUAROUTER" title="wikilink">DUAROUTER</a></td>
+      <td>Computes fastest routes through the network, importing different types of demand description. Performs the DUA</td>
+    </tr>
+    <tr>
+      <td><a href="/JTRROUTER" title="wikilink">JTRROUTER</a></td>
+      <td>Computes routes using junction turning percentages</td>
+    </tr>
+    <tr>
+      <td><a href="/DFROUTER" title="wikilink">DFROUTER</a></td>
+      <td>Computes routes from induction loop measurements</td>
+    </tr>
+    <tr>
+      <td><a href="/MAROUTER" title="wikilink">MAROUTER</a></td>
+      <td>Performs macroscopic assignment</td>
+    </tr>
+    <tr>
+      <td><a href="/OD2TRIPS" title="wikilink">OD2TRIPS</a></td>
+      <td>Decomposes O/D-matrices into single vehicle trips</td>
+    </tr>
+    <tr>
+      <td><a href="/POLYCONVERT" title="wikilink">POLYCONVERT</a></td>
+      <td>Imports points of interest and polygons from different formats and translates them into a description that may be visualized by <a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a></td>
+    </tr>
+    <tr>
+      <td><a href="/ACTIVITYGEN" title="wikilink">ACTIVITYGEN</a></td>
+      <td>Generates a demand based on mobility wishes of a modeled population</td>
+    </tr>
+    <tr>
+      <td><a href="/Tools/Emissions" title="wikilink">EMISSIONSMAP</a></td>
+      <td>Generates an emission map</td>
+    </tr>
+    <tr>
+      <td><a href="/Tools/Emissions" title="wikilink">EMISSIONSDRIVINGCYCLE</a></td>
+      <td>Calculates emission values based on a given driving cycle</td>
+    </tr>
+    <tr>
+      <td><a href="/Tools/Main" title="wikilink">Additional Tools</a></td>
+      <td>There are some tasks for which writing a large application is not necessary. Several solutions for different problems may be covered by these tools.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Several parties have extended the SUMO package during their work and submitted <a href="/Contributed" title="wikilink">their code</a>. If not being a part of the release, these contributions are usually not tested frequently and may be outdated. The following contributions are included, please note that not all of them are longer maintained.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Application Name</th>
+      <th>Short Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="http://sourceforge.net/projects/traci4j/">TraCI4J</a></td>
+      <td>A Java interface for connecting and extending information via <a href="/TraCI" title="wikilink">TraCI</a> by Enrico Gueli</td>
+    </tr>
+    <tr>
+      <td><a href="http://de.mathworks.com/matlabcentral/fileexchange/44805-traci4matlab">TraCI4Matlab</a></td>
+      <td>A Matlab interface for connecting and extending information via <a href="/TraCI" title="wikilink">TraCI</a> Andres Acosta</td>
+    </tr>
+    <tr>
+      <td><a href="http://traas.sourceforge.net/cms/">TraaS</a></td>
+      <td>A SOAP(webservice) interface for connecting and extending information via <a href="/TraCI" title="wikilink">TraCIby</a> Mario Krumnow</td>
+    </tr>
+    <tr>
+      <td><del><a href="/Contributed/SUMO_Traffic_Modeler" title="wikilink">Contributed/SUMO Traffic Modeler</a></del></td>
+      <td><del>A Java application for generating a demand based on mobility wishes by Leontios Papaleontiou</del> (obsolete)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="history">History</h2>
+
+<p>The development of SUMO started in the year 2000. The major reason for the development of an open source, microscopic road traffic simulation was to support the traffic research community with a tool with the ability to implement and evaluate own algorithms. The tool has no need for regarding all the needed things for obtaining a complete traffic simulation such as implementing and/or setting up methods for dealing with road networks, demand, and traffic controls. By supplying such a tool, the DLR wanted to i) make the implemented algorithms more comparable by using a common architecture and model base, and ii) gain additional help from other contributors.</p>
+
+<h2 id="software-design-criteria">Software design criteria</h2>
+
+<p>Two major design goals are approached: the software shall be fast and it shall be portable. Due to this, the very first versions were developed to be run from the command line only - no graphical interface was supplied at first and all parameter had to be inserted by hand. This should increase the execution speed by leaving off slow visualisation. Also, due to these goals, the software was split into several parts. Each of them has a certain purpose and must be run individually. This is something that makes SUMO different to other simulation packages where, for instance, the dynamical user assignment is made within the simulation itself, not via an external application like here. This split allows an easier extension of each of the applications within the package because each is smaller than a monolithic application that does everything. Also, it allows the usage of faster data structures, each adjusted to the current purpose, instead of using complicated and ballast-loaded ones. Still, this makes the usage of SUMO a little bit uncomfortable in comparison to other simulation packages. As there are still other things to do, we are not thinking of a redesign towards an integrated approach by now.</p>
+
+<h2 id="contributors-and-participants">Contributors and Participants</h2>
+
+<table>
+<thead>
+<tr class="header">
+<th><p>Org.</p></th>
+<th><p>Name</p></th>
+<th><p>Topics / Contribution</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><a href="/Image:zaik_small.gif" title="wikilink">link=<a href="http://www.zaik.de/" class="uri">http://www.zaik.de/</a></a></p></td>
+<td><p>Christian Rössel</p></td>
+<td><p>Initial microsimulation core; initial detectors implementation</p></td>
+</tr>
+<tr class="even">
+<td><p><a href="/Image:dlr_small.gif" title="wikilink">link=<a href="http://www.dlr.de/fs/en/desktopdefault.aspx" class="uri">http://www.dlr.de/fs/en/desktopdefault.aspx</a></a></p></td>
+<td><p>Peter Wagner</p></td>
+<td><p>Models, organisation, spiritual lead</p></td>
+</tr>
+<tr class="odd">
+<td><p>Daniel Krajzewicz</p></td>
+<td><p>Everything</p></td>
+</tr>
+<tr class="even">
+<td><p>Julia Ringel</p></td>
+<td><p>Traffic Light &amp; WAUT Algorithms</p></td>
+</tr>
+<tr class="odd">
+<td><p>Eric Nicolay</p></td>
+<td><p>Everything</p></td>
+</tr>
+<tr class="even">
+<td><p>Michael Behrisch</p></td>
+<td><p>Everything</p></td>
+</tr>
+<tr class="odd">
+<td><p>Yun-Pang Wang</p></td>
+<td><p>User Assignment</p></td>
+</tr>
+<tr class="even">
+<td><p>Danilot Teta Boyom</p></td>
+<td><p>Vehicular Communication Model (removed from the source)</p></td>
+</tr>
+<tr class="odd">
+<td><p>Sascha Krieg</p></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><p>Lena Kalleske</p></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><p>Laura Bieker</p></td>
+<td><p>Tests, Python scripts</p></td>
+</tr>
+<tr class="even">
+<td><p>Jakob Erdmann</p></td>
+<td><p>network import, <a href="/NETEDIT" title="wikilink">NETEDIT</a></p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>Andreas Gaubatz</p></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>Maik Drozdzynski</p></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><p>Uni Lübeck</p></td>
+<td><p>Axel Wegener</p></td>
+<td><p>TraCI initiator</p></td>
+</tr>
+<tr class="even">
+<td><p>Thimor Bohn</p></td>
+<td><p>TraCI</p></td>
+</tr>
+<tr class="odd">
+<td><p>Friedemann Wesner</p></td>
+<td><p>TraCI</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>Felix Brack</p></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>Tino Morenz</p></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><p><a href="/Image:uni_erlangen.png" title="wikilink">149px|link=<a href="http://www.uni-erlangen.de/" class="uri">http://www.uni-erlangen.de/</a></a><br />
+<br />
+<a href="/Image:uibk-small.png" title="wikilink">64px|link=<a href="http://www.uibk.ac.at/" class="uri">http://www.uibk.ac.at/</a></a><br />
+<br />
+<a href="/Image:logo_cmu.png" title="wikilink">100px|link=<a href="http://www.cmu.edu/" class="uri">http://www.cmu.edu/</a></a><br />
+<br />
+<a href="/Image:logo_ucla.png" title="wikilink">100px|link=<a href="http://www.ucla.edu/" class="uri">http://www.ucla.edu/</a></a></p></td>
+<td><p>Christoph Sommer</p></td>
+<td><p>TraCI merge with <a href="http://veins.car2x.org/">Veins</a>, Subscription Interface, Misc.</p></td>
+</tr>
+<tr class="odd">
+<td><p>David Eckhoff</p></td>
+<td><p>TraCI, deterministic simulation behavior</p></td>
+</tr>
+<tr class="even">
+<td><p>Falko Dressler</p></td>
+<td><p>TraCI</p></td>
+</tr>
+<tr class="odd">
+<td><p>Tobias Mayer</p></td>
+<td><p>Traffic model abstraction, IDM model port</p></td>
+</tr>
+<tr class="even">
+<td><p>HU Berlin</p></td>
+<td><p>Matthias Heppner</p></td>
+<td><p>Unittests</p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="/Image:tum-logo.png" title="wikilink">link=<a href="http://www.tum.de/" class="uri">http://www.tum.de/</a></a></p></td>
+<td><p>Piotr Woznica</p></td>
+<td><p><a href="/ACTIVITYGEN" title="wikilink">ACTIVITYGEN</a></p></td>
+</tr>
+<tr class="even">
+<td><p>Walter Bamberger</p></td>
+<td><p>Development of <a href="/ACTIVITYGEN" title="wikilink">ACTIVITYGEN</a> as a base for the evaluation of trust scenarios in VANETs. The work is part of the project <a href="http://www.ldv.ei.tum.de/fidens/">Fidens: Trust between Cooperative Systems</a> featuring trusted probabilistic knowledge processing in vehicular networks.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Matthew Fullerton</p></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><p>IIT Bombay, India</p></td>
+<td><p>Ashutosh Bajpai</p></td>
+<td><p>randomDepart.py, a python script to generate the real traffic pattern by exponential Distribution.</p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="/Image:torino_small.gif" title="wikilink">link=<a href="http://www.polito.it/" class="uri">http://www.polito.it/</a></a></p></td>
+<td><p>Enrico Gueli</p></td>
+<td><p><a href="http://sourceforge.net/projects/traci4j/">TraCI4J</a></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>Leontios Papaleontiou</p></td>
+<td><p><a href="/Contributed/SUMO_Traffic_Modeler" title="wikilink">Contributed/SUMO Traffic Modeler</a></p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="/File:Wroclaw_university_small.jpg" title="wikilink">link=<a href="http://www.uni.wroc.pl/" class="uri">http://www.uni.wroc.pl/</a></a></p></td>
+<td><p>Karol Stosiek</p></td>
+<td><p>Documentation, network building</p></td>
+</tr>
+</tbody>
+</table>
+
+
+  </div><a class="u-url" href="/sumo-documentation/Sumo_at_a_Glance/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

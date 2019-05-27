@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Specification Duarouter | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Specification Duarouter" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Specification/Duarouter/" />
+<meta property="og:url" content="/sumo-documentation/Specification/Duarouter/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Specification/Duarouter/","headline":"Specification Duarouter","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Specification Duarouter</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Specification/Duarouter.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="inputs">Inputs</h1>
+
+<h2 id="network">Network</h2>
+
+<p>A good old sumo network maybe with traffic assignment zones (aka taz or districts). They may also be given in a separate file.</p>
+
+<h2 id="demand">Demand</h2>
+
+<p>In principle the duarouter should understand every route file sumo understands. This includes correct parsing of routes, vehicle types, vehicles, flows, trips, various distributions, stops and persons. Per default it tries to find shortest paths between any two consecutive edges given in a (trip, flow or route) definition. In the “iterative” mode it also tries to add new routes between start and destination.</p>
+
+<h2 id="partial-routes-stops-etc">Partial routes, stops etc.</h2>
+
+<p>It is possible to define a flow with a nested route or with from/to/via and/or with nested stops. Additionally it may have fromTaz/toTaz attributes. This section describes how these settings (should) interact. They should in principle transfer to vehicle/trip definitions and to the usage with ad hoc (one shot) routing as well.</p>
+
+<h3 id="taz">TAZ</h3>
+
+<ul>
+  <li>“from” takes precedence over “fromTaz” (and the same for “to(Taz)”) unless “–with-taz” is used</li>
+  <li>if “with-taz” is used, it is an error if no taz information is present</li>
+  <li>it may be the case that “from” is used together with “toTaz” or vice versa</li>
+</ul>
+
+<h3 id="nested-routes-together-with-fromto">nested routes together with from/to</h3>
+
+<ul>
+  <li>it is an error, if a nested route definition does not fit the information in the from/to/via or the fromTaz/toTaz attributes</li>
+  <li>the nested route has precedence over a route referenced by id but a warning is emitted if both are given</li>
+</ul>
+
+<h3 id="nested-stops">nested stops</h3>
+
+<ul>
+  <li>stops nested in a flow are merged into the list of stops of the route using the stop attributes</li>
+  <li>the stop edges are handled just like “via” edges</li>
+  <li>if “via” is present as well and is not a superset of the stop edges, it is an error</li>
+  <li>if the stops do not fit the route, it is an error as well</li>
+</ul>
+
+<h2 id="rerouting">Rerouting</h2>
+
+<p>There are some special cases when using this concept with the in-simulation-routing because the vehicle may be already on the way when a rerouting request occurs. If we are still before vehicle insertion everything should behave as with the duarouter at least for the first route search (it is probably hard to implement at the moment to do rerouting before insertion and keep all information about vias). After insertion the vehicle already has a real start edge so the routing source will always be a real edge but the destination may still vary with the taz info as above. Stops should still be taken into account (if they are not already done) but vias are ignored for the moment (until we implement the more general concept of “waypoints” which define intermediate positions / speeds on the route which are no stops).</p>
+
+<h1 id="output">Output</h1>
+
+<p>duarouter always generates a route file and a route alternatives file (with route distributions).</p>
+
+<ul>
+  <li>it always contains vehicles with nested routes (and optionally stops which are vehicle child elements and not route child elements)</li>
+  <li>“from” and “to” are not retained in the output, “fromTaz”, “toTaz” and “via” are
+    <ul>
+      <li>alternative: keep “via” only if necessary (if it cannot be reconstructed from the stops)</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="vehroutes">vehroutes</h2>
+
+<p>Should basically generate a usable route file as well.</p>
+
+  </div><a class="u-url" href="/sumo-documentation/Specification/Duarouter/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

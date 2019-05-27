@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Tools LiSuM | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Tools LiSuM" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Tools/LiSuM/" />
+<meta property="og:url" content="/sumo-documentation/Tools/LiSuM/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Tools/LiSuM/","headline":"Tools LiSuM","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Tools LiSuM</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Tools/LiSuM.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <table>
+  <tbody>
+    <tr>
+      <td>[thumb</td>
+      <td>150px</td>
+      <td>right</td>
+      <td>LiSuM Logo](/File:LisaSumoIcon.png “wikilink”)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>LiSuM is a middleware that couples <a href="https://www.schlothauer.de/en/software-systems/lisa/">LISA+</a> and SUMO helping to execute more complex traffic controls on the intersections than SUMO originally permits. SUMO communicates with the LISA+ virtual controller through LiSuM.</p>
+
+<p>LISA+ is a proprietary software tool developed and commercialized by <a href="https://www.schlothauer.de/">Schlothauer &amp; Wauer</a> used to plan and evaluate complex intersections. The control logics created with it can be directly uploaded to real controllers or tested with SUMO (using LiSuM) and VISSIM, a proprietary microscopic 3D traffic simulator.</p>
+
+<p>LiSuM was built on Java technology and thus can be run on any operating system. LiSuM is licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GPL</a> and its current version is the 1.0.0.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[thumb</td>
+      <td>550px</td>
+      <td>right</td>
+      <td>SUMO communicates with the LISA+ virtual controller through LiSuM](/File:flowws.png “wikilink”)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="installation">Installation</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[thumb</td>
+      <td>350px</td>
+      <td>right</td>
+      <td>LiSuM Main window](/File:LISASumo.MainWindow.PNG “wikilink”)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The installation of LiSuM is straightforward and it may not present major difficulties. It is recomended to have Java SE Runtime Environment (version 8 and later) and SUMO (version 0.29.0 and later) installed before beginning with the installation. In order to install it on a Windows machine just download and execute the provided <em>msi</em> file and follow its instructions. On Ubuntu or other Linux distributions download the provided <em>zip</em> file and unzip it in any directory of your choice; to start LiSuM, seek the <em>jar</em> file, open a terminal and execute it using the well-known <i>java -jar</i> command.</p>
+
+<p>When LiSuM is started for the first time, the user is prompt to select a directory which is going to be used as the workspace directory. The workspace is the directory where LiSuM looks for existing simulation projects, where new ones should be stored and where the system preferences are saved. If needed use the system preferences window to change the workpace path.</p>
+
+<h2 id="getting-started">Getting started</h2>
+
+<p>Open LiSuM, set the SUMO path in the system proferences dialog window and open an existing simulation project from the workspace. In the Tools menu, select “Start Lisa+ Virtual Controller” to start an instance of the LISA+ Virtual Controller. Pressing Ctrl+p or clicking on the “Play” button on the toolbar will open an instance of the SUMO-GUI, which will take control over the system. Almost all menus, toolbars and dialog windows of LiSuM get blocked and from hereon the simulation may be started, paused, resumed and stopped from SUMO. Only the Control Units Management dialog window stays enabled so it is possible to change the control units settings during the execution of the simulation.</p>
+
+<p>For better understanding of how LiSuM works, you can play around with the two sample projects (sampleSimulation and simpleSampleSimulation) located in the workspace.</p>
+
+<h3 id="creating-a-new-simulation-project">Creating a new simulation project</h3>
+
+<p>A simulation project is a directory containing:</p>
+
+<ul>
+  <li>A LiSuM configuration file (lisum.xml)</li>
+  <li>SUMO files (*.add.xml, *.net.xml, *.rou.xml, *.sumocfg, etc)</li>
+  <li>A directory containing LISA+ control units files (exported from LISA+ to Vissim)</li>
+</ul>
+
+<h4 id="configuration-file">Configuration file</h4>
+
+<p>The LiSuM configuration file is a XML file (always named <em>lisum.xml</em>) which contains the necessary information to control the way LISA+ communicates with SUMO during the execution of a simulation by telling LiSuM how to match control units, signal groups and detectors to one another. The configuration file is basically composed of the mandatory elements <code class="highlighter-rouge">input</code> and <code class="highlighter-rouge">controlUnits</code> that is composed of the two non-mandatory tags <code class="highlighter-rouge">controlUnits</code> and <code class="highlighter-rouge">detectors</code>. Since LISA+ and SUMO use different naming conventions for their elements, the fields <code class="highlighter-rouge">controlUnits</code> and <code class="highlighter-rouge">detectors</code> tell LiSuM how are they called in each system.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[thumb</td>
+      <td>320px</td>
+      <td>right](/File:Classes.PNG “wikilink”)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Example:</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;simulation&gt;
+   &lt;input&gt;
+      &lt;lisa&gt;lisaDirectory&lt;/lisa&gt;
+   &lt;/input&gt;
+
+   &lt;controlUnits&gt;
+      &lt;controlUnit  lisa="z1_fg1" sumo="gneJ1" &gt;
+         &lt;signalGroups&gt;
+            &lt;signalGroup  lisa="K1" sumo="0" /&gt;
+            &lt;signalGroup  lisa="K2" sumo="1" /&gt;
+            &lt;signalGroup  lisa="K3" sumo="2" /&gt;
+            &lt;signalGroup  lisa="K4" sumo="3" /&gt;
+         &lt;/signalGroups&gt;
+
+         &lt;detectors&gt;
+            &lt;detector  lisa="D1" sumo="myLoop1" /&gt;
+         &lt;/detectors&gt;
+      &lt;/controlUnit&gt;
+
+      &lt;controlUnit  lisa="z1_fg2" sumo="gneJ2" &gt;
+         &lt;signalGroups&gt;
+            &lt;signalGroup lisa="K1" sumo="0,1,2" /&gt;
+            &lt;signalGroup lisa="K2" sumo="3,4" /&gt;
+            &lt;signalGroup lisa="K3" sumo="5,6,7"/&gt;
+            &lt;signalGroup lisa="K4" sumo="8" main="K3" /&gt;
+         &lt;/signalGroups&gt;
+      &lt;/controlUnit&gt;
+   &lt;/controlUnits&gt;
+&lt;/simulation&gt;
+</code></pre></div></div>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[thumb</td>
+      <td>190px</td>
+      <td>right</td>
+      <td>Logging levels](/File:LoggingLevels.PNG “wikilink”)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The configuration file shown above declares the following:</p>
+
+<ul>
+  <li>The LISA+ control unit files are in the directory <span style="background:#ffe6e6"><SIMULATION_DIRECTORY>/lisaDirectory&lt;/span&gt;.</SIMULATION_DIRECTORY></span></li>
+  <li>There are two control units where…
+    <ul>
+      <li>the first control unit…
+        <ul>
+          <li>matches the LISA+’s control unit <b><i>z1_fg1</i></b> with <b><i>gneJ1</i></b> in SUMO.</li>
+          <li>is composed of four signal groups for LISA+ and four for SUMO</li>
+          <li>contains one detector called D1 in LISA+ and myLoop1 in SUMO.</li>
+        </ul>
+      </li>
+      <li>and the second control unit…
+        <ul>
+          <li>is called <b><i>z1_fg2</i></b> in LISA+ and <b><i>gneJ2</i></b> in SUMO.</li>
+          <li>contains also four signal groups in LISA+ and 9 in SUMO, where, for example, the LISA+ signal group <b>K2</b> controls the behaviour of the SUMO signal groups number 3 and 4.</li>
+          <li>the fourth signal group contains the attribute <span style="background:#ffe6e6">main</span> set to <b>K3</b>. This means that if the LISA+ signal group <b>K4</b> is disabled (<i>OFF</i>) at any time of the cycle, the SUMO signal group number 8 will take the state of the signal group <b>K3</b> of LISA+.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="tools">Tools</h2>
+
+<h3 id="control-units-management">Control Units Management</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[thumb</td>
+      <td>300px</td>
+      <td>right</td>
+      <td>Control units management window](/File:LISASumo.ControlUnitsOptionsWindow.PNG “wikilink”)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The Control Units Managemente dialog window gets opened by pressing Ctrl+M or by clicking on the “Grid” button on the simulation toolbar. In this dialog it is possible to change the behaviour of all available control units of the simulation by turning them off and on, selecting the program, or enabling or disabling program settings like VA (Verkehrsabhänhig) and ÖV (Öffentliche Verkehrsmittel).</p>
+
+<p>It is also possible to deactivate the communication with LISA+ by unclicking the check box right of the control units combo box (image below). Per default, LISA+ controls units not being assigned to any Sumo intersection appear disabled.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[thumb</td>
+      <td>170px</td>
+      <td>center</td>
+      <td>Checkbox to deactivate the communication with LISA+](/File:Controlunits_on.PNG “wikilink”)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="lisa-virtual-controller">LISA+ Virtual Controller</h3>
+
+<p>LISA+ provides an executable stand-alone Java JAR file containing an application called LISA+ Virtual Controller and is used to simulate control units devices and run control logics on it. Therefore it is not necessary to have LISA+ installed to be able to run LiSuM. This application is originally intended to be used with Vissim. The communication with LISA+ Virtual Controller happens over RESTful web services, the communication protocol is REST/HTTP and the data format is described using WSDL/XSD files, used to describe SOAP services.</p>
+
+<p>It is necessary that, before starting SUMO, an instance of the LISA+ Virtual Controller is opened and running (clicking on <em>Menu: Tools -&gt; Start Lisa+ Virtual Controller</em> or by pressing Ctrl+r).</p>
+
+<p>Per default the LISA+ Virtual Controller and its configuration file (OmlFgServer.ini) are to be found in the <span style="background:#ffe6e6">OmlFgServer</span> directory located in the LiSuM installation directory. This path can be changed in the System Preferences Window (<em>Menu: Tools -&gt; Preferences</em>).</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[thumb</td>
+      <td>400px</td>
+      <td>right</td>
+      <td>LISA+ Virtual Controller (Windows 7)](/File:VirtualController.PNG “wikilink”)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="simulations-directory">Simulations directory</h3>
+
+<p>Per default, LiSuM searches for simulations in the <span style="background:#ffe6e6">simulations</span> directory, which can be found in the instalation directory (…/DLR/LiSuM/). The simulations directory can be changed in the <i>System Preferences Window</i> (<em>Menu: Tools -&gt; System Preferences</em>).</p>
+
+<h2 id="miscellaneous">Miscellaneous</h2>
+
+<h3 id="the-green-phase-matching-problem">The green phase matching problem</h3>
+
+<p>While LISA+ only defines and uses only one green phase, SUMO uses two different types of them: <b><i>g</i></b> (no priority) and <b><i>G</i></b> (priority). This way, when LISA+ switches a signal group to green, LiSuM has to decide which of the two types of green may send to the corresponding SUMO signal group. Since there is no ideal solution to this problem so a heuristic approach is applied: LiSuM decides in forehand which green phase each SUMO signal group will ALWAYS receive based on the number of <b><i>G</i></b><i>s</i> and <b><i>g</i></b><i>s</i> that each signal group has in their configuration strings in the net.xml file of the simulations project (tag tlLogic), having <b><i>G</i></b> priority over <b><i>g</i></b>.</p>
+
+<p>Some examples:</p>
+
+<ul>
+  <li>
+    <phase duration="31" state="GGggrrrrGGggrrrr" />
+    <p><code class="highlighter-rouge"> → This signal group will always switch to </code><b><i><code class="highlighter-rouge">G</code></i></b></p>
+  </li>
+  <li>
+    <phase duration="5" state="yyggrrrryyggrrrr" />
+    <p><code class="highlighter-rouge"> → This signal group will always switch to </code><b><i><code class="highlighter-rouge">g</code></i></b></p>
+  </li>
+  <li>
+    <phase duration="6" state="rrGGrrrrrrGGrrrr" />
+    <p><code class="highlighter-rouge"> → This signal group will always switch to </code><b><i><code class="highlighter-rouge">G</code></i></b></p>
+  </li>
+  <li>
+    <phase duration="5" state="rryyrrrrrryyrrrr" />
+    <p><code class="highlighter-rouge"> → This signal group will always switch to </code><b><i><code class="highlighter-rouge">G</code></i></b></p>
+  </li>
+  <li>
+    <phase duration="31" state="rrrrGGggrrrrGggg" />
+    <p><code class="highlighter-rouge"> → This signal group will always switch to </code><b><i><code class="highlighter-rouge">g</code></i></b></p>
+  </li>
+</ul>
+
+  </div><a class="u-url" href="/sumo-documentation/Tools/LiSuM/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

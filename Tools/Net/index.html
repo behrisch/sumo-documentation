@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Tools Net | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Tools Net" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Tools/Net/" />
+<meta property="og:url" content="/sumo-documentation/Tools/Net/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Tools/Net/","headline":"Tools Net","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Tools Net</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Tools/Net.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="netdiffpy">netdiff.py</h1>
+
+<p>This script compares two <em>.net.xml</em> files. The call</p>
+
+<p><code class="highlighter-rouge"> </code><code class="highlighter-rouge">/tools/net/netdiff.py A.net.xml B.net.xml diff</code></p>
+
+<p>will produce 4 <a href="/Networks/Building_Networks_from_own_XML-descriptions" title="wikilink">plain-XML network</a> files</p>
+
+<ul>
+  <li>diff.nod.xml</li>
+  <li>diff.edg.xml</li>
+  <li>diff.con.xml</li>
+  <li>diff.tll.xml</li>
+</ul>
+
+<p>These files contain groups of xml elemens (i.e. nodes) that have been delete, created or modified and can be used to investigate differences between the two networks <em>A</em> and <em>B</em>. Furthermore these files be used to maintain change-sets for making repeatable modifications:</p>
+
+<p><code class="highlighter-rouge">netconvert --sumo-net-file A.net.xml -n diff.nod.xml -e diff.edg.xml -x diff.con.xml -i diff.tll.xml -o B.net.xml</code></p>
+
+<p>The above call can be used to recreate network <em>B</em> based on <em>A</em> and the recorded change-set. Note, that for any modified elements (i.e. modified speed limit for an edge) the file <em>diff.edg.xml</em> only contains to modified attributes.</p>
+
+<p>A typical use case for <em>netdiff.py</em> is this:</p>
+
+<ol>
+  <li><a href="/Networks/Import/OpenStreetMap" title="wikilink">Import a network from OSM</a> (call this <em>A.net.xml</em>)</li>
+  <li>make some modifications with <a href="/NETEDIT" title="wikilink">NETEDIT</a> (save this under the new name <em>B.net.xml</em>)</li>
+  <li>use <em>netdiff.py</em> to create the <em>diff</em>-files</li>
+  <li>At a later date, re-import the OSM network (with a newer OSM file, a new version of <a href="/NETCONVERT" title="wikilink">NETCONVERT</a> or different options)</li>
+  <li>re-apply the <em>diff</em>-files to avoid repeating manual corrections with <a href="/NETEDIT" title="wikilink">NETEDIT</a></li>
+</ol>
+
+<h1 id="createroundaboutconnectionspy">createRoundaboutConnections.py</h1>
+
+<p>This script generates additional connections for roundabouts from a given network. The following connections are added:</p>
+
+<ul>
+  <li>vehicles can stay inside of the roundabout on every lane.</li>
+  <li>vehicles can leave a roundabout even if they are driving on an inner lane if there are enough outgoing lanes.</li>
+</ul>
+
+<h1 id="netcheckpy">netcheck.py</h1>
+
+<p>This tool checks the network (first parameter) for weak connectivity (whether there is a route from every node to every other node, regardless of edge direction) and prints the connected components if not.</p>
+
+<p>Additionally you may run this script to discover which edges are reachable from a particular edge</p>
+
+<p><code class="highlighter-rouge"> </code><code class="highlighter-rouge">/tools/net/netcheck.py &lt;your.net.xml&gt; --source </code><edge_id>` --selection-output selection.txt`</edge_id></p>
+
+<p>This will create a file called <em>selection.txt</em> which can be loaded in <a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a> to visualize the portion of the network reachable from <edge_id>. To visualize the selection you must load the file using the menus **Edit-&gt;Edit chosen**. Then you need to enable edge coloring by selection status in the view settings dialog **Street-&gt;Color by: selection**. The reachable portion of the network will be colored differently from the unreachable portion which is usually sufficient to figure out network modelling errors.</edge_id></p>
+
+<p>The options can be shortened to for source edges and for selection output.</p>
+
+<p>Using option , or , lists edges which can reach the given edge. By adding the option , or , the check becomes <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Abstract_Vehicle_Class" title="wikilink">vClass</a> aware.</p>
+
+<p>The option , or , writes all the identified components and their constituent edges to the specified file. The option , or , writes the whole network summary of largest component percentage coverage and component edge count distribution to the specified file.</p>
+
+<p>The and options are not compatible with the or .</p>
+
+<p>Use the option for the latest version information.</p>
+
+<h1 id="netextractpy">netextract.py</h1>
+
+<p>This tool extracts nodes and edges from a given network for their reuse in NETCONVERT.</p>
+
+<h1 id="xmledges_applyoffsetpy-and-xmlnodes_applyoffsetpy">xmledges_applyOffset.py and xmlnodes_applyOffset.py</h1>
+
+<p>Both tools apply the given offset to the geometrical information of edges or nodes given in the input file. The results are written into <XMLEDGES>.mod.xml or <XMLNODES>.mod.xml, respectively.</XMLNODES></XMLEDGES></p>
+
+<p><code class="highlighter-rouge">xmledges_applyOffset.py </code><XMLEDGES>` `<X-OFFSET>` `<Y-OFFSET>
+`xmlnodes_applyOffset.py `<XMLNODES>` `<X-OFFSET>` `<Y-OFFSET></Y-OFFSET></X-OFFSET></XMLNODES></Y-OFFSET></X-OFFSET></XMLEDGES></p>
+
+<ul>
+  <li>
+    <XMLEDGES>/<XMLNODES>: The edges/nodes file which content shall be shited
+</XMLNODES></XMLEDGES>
+  </li>
+  <li>
+    <X-OFFSET>: The x-offset to apply
+</X-OFFSET>
+  </li>
+  <li>
+    <Y-OFFSET>: The x-offset to apply
+
+</Y-OFFSET>
+  </li>
+</ul>
+<p>xmlconnections_mapEdges.py
+===========================</p>
+
+<p>Reads edge id replacements from “edgemap.txt”; the format of this file is</p>
+
+<OLD_EDGE_ID>`-&gt;`<NEW_EDGE_ID>
+
+Reads the given connections file <CONNECTIONS> and replaces old edge names by new. The result is written to <CONNECTIONS>.mod.xml
+
+`xmlconnections_mapEdges.py `<CONNECTIONS>
+
+-   <OLD_EDGE_ID>: Id of an edge as used within <CONNECTIONS>
+-   <NEW_EDGE_ID>: Id of the edge as to use instead
+-   <CONNECTIONS>: The connections file to change
+</CONNECTIONS></NEW_EDGE_ID></CONNECTIONS></OLD_EDGE_ID></CONNECTIONS></CONNECTIONS></CONNECTIONS></NEW_EDGE_ID></OLD_EDGE_ID>
+
+  </div><a class="u-url" href="/sumo-documentation/Tools/Net/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

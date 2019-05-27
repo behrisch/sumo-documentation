@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Tutorials OSMWebWizard | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Tutorials OSMWebWizard" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Tutorials/OSMWebWizard/" />
+<meta property="og:url" content="/sumo-documentation/Tutorials/OSMWebWizard/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Tutorials/OSMWebWizard/","headline":"Tutorials OSMWebWizard","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Tutorials OSMWebWizard</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Tutorials/OSMWebWizard.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="about">About</h1>
+
+<p>The OSM Web Wizard offers one of the easiest solution to start with SUMO. Based on a selection of an openstreetmap map excerpt you will be able to configure a randomized traffic demand and run and visualize the scenario in the <a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a>. This tutorial will guide you step by step from the selection of the map excerpt over defining the traffic demand through running and visualizing the scenario in the SUMO-GUI.</p>
+
+<h1 id="requirements">Requirements</h1>
+
+<ul>
+  <li><a href="/Installing" title="wikilink">SUMO</a> installation</li>
+  <li><a href="http://www.python.org">Python</a> (&gt;= 2.7) installation</li>
+</ul>
+
+<h1 id="getting-started">Getting started</h1>
+
+<p>The OSM Web Wizard is essentially a collection of python scripts located under the directory <em>tools</em> in your sumo installation root. You start the OSM Web wizard by invoking the following command in the <em>tools</em> directory.</p>
+
+<p><code class="highlighter-rouge">   python osmWebWizard.py</code></p>
+
+<p>Windows users may also invoke the command by clicking <em>All Programs -&gt; SUMO -&gt; OSM Web Wizard</em>. Once the script is running a web browser should open showing a map excerpt of central Berlin</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[800px</td>
+      <td>initial OSM Web Wizard view](/Image:wz01.jpg “wikilink”)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>You may zoom and pan to the area of your interest. Caution, if the map excerpt covers a very large area the simulation might become slow or even unresponsive. We suggest to choose a similar zoom level as in the initial view.</p>
+
+<p>In the next step you select the actual area for wich you want to generate the simulation scenario. The area selection will be activated by clicking the check box <em>Select Area</em> at the blue area selction panel on the right side of the map.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[800px</td>
+      <td>The selected simulation area](/Image:wz02.jpg “wikilink”)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>You can change the size and location of this area by click and hold with the mouse pointer at the boundary between the grayed and non-grayed area. Once you are satisfied with the area selection you can proceed to the next step.</p>
+
+<h1 id="demand-generation">Demand Generation</h1>
+
+<p>The demand is defined by the demand generation panel. You activate this panel by clicking on the car pictogram.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[800px</td>
+      <td>Definition of the demand](/Image:wz03.jpg “wikilink”)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>SUMO supports various modes of transport. At the demand generation panel you can activate/deactivate the individual modes of transport by clicking the corresponding checkboxes. For each mode of transport the OSM Web Wizard generates random demand based on a certain probability distribution, which is influenced by two parameters.</p>
+
+<ul>
+  <li>Every time a new vehicle is generated the OSM Web Wizard randomly choses a departure and arrival edge for the vehicle. The <em>Through Traffic Factor</em> defines how many times it is more likely for an edge at the boundary of the simulation area being chosen compared to an edge entirely located inside the simulation area. A big value for the <em>Through Traffic Factor</em> implies that many vehicles depart and arrive at the boundary of the simulation area, which correspond to a scenario with a lot of though traffic.</li>
+  <li>The <em>Count</em> parameter defines how many vehicle are generated per hour and lane-kilometer. Assuming
+    <ul>
+      <li>the network contains 3 edges with a combined length of 5 km</li>
+      <li>that each has 2 lanes which allows the current traffic mode</li>
+      <li>and the count value is set to 90</li>
+      <li>then 5 * 2 * 90 = 900 vehicles per hour will be generated. This translates to a <a href="/Tools/Trip#randomTrips.py#Arrival_rate" title="wikilink">randomTrips</a> parameter of p=4 which means a new vehicle is inserted every 4 seconds somewhere in the network.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>The next step is generating and running the scenario.</p>
+
+<h1 id="generating-and-running-the-scenario">Generating and Running the scenario</h1>
+
+<p>The complete scenario will be generated automatically once <em>Generate Scenario</em> in the control panel has been clicked. The scenario generation takes a couple of seconds or minutes (depending among others on the size of the scenario). Once the scenario generation process has finished the SUMO-GUI starts and the simulation can be started by pressing the <em>Play</em>-button.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[800px</td>
+      <td>SUMO-GUI](/Image:wz04.jpg “wikilink”)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="where-to-go-from-here">Where to go from here</h1>
+
+<p>The OSM Web Wizard stores the entire simulation scenario sumo config and intermediate files in a local directory with a name in the format of <em>yyyy-mm-dd-hh-mm-ss</em>. If your SUMO installation location is writeable, the data will be stored inside the <em>tools</em> directory. Otherwise, a new directory <em>~/SUMO/yyyy-mm-dd-hh-mm-ss</em> will be created to host the data. The contents of the directory look like this:</p>
+
+<p><code class="highlighter-rouge">   ➜  2016-10-17-14-54-30 ls</code>
+<code class="highlighter-rouge">   build.bat                  osm.net.xml                osm.rail.rou.alt.xml       osm.tram.rou.alt.xml</code>
+<code class="highlighter-rouge">   osm.bicycle.rou.alt.xml    osm.netccfg                osm.rail.rou.xml           osm.tram.rou.xml</code>
+<code class="highlighter-rouge">   osm.bicycle.rou.xml        osm.passenger.rou.alt.xml  osm.rail.trips.xml         osm.tram.trips.xml</code>
+<code class="highlighter-rouge">   osm.bicycle.trips.xml      osm.passenger.rou.xml      osm.rail_urban.rou.alt.xml osm.truck.rou.alt.xml</code>
+<code class="highlighter-rouge">   osm.bus.rou.alt.xml        osm.passenger.trips.xml    osm.rail_urban.rou.xml     osm.truck.rou.xml</code>
+<code class="highlighter-rouge">   osm.bus.rou.xml            osm.pedestrian.rou.alt.xml osm.rail_urban.trips.xml   osm.truck.trips.xml</code>
+<code class="highlighter-rouge">   osm.bus.trips.xml          osm.pedestrian.rou.xml     osm.ship.rou.alt.xml       osm.view.xml</code>
+<code class="highlighter-rouge">   osm.motorcycle.rou.alt.xml osm.pedestrian.trips.xml   osm.ship.rou.xml           osm_bbox.osm.xml</code>
+<code class="highlighter-rouge">   osm.motorcycle.rou.xml     osm.poly.xml               osm.ship.trips.xml         run.bat</code>
+<code class="highlighter-rouge">   osm.motorcycle.trips.xml   osm.polycfg                osm.sumocfg</code></p>
+
+<p>You may now edit those files and re-run the simulation. To learn more about the SUMO scenario files please consult the other <a href="/Tutorials" title="wikilink">Tutorials</a> as well.</p>
+
+  </div><a class="u-url" href="/sumo-documentation/Tutorials/OSMWebWizard/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

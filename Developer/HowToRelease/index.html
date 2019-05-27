@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Developer HowToRelease | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Developer HowToRelease" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Developer/HowToRelease/" />
+<meta property="og:url" content="/sumo-documentation/Developer/HowToRelease/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Developer/HowToRelease/","headline":"Developer HowToRelease","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Developer HowToRelease</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Developer/HowToRelease.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="packages">Packages</h2>
+
+<p>for an overview of created packages and contents see <a href="/Downloads" title="wikilink">Downloads</a>.</p>
+
+<h2 id="release-steps">Release steps</h2>
+
+<p>Below, a list of steps that should be done in order to publish a new release is given. All necessary commits which have no ticket of their own may refer to .</p>
+
+<h3 id="merge-phase">Merge phase</h3>
+
+<p>Major changes to the SUMO trunk should end about two weeks before the release data. This refers especially to merges of project branches into the trunk. It is also a good idea to inform the developers of dependent software (traci4j, Veins, VSimRTI, TraaS, SUMOPy etc.) at this stage.</p>
+
+<h3 id="freeze-phase-release-day---7">Freeze phase (Release day - 7)</h3>
+
+<ul>
+  <li>check the sources
+    <ul>
+      <li>compile, try to remove warnings and commit the patches</li>
+      <li>run <a href="/Developer/CodeStyle" title="wikilink">AStyle</a> and commit changed files</li>
+      <li>check the calendar to update copyright statements</li>
+      <li>check whether the TraCI version <a href="/TraCI/Control-related_commands#Response_0x00:_Version" title="wikilink">needs to be incremented</a> and rebuild TraCI constants in python (tools/traci/rebuildConstants.py)</li>
+      <li>check whether the network version needs to be incremented and update the value in NWFrame::MAJOR_VERSION. Netconvert tests need to be updated afterwards.</li>
+      <li>update author information</li>
+    </ul>
+  </li>
+  <li>check the regular tests
+    <ul>
+      <li>put special attention to the tests which serve as examples, see tests/examples.txt!</li>
+      <li>Win64 and gcc4_64 should have no failing tests, the other platforms are less important</li>
+      <li>If there are failing tests, which are not flagged as known bugs, save them after careful checking or open a ticket and assign a known bug.</li>
+      <li>recheck/rebuild the test networks (if necessary due to netconvert changes)</li>
+      <li>check the tests again</li>
+    </ul>
+  </li>
+  <li>check the documentation
+    <ul>
+      <li>update the <a href="/ChangeLog" title="wikilink">change log</a></li>
+      <li>generate options documentation from configuration templates using configTemplateToWiki.py (for instance <code class="highlighter-rouge">tools/build/configTemplateToWiki.py activitygen | xclip</code> which copies it directly to the clipboard)</li>
+      <li>recheck/rebuild the configuration schemata (if options were added) using tools/xml/rebuildSchemata.py (use the internal build to include all options)</li>
+    </ul>
+  </li>
+  <li>check the internal tests (same procedure as above), especially the (to be) published scenarios</li>
+  <li>GitHub
+    <ul>
+      <li>add new <a href="https://github.com/DLR-TS/sumo/milestones">milestone</a> if necessary</li>
+      <li>check all remaining tickets and assign them to later milestones or to persons.</li>
+    </ul>
+  </li>
+  <li>scenarios (optional)
+    <ul>
+      <li>prepare scenarios for release if the previous version does not run with the current release or significant changes were made to the scenarios</li>
+    </ul>
+  </li>
+  <li>update submodules by running <code class="highlighter-rouge">git submodule update</code> and committing the changes if necessary</li>
+</ul>
+
+<p>The trunk is now frozen. All commits which do not refer to an open ticket for the upcoming release need to be made to a separate branch. The freeze phase should not last longer than one week. The goal is to fix all scenarios and have all failing tests fixed, which are not assigned to a later milestone.</p>
+
+<h3 id="release-day---1">Release day - 1</h3>
+
+<p>All scenarios should be fixed by now.</p>
+
+<ul>
+  <li>patch the version information
+    <ul>
+      <li>in windows_config.h, also disable the HAVE_VERSION_H macro</li>
+      <li>in configure.ac and build/wix/sumo.wxs</li>
+      <li>commit the changes</li>
+    </ul>
+  </li>
+  <li>recheck whether submodules changed by doing <code class="highlighter-rouge">git submodule update</code> and committing the changes after careful inspection</li>
+  <li>check the documentation
+    <ul>
+      <li>update the <a href="/ChangeLog" title="wikilink">change log</a> again and include version and release date</li>
+      <li>modify the <a href="/Template:Version" title="wikilink">Version Template</a> to update <a href="/Downloads" title="wikilink">download links</a> and .</li>
+      <li>update the release date on the <a href="/Main_Page" title="wikilink">main page</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="release-day">Release day</h3>
+
+<p>The nightly build should have generated all releasable packages. If not, delay the release. (The complete documentation, tests and source distribution build can be achieved via “make dist-complete”.) The following things need to be there:</p>
+
+<ul>
+  <li>the platform independent part of the distribution;
+    <ul>
+      <li>source distributions (.tar.gz, .zip) (“make dist”, rename)</li>
+      <li>tests distributions (.tar.gz) (“make dist-tests”)</li>
+      <li>docs distributions (.tar.gz) (“make dist-doc”)</li>
+    </ul>
+  </li>
+  <li>the binary part of the distribution
+    <ul>
+      <li>windows binary distribution (zip, includes docs)</li>
+      <li>windows installer (msi, Win32 and x64, includes docs)</li>
+      <li>check presence of RPMs on <a href="https://build.opensuse.org/package/show/home:behrisch/sumo">https://build.opensuse.org/package/show/home:behrisch/sumo</a></li>
+    </ul>
+  </li>
+</ul>
+
+<p>If everything is fine:</p>
+
+<ul>
+  <li>make a new folder in O:\Daten\Sumo\Releases</li>
+  <li>make new sourceforge-release
+    <ul>
+      <li>make a new release within the sumo package (named “version x.y.z”)</li>
+      <li>add files to the release</li>
+      <li>change default download attributes</li>
+      <li>update files at the <a href="https://build.opensuse.org/package/show?package=sumo&amp;project=home%3Abehrisch">opensuse build service</a></li>
+    </ul>
+  </li>
+  <li>scenarios (optional)
+    <ul>
+      <li>add files to <a href="https://sourceforge.net/projects/sumo/files/traffic_data/scenarios/">the scenario folder</a></li>
+      <li>updated README.txt</li>
+    </ul>
+  </li>
+  <li><del>unpack the doc.tar.gz into the “doc” folder on the web space</del>
+    <ul>
+      <li><del>change the current link for the docs</del></li>
+    </ul>
+  </li>
+  <li>inform the users about the new release
+    <ul>
+      <li>post information about the release to sumo-user@eclipse.org and sumo-announce@eclipse.org</li>
+      <li><del>post information about the release to news</del></li>
+      <li><del>post information into the <a href="http://sumo-sim.org/blog">blog</a></del></li>
+      <li>trigger update of main website at <a href="http://sumo.dlr.de">http://sumo.dlr.de</a></li>
+    </ul>
+  </li>
+  <li>add a new version tag</li>
+</ul>
+
+<p><code class="highlighter-rouge">&gt; git tag -a v0_13_7 -m </code>“<code class="highlighter-rouge">tagging</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">release</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">0.13.7,</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">refs</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">#563</code>”
+<code class="highlighter-rouge">&gt; git push --tags</code></p>
+
+<ul>
+  <li>close <a href="https://github.com/DLR-TS/sumo/milestones">the milestone</a> (retargeting open tickets needs to be done manually for now)</li>
+</ul>
+
+<h3 id="after-release-cleanup">After-release cleanup</h3>
+
+<p>The trunk is now open for changes again.</p>
+
+<ul>
+  <li>reenable HAVE_VERSION_H in windows_config.h</li>
+  <li>rename version to “git” in configure.ac</li>
+  <li>insert a new empty “Git master” section at the top of the <a href="/ChangeLog" title="wikilink">change log</a></li>
+  <li>commit changes</li>
+  <li>drink your favorite beverage</li>
+</ul>
+
+  </div><a class="u-url" href="/sumo-documentation/Developer/HowToRelease/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

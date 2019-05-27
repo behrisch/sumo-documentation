@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Purgatory Traffic Lights | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Purgatory Traffic Lights" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Purgatory/Traffic_Lights/" />
+<meta property="og:url" content="/sumo-documentation/Purgatory/Traffic_Lights/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Purgatory/Traffic_Lights/","headline":"Purgatory Traffic Lights","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Purgatory Traffic Lights</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Purgatory/Traffic_Lights.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="traffic-lights">Traffic Lights</h1>
+
+<h2 id="command-0x41-get-traffic-light-status">Command 0x41: Get Traffic Light Status</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center">integer</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">TrafficLightId</td>
+      <td style="text-align: center">IntervalStart [ms]</td>
+      <td style="text-align: center">IntervalEnd [ms]</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The traffic lights of the junction specified by <em>TrafficLight-Id</em> are asked for their state transitions that will occur within a given time interval defined by <em>IntervalStart</em> and <em>IntervallEnd</em>. All traffic light switches within this interval are then reported as a series of <em>Traffic Light Switch</em> responses (s. below).</p>
+
+<h3 id="response-0x91-traffic-light-switch">Response 0x91: Traffic Light Switch</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">float</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">integer</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">SwitchTime [ms]</td>
+      <td style="text-align: center">PrecedingEdge</td>
+      <td style="text-align: center">PositionOnPrecedingEdge</td>
+      <td style="text-align: center">SucceedingEdge</td>
+      <td style="text-align: center">NewPhase</td>
+      <td style="text-align: center">YellowTime [ms]</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>This response is sent for each switch in a traffic lights phase that occurs within the time interval given by the command <em>Get Traffic Light Status</em>. The <em>NewPhase</em> that the traffic light will switch to is reported along with the time of the switch (<em>SwitchTime</em>) and the duration of the yellow phase that precedes the phase switch (<em>YellowTime</em>).
+A switch is reported for each pair of <em>PrecedingEdge</em> and <em>SucceedingEdge</em> that is affected by it. Additionally, the traffic light’s <em>PositionOnPrecedingEdge</em> is given.</p>
+
+  </div><a class="u-url" href="/sumo-documentation/Purgatory/Traffic_Lights/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

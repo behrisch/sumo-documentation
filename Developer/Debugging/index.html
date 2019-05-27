@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Developer Debugging | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Developer Debugging" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Developer/Debugging/" />
+<meta property="og:url" content="/sumo-documentation/Developer/Debugging/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Developer/Debugging/","headline":"Developer Debugging","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Developer Debugging</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Developer/Debugging.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Besides using a debugger (e.g. <a href="https://www.gnu.org/s/gdb/">gdb</a>) with the debug build (see below), the SUMO source code offers debugging macros at several locations, which are usually deactivated (e.g., commented out). Activating the macros can yield a detailed program output, that can be configured by given parameters.</p>
+
+<h2 id="debug-build">Debug Build</h2>
+
+<p>To create debugging symbols during the build, see the build instructions for your operating system (<a href="/Installing/Linux_Build" title="wikilink">Linux</a> / <a href="/Installing/Windows_Build" title="wikilink">Windows</a> / <a href="/Installing/MacOS_Build" title="wikilink">MacOS</a>). The corresponding binaries receive the suffix <code class="highlighter-rouge">D</code> (e.g. <code class="highlighter-rouge">sumoD</code> instead of <code class="highlighter-rouge">sumo</code>). The debug configuration defines a preprocessor macro <code class="highlighter-rouge">_DEBUG</code> that may be used to encapsulate debug specific code. For simple text debugging, local macros should be used that can be switched on and off more flexibly, see below.</p>
+
+<h2 id="local-debug-macros">Local Debug Macros</h2>
+
+<p>The recommended style for inserting reusable debugging code in SUMO is encapsulation by preprocessor directives. This is done by placing a <code class="highlighter-rouge">#define DEBUG_THIS_CODE</code> at the beginning of a source (preferably just below any other <code class="highlighter-rouge">#include</code> or <code class="highlighter-rouge">#define</code> macros). The debugging code (e.g. some output to <code class="highlighter-rouge">std::cout</code>) should then be surrounded by</p>
+
+<p><code class="highlighter-rouge">#ifdef DEBUG_THIS_CODE</code>
+<code class="highlighter-rouge">    ...</code>
+<code class="highlighter-rouge">#endif</code></p>
+
+<p>Thus, it can be switched on and off by (un)commenting the <code class="highlighter-rouge">#define DEBUG_THIS_CODE</code> line.</p>
+
+<p>Sometimes it is useful to combine this with a condition for more specific debugging output. For instance, if only output for the vehicle with ID ‘my_new_ferrari’ is needed while looping through all vehicles, you should insert a corresponding debug condition</p>
+
+<p><code class="highlighter-rouge">#define DEBUG_COND (veh.getID() == </code>“<code class="highlighter-rouge">my_new_ferrari</code>”<code class="highlighter-rouge">)</code></p>
+
+<p>(at the same location as the <code class="highlighter-rouge">#define DEBUG_THIS_CODE</code>) and encapsulate the debug code further as</p>
+
+<p><code class="highlighter-rouge">#ifdef DEBUG_THIS_CODE</code>
+<code class="highlighter-rouge">    if DEBUG_COND {</code>
+<code class="highlighter-rouge">        ...</code>
+<code class="highlighter-rouge">    }</code>
+<code class="highlighter-rouge">#endif</code></p>
+
+<p>Note that this presupposes that <code class="highlighter-rouge">veh</code> is a reference to the current vehicle, which is being looped over. It is worth mentioning that you can also define debug conditions with arguments to become a bit more flexible. For example:</p>
+
+<p><code class="highlighter-rouge">#define DEBUG_COND(x) (x != 0 &amp;&amp; x-&gt;getID() == "my_new_ferrari")</code>
+<code class="highlighter-rouge">    ...</code>
+<code class="highlighter-rouge">#ifdef DEBUG_THIS_CODE</code>
+<code class="highlighter-rouge">    if DEBUG_COND(veh_pointer) {</code>
+<code class="highlighter-rouge">        ...</code>
+<code class="highlighter-rouge">    }</code>
+<code class="highlighter-rouge">#endif</code></p>
+
+<p>Debugging macros already exist at several locations (see some of these before implementing your own):</p>
+
+<ul>
+  <li>src/microsim/MSLane.cpp</li>
+  <li>src/microsim/MSLink.cpp</li>
+  <li>src/microsim/MSVehicle.cpp</li>
+  <li>src/microsim/lcmodel/MSLCM_LC2013.cpp</li>
+  <li>src/guisim/GUIVehicle.cpp</li>
+  <li>src/guisim/GUILane.cpp</li>
+</ul>
+
+<h2 id="selection-based-vehicle-debugging">Selection based vehicle debugging</h2>
+
+<p>The header <code class="highlighter-rouge">utils/common/StdDefs.h</code> provides the String <code class="highlighter-rouge">gDebugSelectedVehicle</code>, which always holds the id of the last vehicle, which was selected in the GUI, and can be used in the debugging conditions to obtain a dynamic debugging selection (provided the corresponding macro is activated).</p>
+
+  </div><a class="u-url" href="/sumo-documentation/Developer/Debugging/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

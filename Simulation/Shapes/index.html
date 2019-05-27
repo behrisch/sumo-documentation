@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Simulation Shapes | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Simulation Shapes" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Simulation/Shapes/" />
+<meta property="og:url" content="/sumo-documentation/Simulation/Shapes/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Simulation/Shapes/","headline":"Simulation Shapes","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Simulation Shapes</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Simulation/Shapes.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="using-additional-polygons-and-pois-within-the-simulation">Using additional Polygons and POIs within the Simulation</h1>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[left</td>
+      <td>thumb</td>
+      <td>Example of using polygons and POIs; from Traffic Online, area#1](/Image:tol1_with_polys.gif “wikilink”)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Definitions of colored polygons and POIs (points of interest) can be loaded within an . These shapes are currently meant to improve a simulation’s appearance and to allow an easier debugging. No special interaction with them is implemented, yet.</p>
+
+<p>Both polygons and points of interest may be located within a “layer”. Shapes with lowest layer values are below those with a higher layer number. The network itself is drawn as layer 0. An additional file may contain definitions for both points of interest and polygons.</p>
+
+<p>Geometrical objects may either be defined “by hand” or imported using <a href="/POLYCONVERT" title="wikilink">POLYCONVERT</a>. A valid geometry-file can be given to <a href="/SUMO" title="wikilink">SUMO</a> as one of the additional files (option: **–additional-files *<FILE>***). For usage within [SUMO-GUI](/SUMO-GUI "wikilink"), you have to add it to the list of additional files to load within the used [configuration file](/Basics/Using_the_Command_Line_Applications#Configuration_Files "wikilink") or load the additional file interactively through the [GUI](/SUMO-GUI#Loading_Shapes_and_POIs "wikilink").</FILE></p>
+
+<h1 id="definitions">Definitions</h1>
+
+<p>The geometrical objects (POIs, polygons) are stored one by one into an “additional file”. Currently, the root element may arbitary.</p>
+
+<h2 id="polygon-definitions">Polygon Definitions</h2>
+
+<p>A polygon is defined as following: <span class="inlxml">&lt;poly id=”’‘<POLYGON_ID>''" type=“*<TYPENAME>*” color=“” fill=“*<FILL_OPTION>*” layer=“*<LAYER_NO>*” shape=“*&lt;2D-POSITION&gt;*\[ *&lt;2D-POSITION&gt;*\]\*”/&gt;&lt;/span&gt;</LAYER_NO></FILL_OPTION></TYPENAME></POLYGON_ID></span></p>
+
+<p>These attributes have the following meanings:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute Name</th>
+      <th>Value Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>id</strong></td>
+      <td>id (string)</td>
+      <td>The id (a unique name) of the polygon</td>
+    </tr>
+    <tr>
+      <td><strong>shape</strong></td>
+      <td>2D position list</td>
+      <td>The shape of the polygon</td>
+    </tr>
+    <tr>
+      <td>color</td>
+      <td>color</td>
+      <td>The RGBA color with which the polygon shall be displayed; see for details</td>
+    </tr>
+    <tr>
+      <td>geo</td>
+      <td>bool</td>
+      <td>Whether the shape shall be interpreted as geo-coordinates and converted</td>
+    </tr>
+    <tr>
+      <td>fill</td>
+      <td>bool</td>
+      <td>An information whether the polygon shall be filled; optional bool, <em>default: false</em></td>
+    </tr>
+    <tr>
+      <td>layer</td>
+      <td>float</td>
+      <td>The layer in which the polygon lies; optional</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>string</td>
+      <td>A typename for the polygon.</td>
+    </tr>
+    <tr>
+      <td>imgFile</td>
+      <td>string</td>
+      <td>A bitmap to use for rendering this polygon</td>
+    </tr>
+    <tr>
+      <td>angle</td>
+      <td>float</td>
+      <td>angle of rendered image in degree</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="poi-point-of-interest-definitions">POI (Point of interest) Definitions</h2>
+
+<p>A point-of-interest is defined as following: <span class="inlxml">&lt;poi id=”’‘<POLYGON_ID>''" type=“*<TYPENAME>*” color=“*<RED>*,*<GREEN>*,*<BLUE>*” layer=“*<LAYER_NO>*” \[(x=“*<X_POS>*” y=“*<Y_POS>*”) | (lane=“*<LANE_ID>*” pos=“*<LANE_POS>*”)\]/&gt;&lt;/span&gt;</LANE_POS></LANE_ID></Y_POS></X_POS></LAYER_NO></BLUE></GREEN></RED></TYPENAME></POLYGON_ID></span></p>
+
+<p>It means that the position a point-of-interest is located at may be given either using explicite x/y-coordinates or a lane name and a position on this lane. So, the attributes have the following meanings:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute Name</th>
+      <th>Value Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>id</strong></td>
+      <td>id (string)</td>
+      <td>The id (a unique name) of the polygon</td>
+    </tr>
+    <tr>
+      <td><strong>color</strong></td>
+      <td>color</td>
+      <td>The color with which the poi shall be displayed; *<RED>*, *<GREEN>*, and *<BLUE>* must be floating point numbers between 0 and 1. They are devided using a ',' (no space); optional, *default “1,0,0”*</BLUE></GREEN></RED></td>
+    </tr>
+    <tr>
+      <td>x<sup>(*)</sup></td>
+      <td>float</td>
+      <td>The position of the poi along the x-axis in meters</td>
+    </tr>
+    <tr>
+      <td>y<sup>(*)</sup></td>
+      <td>float</td>
+      <td>The position of the poi along the y-axis in meters</td>
+    </tr>
+    <tr>
+      <td>lane<sup>(*)</sup></td>
+      <td>id (string)</td>
+      <td>The name of the lane the poi is located at; the lane must be a part of the loaded network</td>
+    </tr>
+    <tr>
+      <td>pos<sup>(*)</sup></td>
+      <td>float</td>
+      <td>The position on the named lane at which the poi is located at</td>
+    </tr>
+    <tr>
+      <td>posLat<sup>(*)</sup></td>
+      <td>float</td>
+      <td>The lateral offset on the named lane at which the poi is located at (negative values lie on the right side of the lane center line in driving direction)</td>
+    </tr>
+    <tr>
+      <td>lon<sup>(*)</sup></td>
+      <td>float</td>
+      <td>The geo-position of the poi along the east-west axis in degrees</td>
+    </tr>
+    <tr>
+      <td>lat<sup>(*)</sup></td>
+      <td>float</td>
+      <td>The geo-position of the poi along the north-south axis in degrees</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>string</td>
+      <td>A typename for the poi.</td>
+    </tr>
+    <tr>
+      <td>layer</td>
+      <td>float</td>
+      <td>the layer of the poi for drawing and selecting.</td>
+    </tr>
+    <tr>
+      <td>imgFile</td>
+      <td>string</td>
+      <td>A bitmap to use for rendering this poi. If none is given, circle is drawn instead.</td>
+    </tr>
+    <tr>
+      <td>width</td>
+      <td>float</td>
+      <td>width of rendered image in meters</td>
+    </tr>
+    <tr>
+      <td>height</td>
+      <td>float</td>
+      <td>height of rendered image in meters</td>
+    </tr>
+    <tr>
+      <td>angle</td>
+      <td>float</td>
+      <td>angle of rendered image in degree</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><sup>(*)</sup> Either <span class="inlxml">x</span>/<span class="inlxml">y</span> or <span class="inlxml">lane</span>/<span class="inlxml">pos</span> or <span class="inlxml">lon</span>/<span class="inlxml">lat</span> must be given</p>
+
+<h1 id="see-also">See Also</h1>
+
+<ul>
+  <li>See the description of <a href="/POLYCONVERT" title="wikilink">POLYCONVERT</a> in order to know how polygons/POIs can be imported from other sources</li>
+  <li><a href="/Developer/Implementation_Notes/Drawing_in_sumo-gui" title="wikilink">Developer/Implementation Notes/Drawing in sumo-gui</a> describes how <a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a> renders loaded structures (for developers)</li>
+  <li>You can <a href="/TraCI/POI_Value_Retrieval" title="wikilink">read variables of loaded PoIs</a> and <a href="/TraCI/Polygon_Value_Retrieval" title="wikilink">read variables of loaded polygons</a> via <a href="/TraCI" title="wikilink">TraCI</a></li>
+</ul>
+
+  </div><a class="u-url" href="/sumo-documentation/Simulation/Shapes/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

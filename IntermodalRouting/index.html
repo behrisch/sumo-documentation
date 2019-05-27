@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>IntermodalRouting | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="IntermodalRouting" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/IntermodalRouting/" />
+<meta property="og:url" content="/sumo-documentation/IntermodalRouting/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/IntermodalRouting/","headline":"IntermodalRouting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">IntermodalRouting</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/IntermodalRouting.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><strong>FORCETOC</strong></p>
+
+<h1 id="basic-concepts">Basic Concepts</h1>
+
+<p>Every person may have multiple modes of transport to chose from. Currently those are walking (which is assumed to be always possible), riding by public transport and going by car. Intermodal routing uses person trips to define a trip of a person including mode changes. Currently only the <a href="/DUAROUTER" title="wikilink">DUAROUTER</a> can handle this input.</p>
+
+<h1 id="defining-intermodal-demand">Defining intermodal demand</h1>
+
+<p>To define intermodal demand use the -element:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;routes&gt;
+     &lt;person id="p0" depart="0"&gt;
+        &lt;personTrip from="beg" to="end"/&gt;
+    &lt;/person&gt;
+&lt;/routes&gt;
+</code></pre></div></div>
+
+<p>The tool <a href="/Tools/Trip#randomTrips.py" title="wikilink">randomTrips.py</a> may be used with the option to generate random intermodal demand.</p>
+
+<h1 id="defining-available-cars">Defining available cars</h1>
+
+<p>To allow usage of a car, either the attribute or the vType of the available car must be specified for the personTrip:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;routes&gt;
+    &lt;vType id="typ0" vClass="passenger"/&gt;
+    &lt;person id="p0" depart="0"&gt;
+        &lt;personTrip from="beg" to="end" vTypes="typ0"/&gt;
+    &lt;/person&gt;
+&lt;/routes&gt;
+</code></pre></div></div>
+
+<h1 id="defining-public-transport">Defining public transport</h1>
+
+<p>Every vehicle with a line attribute is considered public transport and will be used for routing regardless of its capacity.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd"&gt;
+    &lt;flow id="bus" from = "beg" to ="end" line="bus" begin="0" end="1000" period="300"&gt;
+                &lt;stop busStop="beg_0" until="10"/&gt;
+                &lt;stop busStop="left_0" until="110"/&gt;
+                &lt;stop busStop="end_0" until="210"/&gt;
+    &lt;/flow&gt;
+    &lt;person id="p0" depart="0"&gt;
+        &lt;personTrip from="beg" to="end" modes="public"/&gt;
+    &lt;/person&gt;
+&lt;/routes&gt;
+</code></pre></div></div>
+
+<ul>
+  <li>In order to define a route-able bus schedule all -definitions must use the <em>until</em>-attribute.</li>
+  <li>Stops that are declared as child elements of a flow must have until times appropriate for the first vehicle in the flow. The until times for later vehicles will be shifted forward by the flow period</li>
+  <li>Stops that are declared as child element of a stand-alone route (external to a flow or vehicle) must have until times that are offsets from the departure time of the respective vehicles.</li>
+</ul>
+
+<h1 id="intermodal-cost-function">Intermodal Cost Function</h1>
+
+<p>Generally, intermodal routing may consider multiple criteria such as travel time, costs, reliability and convenience. Currently, <a href="/DUAROUTER" title="wikilink">DUAROUTER</a> only takes the following travel time into account:</p>
+
+<ul>
+  <li>Individual vehicle transport uses the standard vehicle routing costs. This can be influenced by loading custom weights via option</li>
+  <li>Walking uses the maximum walking speed of the person and multiplies this with a factor, configurable via option (default <em>0.9</em>). The factor is used to account for delays due to intersections and pedestrian interactions</li>
+  <li>Public transport uses the difference of the <em>until</em>-times between successive stops</li>
+  <li><a href="/Simulation/Public_Transport#Access_Lanes" title="wikilink">Accessing a stop from another part of the network</a> currently takes no additional time (this will be configurable in the future)</li>
+</ul>
+
+  </div><a class="u-url" href="/sumo-documentation/IntermodalRouting/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

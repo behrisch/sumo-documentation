@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Tutorials Autobahn | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Tutorials Autobahn" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Tutorials/Autobahn/" />
+<meta property="og:url" content="/sumo-documentation/Tutorials/Autobahn/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Tutorials/Autobahn/","headline":"Tutorials Autobahn","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Tutorials Autobahn</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Tutorials/Autobahn.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>This tutorial covers the very basic elements for creating heterogeneous flows on a multi-lane highway and modifying and saving view settings.</p>
+
+<h1 id="building-a-highway">Building a Highway</h1>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[thumb</td>
+      <td>upright=0.7</td>
+      <td>Editing geometry pointsOpen](/File:AutobahnEditGeometryPoints.png “wikilink”) <a href="/NETEDIT" title="wikilink">NETEDIT</a> to create a fictional highway. We keep this very simplistic for the start and consider a segment without on- or off-ramps. Enter the edge creation mode by pressing <code class="highlighter-rouge">e</code> and create an edge that is a few kilometers long. <b>Hint</b>: you can start with a long straight edge and then change to the move-mode (press <code class="highlighter-rouge">m</code>) to add and drag around geometry points on the edge to alter its shape. Save your highway as <code class="highlighter-rouge">autobahn.net.xml</code>. Now add some more lanes to the edge by right clicking on it and selecting “Duplicate lane”. Now enter the inspect mode (press <code class="highlighter-rouge">i</code>) and click on the edge. For the “speed” enter 36.11 (recall that SUMO always uses m/s as the unit for speed, 36.11m/s ~ 130km/h). Then split a short (about onehundred meters long) initial segment (right click on edge -&gt; context menu -&gt; Split edge here) of the edge and name it “entry” (press <code class="highlighter-rouge">i</code> and click on the edge, then find the right textfield in the left panel). Do the same at the end of the long edge and call the shorter edge at the end “exit”. Give the long edge the name “longEdge”.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="create-traffic">Create Traffic</h1>
+
+<p>To populate the highway with traffic, we want to add different vehicle types:</p>
+
+<ul>
+  <li>many normal passenger cars</li>
+  <li>some trucks</li>
+  <li>a few coaches</li>
+  <li>a few sporty passenger cars (higher desired travelling speed, less dawdling)</li>
+</ul>
+
+<p>All of these should in themselves have a certain heterogeneity that can be achieved in a simple way by giving the corresponding <code class="highlighter-rouge">vType</code>-element an attribute <code class="highlighter-rouge">speedDev</code> (see <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Speed_Distributions" title="wikilink">Speed Distributions</a>). We will use this approach here but for more sophisticated realizations of vehicle variability we recommend the script <code class="highlighter-rouge">createVehTypeDistribution.py</code> in the /tools directory.</p>
+
+<p>Create a routes-file <code class="highlighter-rouge">autobahn.rou.xml</code> with the following content:</p>
+
+<p><code class="highlighter-rouge">&lt;routes&gt;</code>
+<code class="highlighter-rouge">    &lt;vType id="normal car" vClass="passenger" maxSpeed="40" speedFactor="0.9" speedDev="0.2" sigma="0.5" /&gt;</code>
+<code class="highlighter-rouge">    &lt;vType id="sporty car" vClass="passenger" maxSpeed="60" speedFactor="1.3" speedDev="0.1" sigma="0.1" /&gt;</code>
+<code class="highlighter-rouge">    &lt;vType id="trailer" vClass="trailer"  maxSpeed="30" speedFactor="1.1" speedDev="0.1" /&gt;</code>
+<code class="highlighter-rouge">    &lt;vType id="coach" vClass="coach"  maxSpeed="30" speedFactor="1." speedDev="0.1" /&gt;</code>
+<code class="highlighter-rouge">    &lt;flow id="normal" type="normal car" begin="0" end="5000" number="5000" from="entry" to="exit" departPos="last" departLane="best" /&gt;</code>
+<code class="highlighter-rouge">    &lt;flow id="sporty" type="sporty car" begin="0" end="5000" number="300" from="entry" to="exit" departPos="last" departLane="best" /&gt;</code>
+<code class="highlighter-rouge">    &lt;flow id="coach" type="coach" begin="0" end="5000" number="300" from="entry" to="exit" departPos="last" departLane="best" /&gt;</code>
+<code class="highlighter-rouge">    &lt;flow id="trailer" type="trailer" begin="0" end="5000" number="700" from="entry" to="exit" departPos="last" departLane="best" /&gt;</code>
+<code class="highlighter-rouge">&lt;/routes&gt;</code></p>
+
+<h1 id="run-the-simulation">Run the Simulation</h1>
+
+<p>Create a config-file <code class="highlighter-rouge">autobahn.sumocfg</code>:</p>
+
+<p><code class="highlighter-rouge">&lt;configuration&gt;</code>
+<code class="highlighter-rouge">   &lt;input&gt;</code>
+<code class="highlighter-rouge">       &lt;net-file value="autobahn.net.xml"/&gt;</code>
+<code class="highlighter-rouge">       &lt;route-files value="autobahn.rou.xml"/&gt;</code>
+<code class="highlighter-rouge">   &lt;/input&gt;</code>
+<code class="highlighter-rouge">&lt;/configuration&gt;</code></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[thumb</td>
+      <td>upright=0.7</td>
+      <td>Editing and saving of view settingsStart](/File:autobahnEditViewSettings.png “wikilink”) SUMO with this config. In the simulation select the visualization scheme “real world” from the dropdown menu in the toolbar. Then click on the View Settings button (looks like a color wheel, right beside the scheme selection) and go to the tab “vehicles” in the appearing View Settings dialog. In the Color-dropdown menu you can chose from a lot of ways to encode information about the vehicles in their color. For now, let us select “by speed”. Then set the time step delay to 200ms and run the simulation.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>It is possible to export the view settings into an additional xml-file and load it on simulation start. Optionally check the checkbox for including delay in the export. To save our current visualization scheme click on the floppy-icon in the View Settings dialog and save it as <code class="highlighter-rouge">autobahn.view.xml</code>. Then adapt the configuration to load the view settings by adding a &lt;gui-settings-file … /&gt;-element:</p>
+
+<p><code class="highlighter-rouge">&lt;configuration&gt;</code>
+<code class="highlighter-rouge">   &lt;input&gt;</code>
+<code class="highlighter-rouge">       &lt;net-file value="autobahn.net.xml"/&gt;</code>
+<code class="highlighter-rouge">       &lt;route-files value="autobahn.rou.xml"/&gt;</code>
+<code class="highlighter-rouge">       &lt;gui-settings-file value="autobahn.view.xml"/&gt;</code>
+<code class="highlighter-rouge">   &lt;/input&gt;</code>
+<code class="highlighter-rouge">&lt;/configuration&gt;</code></p>
+
+<p>If you now restart SUMO with the configuration, it will automatically load the view settings stored in <code class="highlighter-rouge">autobahn.view.xml</code>.</p>
+
+<p>Back to <a href="/Tutorials" title="wikilink">Tutorials</a>.</p>
+
+  </div><a class="u-url" href="/sumo-documentation/Tutorials/Autobahn/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

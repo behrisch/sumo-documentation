@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>TraCI Lane Value Retrieval | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="TraCI Lane Value Retrieval" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/TraCI/Lane_Value_Retrieval/" />
+<meta property="og:url" content="/sumo-documentation/TraCI/Lane_Value_Retrieval/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/TraCI/Lane_Value_Retrieval/","headline":"TraCI Lane Value Retrieval","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">TraCI Lane Value Retrieval</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/TraCI/Lane_Value_Retrieval.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><strong>TOC</strong></p>
+
+<h1 id="command-0xa3-get-lane-variable">Command 0xa3: Get Lane Variable</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">string</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Variable</td>
+      <td style="text-align: center">Lane ID</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Asks for the value of a certain variable of the named lane.</p>
+
+<p>The following variable values can be retrieved, the type of the return value is also shown in the table.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>ValueType</th>
+      <th>Description</th>
+      <th><a href="/TraCI/Interfacing_TraCI_from_Python" title="wikilink">Python Method</a></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id list (0x00)</td>
+      <td>stringList</td>
+      <td>Returns a list of ids of all lanes within the scenario (the given Lane ID is ignored)</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getIDList">getIDList</a></td>
+    </tr>
+    <tr>
+      <td>count (0x01)</td>
+      <td>int</td>
+      <td>Returns the number of lanes within the scenario (the given Lane ID is ignored)</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getIDCount">getIDCount</a></td>
+    </tr>
+    <tr>
+      <td>link number (0x30)</td>
+      <td>ubyte</td>
+      <td>Returns the number of links outgoing from this lane [#]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getLinkNumber">getLinkNumber</a></td>
+    </tr>
+    <tr>
+      <td>edge id (0x31)</td>
+      <td>string</td>
+      <td>Returns the id of the edge this lane belongs to</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getEdgeID">getEdgeID</a></td>
+    </tr>
+    <tr>
+      <td>links (0x33)</td>
+      <td>compound</td>
+      <td>Returns descriptions of the links outgoing from this lane [m]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getLinks">getLinks</a></td>
+    </tr>
+    <tr>
+      <td>allowed vehicle classes (0x34)</td>
+      <td>stringList</td>
+      <td>Returns the mml-definitions of vehicle classes allowed on this lane</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getAllowed">getAllowed</a></td>
+    </tr>
+    <tr>
+      <td>disallowed vehicle classes (0x35)</td>
+      <td>stringList</td>
+      <td>Returns the mml-definitions of vehicle classes not allowed on this lane</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getDisallowed">getDisallowed</a></td>
+    </tr>
+    <tr>
+      <td>length (0x44)</td>
+      <td>double</td>
+      <td>Returns the length of the named lane [m]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getLength">getLength</a></td>
+    </tr>
+    <tr>
+      <td>vmax (0x41)</td>
+      <td>double</td>
+      <td>Returns the maximum speed allowed on this lane [m/s]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getMaxSpeed">getMaxSpeed</a></td>
+    </tr>
+    <tr>
+      <td>shape (0x4e)</td>
+      <td>shape</td>
+      <td>Returns this lane’s shape</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getShape">getShape</a></td>
+    </tr>
+    <tr>
+      <td>width (0x4d)</td>
+      <td>double</td>
+      <td>Returns the width of the named lane [m]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getWidth">getWidth</a></td>
+    </tr>
+    <tr>
+      <td>CO2 emissions (id 0x60)</td>
+      <td>double</td>
+      <td>Sum of CO2 emissions on this lane in mg during this time step.</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getCO2Emission">getCO2Emission</a></td>
+    </tr>
+    <tr>
+      <td>CO emissions (id 0x61)</td>
+      <td>double</td>
+      <td>Sum of CO emissions on this lane in mg during this time step.</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getCOEmission">getCOEmission</a></td>
+    </tr>
+    <tr>
+      <td>HC emissions (id 0x62)</td>
+      <td>double</td>
+      <td>Sum of HC emissions on this lane in mg during this time step.</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getHCEmission">getHCEmission</a></td>
+    </tr>
+    <tr>
+      <td>PMx emissions (id 0x63)</td>
+      <td>double</td>
+      <td>Sum of PMx emissions on this lane in mg during this time step.</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getPMxEmission">getPMxEmission</a></td>
+    </tr>
+    <tr>
+      <td>NOx emissions (id 0x64)</td>
+      <td>double</td>
+      <td>Sum of NOx emissions on this lane in mg during this time step.</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getNOxEmission">getNOxEmission</a></td>
+    </tr>
+    <tr>
+      <td>fuel consumption (id 0x65)</td>
+      <td>double</td>
+      <td>Sum of fuel consumption on this lane in ml during this time step.</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getFuelConsumption">getFuelConsumption</a></td>
+    </tr>
+    <tr>
+      <td>noise emission (id 0x66)</td>
+      <td>double</td>
+      <td>Sum of noise generated on this lane in dBA.</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getNoiseEmission">getNoiseEmission</a></td>
+    </tr>
+    <tr>
+      <td>electricity consumption (id 0x71)</td>
+      <td>double</td>
+      <td>Sum of electricity consumption on this lane in kWh during this time step.</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getElectricityConsumption">getElectricityConsumption</a></td>
+    </tr>
+    <tr>
+      <td>last step vehicle number (0x10)</td>
+      <td>int</td>
+      <td>The number of vehicles on this lane within the last time step.</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getLastStepVehicleNumber">getLastStepVehicleNumber</a></td>
+    </tr>
+    <tr>
+      <td>last step mean speed (0x11)</td>
+      <td>double</td>
+      <td>Returns the mean speed of vehicles that were on this lane within the last simulation step [m/s]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getLastStepMeanSpeed">getLastStepMeanSpeed</a></td>
+    </tr>
+    <tr>
+      <td>last step vehicle ids (0x12)</td>
+      <td>stringList</td>
+      <td>Returns the list of ids of vehicles that were on this lane in the last simulation step</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getLastStepVehicleIDs">getLastStepVehicleIDs</a></td>
+    </tr>
+    <tr>
+      <td>last step occupancy (0x13)</td>
+      <td>double</td>
+      <td>Returns the total lengths of vehicles on this lane during the last simulation step divided by the length of this lane</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getLastStepOccupancy">getLastStepOccupancy</a></td>
+    </tr>
+    <tr>
+      <td>last step mean vehicle length (0x15)</td>
+      <td>double</td>
+      <td>The mean length of vehicles which were on this lane in the last step [m]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getLastStepLength">getLastStepLength</a></td>
+    </tr>
+    <tr>
+      <td>waiting time (0x7a)</td>
+      <td>double</td>
+      <td>Returns the waiting time for all vehicles on the lane [s]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getWaitingTime">getWaitingTime</a></td>
+    </tr>
+    <tr>
+      <td>traveltime (0x5a)</td>
+      <td>double</td>
+      <td>Returns the estimated travel time for the last time step on the given lane [s]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getTraveltime">getTravelTime</a></td>
+    </tr>
+    <tr>
+      <td>last step halting number (0x14)</td>
+      <td>int</td>
+      <td>Returns the total number of halting vehicles for the last time step on the given lane. A speed of less than 0.1 m/s is considered a halt.</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._lane.html#LaneDomain-getLastStepHaltingNumber">getLastStepHaltingNumber</a></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="response-0xb3-lane-variable">Response 0xb3: Lane Variable</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center"><return_type></return_type></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Variable</td>
+      <td style="text-align: center">Lane ID</td>
+      <td style="text-align: center">Return type of the variable</td>
+      <td style="text-align: center"><VARIABLE_VALUE></VARIABLE_VALUE></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The respond to a <strong>“Command Get Lane Variable”</strong>.</p>
+
+<h3 id="command-links-0x33-compound-response-value">command <em>links</em> 0x33 compound response value</h3>
+
+<p>If you request the list of links, an compound object is returned, structured as following. Attention, each part is fowarded by a byte which represents its data type, except “length”.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center">type + integer</td>
+      <td style="text-align: center">link</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">link</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Length</td>
+      <td style="text-align: center">Number of links</td>
+      <td style="text-align: center">Link 1</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">Link n</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>where <strong>length</strong> is the total number of following elements – counting each element of <strong>link</strong> separatley – and <strong>link</strong> is decribed by:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">type + string</td>
+      <td style="text-align: center">type + string</td>
+      <td style="text-align: center">type + ubyte</td>
+      <td style="text-align: center">type + ubyte</td>
+      <td style="text-align: center">type + ubyte</td>
+      <td style="text-align: center">type + string</td>
+      <td style="text-align: center">type + string</td>
+      <td style="text-align: center">type + double</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">consecutive not internal lane</td>
+      <td style="text-align: center">consecutive internal lane</td>
+      <td style="text-align: center">has priority (=1) or not (=0)</td>
+      <td style="text-align: center">is opened (=1) or not (=0)</td>
+      <td style="text-align: center">has approaching foe (=1) or not (=0)</td>
+      <td style="text-align: center"><a href="/Networks/SUMO_Road_Networks#Plain_Connections" title="wikilink">(current) state</a></td>
+      <td style="text-align: center"><a href="/Networks/SUMO_Road_Networks#Plain_Connections" title="wikilink">direction</a></td>
+      <td style="text-align: center">length [m] - only valid if not using internal lanes</td>
+    </tr>
+  </tbody>
+</table>
+
+
+  </div><a class="u-url" href="/sumo-documentation/TraCI/Lane_Value_Retrieval/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

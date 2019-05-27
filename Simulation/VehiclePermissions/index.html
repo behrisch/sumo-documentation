@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Simulation VehiclePermissions | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Simulation VehiclePermissions" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Simulation/VehiclePermissions/" />
+<meta property="og:url" content="/sumo-documentation/Simulation/VehiclePermissions/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Simulation/VehiclePermissions/","headline":"Simulation VehiclePermissions","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Simulation VehiclePermissions</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Simulation/VehiclePermissions.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><strong>FORCETOC</strong></p>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>SUMO allows modelling access restrictions via a predefined set of so-called vehicle classes. Each vehicle has a vehicle class and each simulation lane allows a set of vehicle classes. Vehicles may only drive on lanes that allows it’s vehicle class.</p>
+
+<p>This is useful for describing multi-modal traffic scenarios by distinguishing between passenger cars, bicycles, tram and pedestrians.</p>
+
+<h1 id="vehicle-definition">Vehicle definition</h1>
+
+<p>The vehicle class of a vehicle is defined by first defining a <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicle_Types" title="wikilink">vehicle type</a> with the appropriate <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Abstract_Vehicle_Class" title="wikilink">vehicle class</a> and then<a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicles_and_Routes" title="wikilink">assigning that type to the vehicle</a>. An example is given below:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;routes&gt;
+   &lt;vType id="myType" vClass="bus"/&gt;
+
+   &lt;vehicle id="veh0" type="myType" depart="0"&gt;
+      &lt;route edges="a b c"/&gt;
+   &lt;/vehicle&gt;
+&lt;/routes&gt;
+</code></pre></div></div>
+
+<p>If no such definition is given, the vehicle class defaults to <em>passenger</em> (normal passenger cars). By setting the attribute, a set of <a href="/Vehicle_Type_Parameter_Defaults" title="wikilink">default type parameters</a> is automatically assigned to better correspond to a typical vehicle of that class.</p>
+
+<h1 id="network-definition">Network definition</h1>
+
+<p>In a <em>.net.xml</em> file, each lane defines a set of permitted vehicle classes. This definition is either</p>
+
+<ul>
+  <li>taken from <a href="/Networks/Building_Networks_from_own_XML-descriptions#Edge_Descriptions" title="wikilink">custom input files</a>. It possible to define permissions for edges or individual lanes. To simplify definition, either the permitted classes or the prohibited classes can be specified using the attributes .</li>
+  <li>set using the option</li>
+  <li>imported from an input source such as <a href="/Networks/Import/OpenStreetMap" title="wikilink">OpenStreetMap</a> according to a <a href="/Networks/Import/OpenStreetMap#Recommended_Typemaps" title="wikilink">customizable heuristic</a>.</li>
+  <li>or set via <a href="/NETEDIT#Inspect" title="wikilink">NETEDIT</a>. Convenience features exist <a href="/NETEDIT#Restricted_lanes" title="wikilink">for adding bicycle lanes, bus lanes and sidewalks</a>.</li>
+</ul>
+
+<p>For visualizing access permissions, either <a href="/SUMO-GUI#Road_Access_Permissions" title="wikilink">SUMO-GUI</a> or <a href="/NETEDIT#Correcting_road_access_permissions" title="wikilink">NETEDIT</a> may be used.</p>
+
+<h1 id="special-cases">Special cases</h1>
+
+<p>The vehicle class <em>ignoring</em> may drive on any edge.</p>
+
+<p>The vehicle class <em>pedestrian</em> should not be assigned to a vehicle. Instead, pedestrians should be modeled as <a href="/Simulation/Pedestrians" title="wikilink">walking persons</a>. During network building, no direct connections between pedestrian-only lanes are built. Instead options for <a href="/Simulation/Pedestrians#Building_a_network_for_pedestrian_simulation" title="wikilink">building pedestrian intersections</a> should be used.</p>
+
+  </div><a class="u-url" href="/sumo-documentation/Simulation/VehiclePermissions/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

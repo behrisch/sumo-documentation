@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Simulation VehicleSpeed | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Simulation VehicleSpeed" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Simulation/VehicleSpeed/" />
+<meta property="og:url" content="/sumo-documentation/Simulation/VehicleSpeed/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Simulation/VehicleSpeed/","headline":"Simulation VehicleSpeed","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Simulation VehicleSpeed</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Simulation/VehicleSpeed.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>There are a wide range of influences on vehicle speed. They are described in the following. Each of these influences sets an upper bound on the vehicle speed. The actual speed in any given situation is the minimum speed of all influences.</p>
+
+<h1 id="maxspeed">maxSpeed</h1>
+
+<p>The <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicle_Types" title="wikilink">-attribute </a> models the maximum speed that a vehicle will travel. It can be thought of as the maximum speed of the engine or the maximum speed desired by the driver under any circumstances (possibly these two aspects will be modelled with separate attributes in the future).</p>
+
+<h1 id="edgelane-speed">edge/lane speed</h1>
+
+<p>The -attribute is usually <a href="/Networks/Building_Networks_from_own_XML-descriptions#Edge_Descriptions" title="wikilink">defined for edges</a> but may also <a href="/Networks/Building_Networks_from_own_XML-descriptions#Lane-specific_Definitions" title="wikilink">differ among the lanes</a> of the same edge. It models the legal speed limit.</p>
+
+<p>When approaching an edge with a lower speed limit than the current one, a vehicle will slow down so as to stay within the new limit at the time of reaching the new edge.</p>
+
+<p>Each vehicle can be <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Speed_Distributions" title="wikilink">assigned an individual speed multiplier</a> which then lets it exceed this limit.</p>
+
+<p>Since version 0.24.0 it is also possible to define <a href="/Networks/Building_Networks_from_own_XML-descriptions#vehicle-class_specific_speed_limits" title="wikilink">vClass-specific speed limits for every edge</a>.</p>
+
+<h1 id="car-following-model">Car Following Model</h1>
+
+<p>The <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Car-Following_Models" title="wikilink">car following model</a> of a vehicle defines its speed in relation the vehicle ahead. The default model always selects the maximum speed which is <em>safe</em> in the sense of being able to stop in time to avoid a collision.</p>
+
+<h2 id="acceleration-and-deceleration">Acceleration and Deceleration</h2>
+
+<p>All models are subject to constraints in their <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Car-Following_Models" title="wikilink">acceleration an deceleration</a>. By default they will not accelerate stronger then the <em>accel</em> value. The default model plans it’s maneuvers so as to stay within the <em>decel</em> value (per second) but other models may interpret this value differently. All models will never brake harder than the <em>emergencyDecel</em> value (which defaults to the same value as <em>decel</em> but may be set independently).</p>
+
+<h2 id="dawdling">Dawdling</h2>
+
+<p>Most car-following models support the -attribute which models driver imperfection. For values above <strong>0</strong>, drivers with the default car-following model will drive <em>slower</em> than would be safe by a random amount (between [0, ]).</p>
+
+<h1 id="intersections">Intersections</h1>
+
+<p>Vehicles approaching an intersection without the right-of-way have to slow down. If the intersection is used by other vehicles which have the right of way, stopping may be necessary until a safe time-window is found. That time windows is based on the same safety assumptions as the car-following model. For the default <em>Krauss</em>-model this means that each vehicle must be able to stop safely even if it’s lead vehicle brakes hard to a full stop.</p>
+
+<p>Even if a vehicle has the right-of-way it may need to slow down due to <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Impatience" title="wikilink">impatient</a> drivers which drive across the intersection. The <a href="/Networks/Building_Networks_from_own_XML-descriptions#Right-of-way" title="wikilink">right-of-way rules</a> at an intersection are <a href="/Networks/Building_Networks_from_own_XML-descriptions#Node_Descriptions" title="wikilink">defined by the node -attribute</a> and by <a href="/Simulation/Traffic_Lights" title="wikilink">traffic lights</a>.</p>
+
+<p>The visibility of intersections can be controlled by the visibility attribute for the corresponding connections, see <a href="/Networks/Building_Networks_from_own_XML-descriptions#Connection_Descriptions" title="wikilink">Connection Descriptions</a>. Per default, a vehicle approaching from a minor road slows down until it is 4.5m away from the intersection (even if no prioritized vehicle is nearby). After that it may start to accelerate again if there is a safe gap in traffic.</p>
+
+<h1 id="lane-changing">Lane Changing</h1>
+
+<p>Vehicles may decide to slow down in order to execute a lane-change maneuver. They may also slow down in order to aid other vehicles with lane-changing. If the lane a vehicle is on does not have a connection to the next edge on a vehicles route, the vehicle will decelerate and stop.</p>
+
+<h1 id="stops">Stops</h1>
+
+<p>Vehicles will decelerate when approaching the position of a <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Stops" title="wikilink">-definition</a>.</p>
+
+<h1 id="acceleration--deceleration-constraints">Acceleration / Deceleration constraints</h1>
+
+<p>Vehicles can only change their speed by a certain amount each time step. This is defined by the <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicle_Types" title="wikilink">-attributes and </a></p>
+
+<h1 id="departspeed--arrivalspeed">departSpeed / arrivalSpeed</h1>
+
+<p>Vehicles enter the network using their <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicles_and_Routes" title="wikilink">defined </a>. When approaching the end of their route they will adapt their speed to match their <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicles_and_Routes" title="wikilink">defined </a></p>
+
+<h1 id="variable-speed-signs">Variable Speed Signs</h1>
+
+<p><a href="/Simulation/Variable_Speed_Signs" title="wikilink">Variable speed signs</a> are used to modify the speed limit of an edge for a defined time interval.</p>
+
+<h1 id="calibrators">Calibrators</h1>
+
+<p><a href="/Simulation/Calibrator" title="wikilink">Calibrators</a> are used to adapt the flow on an edge for a defined time interval but may also be used to modify the speed limit of an edge.</p>
+
+<h1 id="traci">TraCI</h1>
+
+<p>Vehicles can forced to adapt their speed using <a href="/TraCI/Change_Vehicle_State" title="wikilink">TraCI commands</a>. When using the command <em>slow down</em> stochastic influences on speed are not applied. By using <a href="/TraCI/Change_Vehicle_State#speed_mode_.280xb3.29" title="wikilink">the <em>speed mode</em> command, various safety related influences can be selectively disabled</a>.</p>
+
+  </div><a class="u-url" href="/sumo-documentation/Simulation/VehicleSpeed/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

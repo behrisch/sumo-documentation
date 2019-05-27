@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>TraCI Control-related commands | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="TraCI Control-related commands" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/TraCI/Control-related_commands/" />
+<meta property="og:url" content="/sumo-documentation/TraCI/Control-related_commands/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/TraCI/Control-related_commands/","headline":"TraCI Control-related commands","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">TraCI Control-related commands</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/TraCI/Control-related_commands.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="control-related-commands">Control-related commands</h1>
+
+<h2 id="command-0x00-get-version">Command 0x00: Get Version</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">no parameters</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="response-0x00-version">Response 0x00: Version</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center">string</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">API Version</td>
+      <td style="text-align: center">Identifier</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The server responds to a <strong>Get Version</strong> command by sending two items:</p>
+
+<ul>
+  <li>an API Version of <strong>10</strong> identifies the current state of the TraCI API (sumo 0.24.0 or later).
+    <ul>
+      <li>It is guaranteed to increase as soon as
+        <ul>
+          <li>the TraCI message format changes</li>
+          <li>the TraCI command format changes</li>
+          <li>any TraCI command has a different meaning (e.g., “0xff: stop” changes from “stop immediately” to “slow down, then stop if possible”)</li>
+          <li>any TraCI parameter has a different meaning (e.g., a “time” parameter changes from seconds to milliseconds)</li>
+          <li>addition of a new command</li>
+          <li>removal of a command</li>
+          <li>addition of optional parameters</li>
+          <li>addition of optional parameter types</li>
+          <li>addition of optional result types</li>
+        </ul>
+      </li>
+      <li>The API version is only incremented for releases and not inbetween</li>
+    </ul>
+  </li>
+  <li>an identifier string identifies the software version running on the TraCI server in human-readable form
+    <ul>
+      <li>no guarantee is made regarding the content of this string</li>
+      <li>as an example, for SUMO 0.12.0, this string is “SUMO 0.12.0”</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="tip">Tip</h4>
+
+<p>The client can find out if a particular command is supported by the current TraCI server (i.e., SUMO) by looking at the <a href="/TraCI/Protocol#Status_Response" title="wikilink">status response</a> of the command. It may report “not implemented.”</p>
+
+<h2 id="command-0x02-simulation-step">Command 0x02: Simulation Step</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">integer</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">TargetTime [ms]</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Forces SUMO to perform simulation. If <em>TargetTime</em> is 0 (zero), SUMO performs exactly one time step. Otherwise SUMO performs the simulation until the given time step is reached. If the given time step is smaller than or equal to the current simulation step then SUMO does nothing. For multi client scenarios currently only TargetTime 0 is supported.</p>
+
+<p>The response of this command is a list of subscription responses to <a href="/TraCI/Object_Variable_Subscription" title="wikilink">TraCI/Object Variable Subscriptions</a> and/or <a href="/TraCI/Object_Context_Subscription" title="wikilink">TraCI/Object Context Subscriptions</a> referring to the last step executed:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center"><SUBSCRIPTION RESPONSE=""></SUBSCRIPTION></td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center"><SUBSCRIPTION RESPONSE=""></SUBSCRIPTION></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Number of following subscription responses</td>
+      <td style="text-align: center">&lt;RESPONSE#1&gt;</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">&lt;RESPONSE#n&gt;</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Please note, that both subscription types differ in their return values, so the parser should regard the id of the returned command.</p>
+
+<h2 id="command-0x7f-close">Command 0x7F: Close</h2>
+
+<p>Tells TraCI to close the connection to any client, stop simulation and shut down sumo.</p>
+
+<h2 id="command-0x01-load">Command 0x01: Load</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">stringList</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">option list</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Tells TraCI to reload the simulation with the given options.</p>
+
+<h2 id="command-0x03-setorder">Command 0x03: SetOrder</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">integer</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">number of the client</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Tells TraCI to give the current client the given position in the execution order. It is mandatory to send this as the first command after connecting to the TraCI server when using multiple clients.</p>
+
+  </div><a class="u-url" href="/sumo-documentation/TraCI/Control-related_commands/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

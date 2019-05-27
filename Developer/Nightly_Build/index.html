@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Developer Nightly Build | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Developer Nightly Build" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Developer/Nightly_Build/" />
+<meta property="og:url" content="/sumo-documentation/Developer/Nightly_Build/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Developer/Nightly_Build/","headline":"Developer Nightly Build","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Developer Nightly Build</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Developer/Nightly_Build.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>There are two main scripts responsible for the nightly build process which are (for the linux part) and for Windows. Essentially they both perform the following steps:</p>
+
+<ol>
+  <li>git pull</li>
+  <li>do a clean build (release and debug version)</li>
+  <li>run unittests (currently linux only)</li>
+  <li>build and upload packages</li>
+  <li>build and upload documentation (linux only)</li>
+  <li>run the acceptance tests (texttest)</li>
+  <li>upload test results</li>
+</ol>
+
+<p>All the results can be found in the <a href="http://sumo.dlr.de/daily/">daily dir on the sumo web space</a>, also see <a href="/Downloads#Nightly_Snapshots" title="wikilink">Downloads#Nightly_Snapshots</a>. Coverage information based on running the nightly tests is generated as well. The status can be found at <a href="http://sumo.dlr.de/daily/lcov/html/">the sumo web space</a>.</p>
+
+<p>There is also a local copy in the Daten/Sumo/daily directory (including the most recent game scenarios) the DLR internal tsall NAS. The windows script uses the sumo-all package from the local dir to build the binary distributable zip and the game zip.</p>
+
+<p>One final step is to trigger the nightly build on the opensuse build service. This is achieved via uploading a new spec file via a cronjob, which triggers an automatic download of the sources and a rebuild. All errors and test result e-mails are directed to the sumo-tests list at dlr.de, except for the build service errors which go to a private account since the build is currently in a private project.</p>
+
+<p>Additionally there is a continuous integration build for MacOS on Travis: <a href="https://travis-ci.org/DLR-TS/sumo">https://travis-ci.org/DLR-TS/sumo</a>.</p>
+
+<h2 id="platforms-and-tests">Platforms and tests</h2>
+
+<ul>
+  <li>“sumo” refers to the publicly available sumo</li>
+  <li>“meso” means the variant with embedded python, OSG and FFMPEG running mesoscopic and python3 tests</li>
+  <li>the clang build has debugging code enabled via the configure option “–enable-debug”</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>variant</th>
+      <th>platform</th>
+      <th>start time</th>
+      <th>estimated duration</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>sumo</td>
+      <td>32 bit msvc10</td>
+      <td>02:00</td>
+      <td>1h</td>
+    </tr>
+    <tr>
+      <td>sumo</td>
+      <td>64 bit msvc10</td>
+      <td>(after 32bit)</td>
+      <td>1h</td>
+    </tr>
+    <tr>
+      <td>meso</td>
+      <td>32 bit msvc10</td>
+      <td>05:00</td>
+      <td>1h</td>
+    </tr>
+    <tr>
+      <td>meso</td>
+      <td>64 bit msvc10</td>
+      <td>(after 32bit)</td>
+      <td>1h</td>
+    </tr>
+    <tr>
+      <td>sumo</td>
+      <td>32 bit gcc</td>
+      <td>19:00</td>
+      <td>3h</td>
+    </tr>
+    <tr>
+      <td>sumo</td>
+      <td>64 bit gcc</td>
+      <td>23:30</td>
+      <td>1.5h</td>
+    </tr>
+    <tr>
+      <td>meso</td>
+      <td>64 bit gcc</td>
+      <td>22:30</td>
+      <td>0.5h</td>
+    </tr>
+    <tr>
+      <td>sumo</td>
+      <td>64 bit clang</td>
+      <td>09:00</td>
+      <td>1.5h</td>
+    </tr>
+    <tr>
+      <td>meso</td>
+      <td>64 bit clang</td>
+      <td>11:00</td>
+      <td>1.5h</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="scenario-tests">Scenario tests</h2>
+
+<ul>
+  <li>“scenario” refers to the internal tests available at source:trunk/tests and includes the default and the daily tests
+    <ul>
+      <li>“weekly” are the weekly test suites of the internal tests available at source:trunk/tests</li>
+      <li>all scenario tests run with the internal (meso) variant of sumo</li>
+    </ul>
+  </li>
+  <li>“ics” refers to the iCS tool of colombo (currently disabled)</li>
+  <li>“vabene” refers to the tests in the vabene repository (currently disabled)</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>variant</th>
+      <th>platform</th>
+      <th>start time</th>
+      <th>estimated duration</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>scenario</td>
+      <td>64 bit gcc</td>
+      <td>02:00</td>
+      <td>5h ?</td>
+    </tr>
+    <tr>
+      <td>scenario weekly</td>
+      <td>64 bit gcc</td>
+      <td>02:00 (only sa)</td>
+      <td>72h ?</td>
+    </tr>
+    <tr>
+      <td>scenario</td>
+      <td>64 bit clang</td>
+      <td>02:00 (only mo-fr)</td>
+      <td>8h ?</td>
+    </tr>
+  </tbody>
+</table>
+
+
+  </div><a class="u-url" href="/sumo-documentation/Developer/Nightly_Build/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

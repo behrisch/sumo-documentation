@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Tools Trip | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Tools Trip" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Tools/Trip/" />
+<meta property="og:url" content="/sumo-documentation/Tools/Trip/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Tools/Trip/","headline":"Tools Trip","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Tools Trip</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Tools/Trip.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><strong>FORCETOC</strong></p>
+
+<h1 id="randomtripspy">randomTrips.py</h1>
+
+<p>“randomTrips.py” generates a set of random trips for a given network (option ). It does so by choosing source and destination edge either uniformly at random or with a modified distribution as described below. The resulting trips are stored in an XML file (option , default trips.trips.xml) suitable for <a href="/DUAROUTER" title="wikilink">DUAROUTER</a> which is called automatically if the option (with a filename for the resulting route file) is given. The trips are distributed evenly in an interval defined by begin (option , default 0) and end time (option , default 3600) in seconds. The number of trips is defined by the repetition rate (option , default 1) in seconds. Every trip has an id consisting of a prefix (option , default “”) and a running number. Example call:</p>
+
+<p><code class="highlighter-rouge">/tools/randomTrips.py -n input_net.net.xml -e 50 </code></p>
+
+<p>The script does not check whether the chosen destination may be reached from the source. This task is performed by the router. If the network is not fully connected some of the trips may be discarded.</p>
+
+<p>The option ensures a minimum straight-line distance (in meter) between start and end edges of a trip. The script will keep sampling from the edge distribution until enough trips with sufficient distance are found.</p>
+
+<h2 id="randomization">Randomization</h2>
+
+<p>When running <em>randomTrips.py</em> twice with the same parameters, different output files will be created due to randomness. The option can be used to get repeatable pseudo-randomness.</p>
+
+<h2 id="edge-probabilities">Edge Probabilities</h2>
+
+<p>The option increases the probability that trips will start/end at the fringe of the network. If the value <em>10</em> is given, edges that have no successor or no predecessor will be 10 times more likely to be chosen as start- or endpoint of a trip. This is useful when modelling through-traffic which starts and ends at the outside of the simulated area.</p>
+
+<p>The probabilities for selecting an edge may also be weighted by</p>
+
+<ul>
+  <li>edge length (option ),</li>
+  <li>by number of lanes (option )</li>
+  <li>edge speed (exponentially, by option )</li>
+</ul>
+
+<p>For additional ways to influence edge probabilities call</p>
+
+<p><code class="highlighter-rouge">/tools/randomTrips.py --help</code></p>
+
+<h2 id="arrival-rate">Arrival rate</h2>
+
+<p>The arrival rate is controlled by option (<em>default 1</em>). By default this generates vehicles with a constant period and arrival rate of (1/period) per second. By using values below 1, multiple arrivals per second can be achieved.</p>
+
+<p>When adding option the arrivals will be randomized using a binomial distribution where <em>n</em> (the maximum number of simultaneous arrivals) is given by the argument to and the expected arrival rate is 1/period <em>(this option is not yet available in version 0.23.0)</em>.</p>
+
+<h3 id="example">Example</h3>
+
+<p>To let <em>n</em> vehicles depart between times <em>t0</em> and <em>t1</em> set the options</p>
+
+<p><code class="highlighter-rouge">-b </code><em><code class="highlighter-rouge">t0</code></em><code class="highlighter-rouge"> -e </code><em><code class="highlighter-rouge">t1</code></em><code class="highlighter-rouge"> -p </code><em><code class="highlighter-rouge">((t1</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">-</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">t0)</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">/</code><code class="highlighter-rouge"> </code><code class="highlighter-rouge">n)</code></em></p>
+
+<h2 id="validated-routes-and-trips">Validated routes and trips</h2>
+
+<p>When using the option , an output file with valid vehicle routes will be generated. This works by automatically calling <a href="/DUAROUTER" title="wikilink">DUAROUTER</a> in the background to turn the random trips into routes and automatically discard disconnected trips. It may be necessary to increase the number of generated random trips to account for a fraction disconnected, discarded trips.</p>
+
+<p>Sometimes it is desirable to obtain validated trips rather than routes (i.e. to make use of <a href="/Demand/Dynamic_User_Assignment#oneShot-assignment" title="wikilink">one-shot route assignment</a>. In this case the additional option may be used to generate validated trips (by first generating valid routes and then converting them back into trips).</p>
+
+<h2 id="generating-vehicles-with-additional-parameters">Generating vehicles with additional parameters</h2>
+
+<p>With the option , additional parameters can be given to the generated vehicles (note, usage of the quoting characters).</p>
+
+<p><code class="highlighter-rouge"> </code><code class="highlighter-rouge">/tools/randomTrips.py -n input_net.net.xml --trip-attributes=</code>“<code class="highlighter-rouge">departLane=\</code>”<code class="highlighter-rouge">best\" departSpeed=\</code>“<code class="highlighter-rouge">max\</code>”<code class="highlighter-rouge"> departPos=\</code>“<code class="highlighter-rouge">random\</code>”<code class="highlighter-rouge">"</code></p>
+
+<p>This would make the random vehicles be distributed randomly on their starting edges and inserted with high speed on a reasonable lane.</p>
+
+<h3 id="setting-a-vehicle-type-from-an-external-file">Setting a vehicle type from an external file</h3>
+
+<p>If the generated vehicles should have a specific vehicle type, an needs to be prepared:</p>
+
+<additional>
+`  `<vType id="myType" maxSpeed="27" vClass="passenger" />
+</additional>
+
+<p>Then load this file (assume it was saved as <em>type.add.xml</em>) with the option –additional-file</p>
+
+<p><code class="highlighter-rouge">/tools/randomTrips.py -n input_net.net.xml --trip-attributes=</code>“<code class="highlighter-rouge">type=\</code>”<code class="highlighter-rouge">myType\"" --additional-file type.add.xml </code>
+<code class="highlighter-rouge">   --edge-permission passenger</code></p>
+
+<p>Note the use of the option (deprecated alias: ) which ensures that random start- and arrival-edges allow a specific vehicle class.</p>
+
+<p>To generate random pedestrian traffic instead of vehicular traffic, the option may be used. It is recommended to combined this with the option to avoid walks of excessive length. See <a href="/Simulation/Pedestrians" title="wikilink">Simulation/Pedestrians</a> for addition information on the simulation of pedestrians.</p>
+
+<p>Note that the option should only be used as a quick shorthand to generate trips for the standard type of the given vehicle class since it places a standard vType definition in the generated trips file.</p>
+
+<h3 id="automatically-generating-a-vehicle-type">Automatically generating a vehicle type</h3>
+
+<p>By setting the option a vehicle type definition that specifies vehicle class will be added to the output files. I.e.</p>
+
+<p><code class="highlighter-rouge"> randomTrips.py --vehicle-class bus ...</code></p>
+
+<p>will add</p>
+
+<p><code class="highlighter-rouge"> </code><vType id="bus" vClass="bus"></vType></p>
+
+<p>After <em>randomTrips.py</em> has finished, the created -element can be edited to specify additional parameters. In contrast to the above method with an , manual editing must be repeated when running <em>randomTrips.py</em> again.</p>
+
+<h2 id="generating-different-modes-of-traffic">Generating different modes of traffic</h2>
+
+<ul>
+  <li>Using the option will generated pedestrians instead of vehicles.</li>
+  <li>Using the option will generated persons with definitions. This means they will use <a href="/IntermodalRouting" title="wikilink">IntermodalRouting</a> to decided whether they use public transport or walking.</li>
+</ul>
+
+<h2 id="intermediate-way-points">Intermediate Way Points</h2>
+
+<p>To generate longer trips within a network, intermediate way points may be generated using the option . This will add the given number of <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Incomplete_Routes_.28trips_and_flows.29" title="wikilink">via-edges</a> to the trip definitions.</p>
+
+<h2 id="customized-weights">Customized Weights</h2>
+
+<h3 id="saving">Saving</h3>
+
+<p>Using option will cause three <em>weight-files</em> with the given prefix to be generated (*<prefix>.src.xml, <prefix>.dst.xml, <prefix>.via.xml*) which contain the used edge probabilities.</prefix></prefix></prefix></p>
+
+<ul>
+  <li><em>.src.xml</em> contains the probabilities for an edge to be selected as -edge</li>
+  <li><em>.dst.xml</em> contains the probabilities for an edge to be selected as -edge</li>
+  <li><em>.via.xml</em> contains the probabilities for an edge to be selected as -edge (only used when option is set).</li>
+</ul>
+
+<h3 id="visualization">Visualization</h3>
+
+<p>Any of these files can be loaded in <a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a> for visualization, i.e. using the options . In <a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a> lane-coloring <em>by loaded weight</em> must be selected to make the data visible.</p>
+
+<p>Note, that the elements within the weight files are only used when visualizing the files in this way.</p>
+
+<h3 id="loading">Loading</h3>
+
+<p>Files in this format can be used to set customized weights for generating random trips by using the option with the prefix value as argument. The randomTrips script will attempt to load weights for all edges and all three file extensions (<em>.src.xml, .dst.xml, .via.xml</em>) but will use the following defaults if same values are missing:</p>
+
+<ul>
+  <li>If a loaded weight file does not contain all edges, probability 0 will be assumed for the missing edges</li>
+  <li>If a file is missing, the probabilities according to the regular options are used when sampling that type of edge (i.e. missing *<prefix>.dst.xml* will result in probabilities as described in section [\#Edge_Probabilities](/#Edge_Probabilities "wikilink") will be used when sampling destination edges)</prefix></li>
+</ul>
+
+<h3 id="usage-example">Usage Example</h3>
+
+<p>To obtain trips from two specific locations (edges <em>a</em>, and <em>b</em>) to random destinations, use</p>
+
+<p><code class="highlighter-rouge"> randomTrips.py --weights-prefix example  ...</code><other options="">`...`</other></p>
+
+<p>and define only the file <em>example.src.xml</em> as follows:</p>
+
+<p><code class="highlighter-rouge"> </code><edgedata>
+`   `<interval begin="0" end="10"></interval>
+`     `<edge id="a" value="0.5"></edge>
+`     `<edge id="b" value="0.5"></edge>
+`   `&lt;/interval&gt;
+` `</edgedata></p>
+
+<h1 id="route2tripspy">route2trips.py</h1>
+
+<p>This script generates a trip file from a route file by stripping all route information except for start and end edge. It has a single parameter which is the route file and prints the trip file to stdout. Example:</p>
+
+<p><code class="highlighter-rouge">/tools/route2trips.py input_routes.rou.xml</code></p>
+
+  </div><a class="u-url" href="/sumo-documentation/Tools/Trip/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Developer Docker | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Developer Docker" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Developer/Docker/" />
+<meta property="og:url" content="/sumo-documentation/Developer/Docker/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Developer/Docker/","headline":"Developer Docker","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Developer Docker</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Developer/Docker.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="dockerised-sumo">Dockerised SUMO</h2>
+
+<p>Building and installing SUMO from source is not an easy task for beginner users. Docker is a popular tool to solve this issue. Searching “SUMO” at <a href="https://hub.docker.com">Docker Hub</a> will give several results from attempts to Dockerise SUMO. We list a few of these attempts beginning with standalone SUMO to SUMO with other packages.</p>
+
+<h3 id="sumo-sumo-gui-and-traci">SUMO, SUMO GUI, and TraCI</h3>
+
+<p>The solution given at <a href="https://github.com/bogaotory/docker-sumo">docker-sumo</a> contains only standard SUMO and tools. It demonstrates how to Dockerise SUMO version 0.30.0 on top of Ubuntu 16.04. As well as sumo and TraCI, <a href="https://github.com/bogaotory/docker-sumo">docker-sumo</a> also shows the user how to access the graphical interface of a Dockerised SUMO, i.e. <strong>sumo-gui</strong>, which is unique compared to other attempts at Dockerising SUMO.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[frame</td>
+      <td>none</td>
+      <td>alt= sumo-gui Docker demo</td>
+      <td><strong>sumo-gui</strong> in action from <a href="https://github.com/bogaotory/docker-sumo">docker-sumo</a>](/File:Docker-sumo-demo1.gif “wikilink”)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="sumo-and-traci4j">SUMO and TraCI4J</h3>
+
+<p>The <a href="https://hub.docker.com/r/similitude/sumo-docker/">sumo-docker</a> project demonstrates how to Dockerise SUMO version 0.25.0 on top of Apache Mavern 3 with <a href="https://github.com/egueli/TraCI4J">TraCI4J</a>.</p>
+
+<h3 id="sumo-and-jupedsim">SUMO and JuPedSim</h3>
+
+<p>The <a href="https://hub.docker.com/r/grgrlmml/hybrid_sumo_jps/">hybrid_sumo_jps</a> project aims on providing an easy to use docker image for running a hybrid simulation that couples SUMO with <a href="http://www.jupedsim.org">JuPedSim</a>. SUMO is a mighty simulator for all kinds of transport problems that focuses mainly on motorized traffic. While SUMO also provides a pedestrian model for simulating pedestrians on sidewalks, crossings or the like, it lacks of the capability to model pedestrians in true 2d space (e.g. in buildings, on squares, at train stations). Instead of reinventing the wheel we decided to team up with JuPedSim and develop a hybrid coupling approach that combines the power of both frameworks. The coupling is realized using google’s <a href="https://github.com/google/protobuf">rotocol buffers</a> over <a href="https://github.com/grpc">gRPC</a>, a library for *remote procedure calls*. Currently this coupling approach is provided as a Docker image. Moreover, also the Docker image is not intended to replace the common SUMO installation (e.g. hybrid_sumo_jps does not provided a graphical interface, i.e. no sumo-gui), you may also use the hybrid_sumo_jps image to run ordinary SUMO scenarios.</p>
+
+<p>Details on how to run hybrid_sumo_jps can be found at the corresponding <a href="https://hub.docker.com/r/grgrlmml/hybrid_sumo_jps/">hybrid_sumo_jps’s Docker Hub</a> page.</p>
+
+  </div><a class="u-url" href="/sumo-documentation/Developer/Docker/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

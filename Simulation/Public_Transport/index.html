@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Simulation Public Transport | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Simulation Public Transport" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Simulation/Public_Transport/" />
+<meta property="og:url" content="/sumo-documentation/Simulation/Public_Transport/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Simulation/Public_Transport/","headline":"Simulation Public Transport","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Simulation Public Transport</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Simulation/Public_Transport.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><strong>FORCETOC</strong></p>
+
+<h1 id="bus-stops">Bus Stops</h1>
+
+<p>It is possible to define positions of bus stops and let vehicles (“busses”) stop at these positions for a pre-given time. Definitions of bus stop locations in SUMO have the following format: <span class="inlxml">&lt;busStop id=”<BUS_STOP_ID>" lane=“<LANE_ID>” startPos=“<STARTING_POSITION>” endPos=“<ENDING_POSITION>” \[lines=“<LINE_ID>\[ <LINE_ID>\]\*”\]/&gt;&lt;/span&gt;. That means that a bus stop is an area on a lane. The parameters have the following meanings:</LINE_ID></LINE_ID></ENDING_POSITION></STARTING_POSITION></LANE_ID></BUS_STOP_ID></span></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute Name</th>
+      <th>Value Type</th>
+      <th>Value Range</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>id</strong></td>
+      <td>string</td>
+      <td>id</td>
+      <td> </td>
+      <td>The ID of the bus stop; must be unique</td>
+    </tr>
+    <tr>
+      <td><strong>lane</strong></td>
+      <td>string</td>
+      <td>valid lane id</td>
+      <td> </td>
+      <td>The name of the lane the bus stop shall be located at</td>
+    </tr>
+    <tr>
+      <td>startPos</td>
+      <td>float</td>
+      <td>-lane.length &lt; x &lt; lane.length (negative values count backwards from the end of the lane)</td>
+      <td>0</td>
+      <td>The begin position on the lane (the lower position on the lane) in meters</td>
+    </tr>
+    <tr>
+      <td>endPos</td>
+      <td>float</td>
+      <td>-lane.length &lt; x &lt; lane.length (negative values count backwards from the end of the lane)</td>
+      <td>lane.length</td>
+      <td>The end position on the lane (the higher position on the lane) in meters, must be larger than <em>startPos</em> by more than 0.1m</td>
+    </tr>
+    <tr>
+      <td>friendlyPos</td>
+      <td>bool</td>
+      <td><em>true,false</em></td>
+      <td><em>false</em></td>
+      <td>whether invalid stop positions should be corrected automatically (default <em>false</em>)</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>string</td>
+      <td>simple String</td>
+      <td> </td>
+      <td>Bus stop name. This is only used for visualization purposes.</td>
+    </tr>
+    <tr>
+      <td>lines</td>
+      <td>string list</td>
+      <td>A list of names separated by spaces (‘ ‘)</td>
+      <td> </td>
+      <td>meant to be the names of the bus lines that stop at this bus stop. This is only used for visualization purposes.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="access-lanes">Access Lanes</h2>
+
+<p>Each named may have additional child elements to model access from other parts of the network (i.e. road access to a stop on the rail network. This takes the following form:</p>
+
+<busStop id="myStop" lane="A_0" startPos="230" endPos="250">
+`   `<access lane="B_0" pos="150" />
+</busStop>
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute Name</th>
+      <th>Value Type</th>
+      <th>Value Range</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>lane</strong></td>
+      <td>string</td>
+      <td>id</td>
+      <td>The name of the lane from which this stop may also be accessed</td>
+    </tr>
+    <tr>
+      <td><strong>pos</strong></td>
+      <td>float</td>
+      <td>position along lane</td>
+      <td>The position along the lane from which the stop is reached</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="letting-vehicles-stop-at-a-bus-stop">Letting Vehicles stop at a bus stop</h1>
+
+<p>Vehicles must be informed that they must stop at a bus stop. The following example shows how this can be done (taken from ‘’ /examples/sumo/busses’’):</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd"&gt;
+    &lt;busStop id="busstop1" lane="2/1to1/1_0" startPos="20" endPos="40" lines="100 101 102"/&gt;
+    &lt;busStop id="busstop2" lane="1/2to0/2_0" startPos="20" endPos="40" lines="100 101"/&gt;
+    &lt;busStop id="busstop3" lane="0/1to0/0_0" startPos="20" endPos="40" lines="100 101 102"/&gt;
+    &lt;busStop id="busstop4" lane="1/0to2/0_0" startPos="20" endPos="40" lines="100 101"/&gt;
+
+    &lt;vType id="BUS" accel="2.6" decel="4.5" sigma="0" length="12" minGap="3" maxSpeed="70" color="1,1,0" guiShape="bus"/&gt;
+
+    &lt;vehicle id="0" type="BUS" depart="0" color="1,1,0"&gt;
+        &lt;route edges="2/0to2/1 2/1to1/1 1/1to1/2 1/2to0/2 0/2to0/1 0/1to0/0 0/0to1/0 1/0to2/0 2/0to2/1"/&gt;
+        &lt;stop busStop="busstop1" duration="20"/&gt;
+        &lt;stop busStop="busstop2" duration="20"/&gt;
+        &lt;stop busStop="busstop3" duration="20"/&gt;
+        &lt;stop busStop="busstop4" duration="20"/&gt;
+    &lt;/vehicle&gt;
+&lt;/additional&gt;
+</code></pre></div></div>
+
+<p>What is defined here is a vehicle named “0” being a “BUS”. “BUS” is a referenced type declared earlier. The vehicle has an embedded route (written by hand in this case) and a list of stop places. Each stop place is described by two attributes, “bus_stop” and “duration” where “bus_stop” is the name of the bus stop the vehicle shall halt at and “duration” is the time the vehicle shall wait at the bus stop in seconds. Please note that the order of bus stops the vehicle shall halt at must be correct.</p>
+
+<p>For a complete list of attributes for the “stop”-element of a vehicle see <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Stops" title="wikilink">Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Stops</a>.</p>
+
+<h2 id="incomplete-route-definition">Incomplete Route Definition</h2>
+
+<p>It is also possible to define a bus route without defining all intermediate edges:</p>
+
+<p><code class="highlighter-rouge">   </code><trip id="0" type="BUS" depart="0" color="1,1,0" from="2/0to2/1" to="2/0to2/1">
+`       `<stop busStop="busstop1" duration="20"></stop>
+`       `<stop busStop="busstop2" duration="20"></stop>
+`       `<stop busStop="busstop3" duration="20"></stop>
+`       `<stop busStop="busstop4" duration="20"></stop>
+`   `</trip></p>
+
+<p>The vehicle will take the fastest path between <em>from</em>-edge and <em>to</em>-edge that visits all stops in their correct order.</p>
+
+<h1 id="stopping-without-defining-a-bus-stop">Stopping without defining a bus stop</h1>
+
+<p>You may also let a vehicle stop at another position than a bus stop. The short definition of a vehicle’s stop is: <span class="inlxml">&lt;stop  bus_stop=”<BUS_STOP_ID>" | ( lane=“<LANE_ID>” endPos=“<POSITION_AT_LANE>” ) duration=“<HALTING_DURATION>”/&gt;&lt;/span&gt;. This means you can either use a bus stop or a lane position to define where a vehicle has to stop. For a complete list of attributes for the “stop”-element of a vehicle see [Definition_of_Vehicles,_Vehicle_Types,_and_Routes\#Stops](/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Stops "wikilink").</HALTING_DURATION></POSITION_AT_LANE></LANE_ID></BUS_STOP_ID></span></p>
+
+<h1 id="passengers">Passengers</h1>
+
+<p><a href="/Specification/Persons#Rides" title="wikilink">Additional definitions are necessary if the persons using the public transport lines shall be modeled as well</a>.</p>
+
+<p>To make use of <a href="/IntermodalRouting" title="wikilink">intermodal routing, additional constrains on public transport definition must be met.</a></p>
+
+  </div><a class="u-url" href="/sumo-documentation/Simulation/Public_Transport/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

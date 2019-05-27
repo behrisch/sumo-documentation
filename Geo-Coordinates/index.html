@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Geo-Coordinates | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Geo-Coordinates" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Geo-Coordinates/" />
+<meta property="og:url" content="/sumo-documentation/Geo-Coordinates/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Geo-Coordinates/","headline":"Geo-Coordinates","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Geo-Coordinates</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Geo-Coordinates.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="geo-referenced-networks">Geo-Referenced Networks</h1>
+
+<p>SUMO networks are always encoded in Cartesian coordinates (meters) and may contain geo-referencing information to allow conversion to lon,lat. By default the Cartesian coordinates use the UTM-projection with the origin shifted to so that the lower left corner of the network is at 0,0.</p>
+
+<ul>
+  <li>When importing a network from <a href="/Networks/Import/OpenStreetMap" title="wikilink">OSM</a>, geo-referencing is automatically included in the generated <em>.net.xml</em> file</li>
+  <li>When importing a network from <a href="/Networks/Building_Networks_from_own_XML-descriptions" title="wikilink">plain-xml</a> files, coordinates may be given in lon,lat and importing using a projection option such as</li>
+  <li>When importing a network from Shapefile, the availability of geo-referencing depends on the format of the source data.</li>
+</ul>
+
+<h1 id="checking-geo-coordinates">Checking Geo-Coordinates</h1>
+
+<p>In <a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a> when right-clicking anywhere in a geo-referenced network, the option <em>copy cursor geo-position to clipboard</em> is available. The resulting <em>lat,lon</em> coordinates are suitable for pasting into any map engine such as [maps.google.com] or [maps.bing.com]. Also, the network coordinates as well as the geo-coordinates at the cursor position are shown in the bottom right-corner of the window.</p>
+
+<h1 id="performing-coordinate-transformations">Performing coordinate-transformations</h1>
+
+<ul>
+  <li>using <a href="/TraCI/Simulation_Value_Retrieval#Command_0x82:_Position_Conversion" title="wikilink">TraCI</a>, coordinates can be transformed between network-coordinates (m,m) and geo-coordinates (lon,lat) and vice versa</li>
+  <li>using <a href="/Tools/Sumolib#coordinate_transformations" title="wikilink">sumolib</a> , coordinates can be transformed between network-coordinates (m,m) and geo-coordinates (lon,lat) and vice versa</li>
+</ul>
+
+<h1 id="obtaining-output-with-geo-coordinates">Obtaining output with geo-coordinates</h1>
+
+<ul>
+  <li>A network can be exported as <em>plain-xml</em> in geo-coordinates using the netconvert command</li>
+</ul>
+
+<p><code class="highlighter-rouge"> netconvert --sumo-net-file myNet.net.xml --plain-output-prefix plain --proj.plain-geo</code></p>
+
+<ul>
+  <li><a href="/Simulation/Output/FCDOutput" title="wikilink">FCD-output</a> can be obtained in geo-coordinates by adding the option</li>
+</ul>
+
+  </div><a class="u-url" href="/sumo-documentation/Geo-Coordinates/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Installing Windows Build | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Installing Windows Build" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Installing/Windows_Build/" />
+<meta property="og:url" content="/sumo-documentation/Installing/Windows_Build/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Installing/Windows_Build/","headline":"Installing Windows Build","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Installing Windows Build</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Installing/Windows_Build.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>This document describes how to build SUMO under MS-Windows using only freely available (this does <strong>not</strong> mean “open source”) tools. Instructions on how to build SUMO on Windows using an Open Source toolchain are included in our <a href="/Installing/Linux_Build" title="wikilink">building on Linux</a> pages. Please note that you may also <a href="/Downloads" title="wikilink">download pre-built Windows binaries</a>.</p>
+
+<ul>
+  <li>Download <a href="https://www.visualstudio.com/vs/community/">Visual C++ Community Edition</a>. SUMO is only compatible with Visual Studio 2013 or higher. If you are using Windows 8 or later be sure to download Visual Studio Express for Windows <em>Desktop</em>. Please install all the available Service Packs for Visual Studio as well. Note that with Visual Studio Express 2017 SUMO only can be compiled <strong>in Release Mode</strong>.</li>
+  <li><a href="http://www.python.org/download/">Download Python for Windows</a> and install it. Our most preferred version is Python 2.7.x for the 32 bit platform, but you may try Python 3 and / or 64bit as well. Please be aware that the test environment needs Python 2.7</li>
+  <li>Download and extract <a href="http://sumo.dlr.de/daily/sumo-src-git.zip">sumo-src-git.zip</a> or a different version (or use a repository checkout, see <a href="/Downloads" title="wikilink">Downloads</a>)</li>
+  <li>Note on installation paths: MSVC seems to have difficulties with include and library paths containing spaces (for instance <code class="highlighter-rouge">C:\Program Files</code>). Thus try to avoid installing SUMO or any of the libraries in such paths.</li>
+</ul>
+
+<h2 id="libraries">Libraries</h2>
+
+<p>We provide a central location for getting all dependent libraries at <a href="https://github.com/DLR-TS/SUMOLibraries">https://github.com/DLR-TS/SUMOLibraries</a>. The easiest way is to clone this repository and define an environment variable SUMO_LIBRARIES pointing to the resulting directory. They are built with Visual Studio 2017, but may be used with earlier and later versions as well. You may need to install the Visual C++ 2017 Runtime Distributable for running SUMO then (tested with Visual Studio 2013). For details on building your own and also on how to use different versions and additional libraries see <a href="/Installing/Windows_Libraries" title="wikilink">Installing/Windows_Libraries</a>. Now continue with the <a href="/Installing/Windows_CMake" title="wikilink">CMake build instructions</a>.</p>
+
+<ul>
+  <li>Add all directories containing dlls (XERCES\bin, PROJ_GDAL\bin, FOX16\lib) to your PATH or copy the dlls into a directory which is in your PATH.
+    <ul>
+      <li>If you build for 64 bit and for 32 bit be sure that you add both dirs and that you add the 64 bit dir before the 32 bit dir.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="tests">Tests</h2>
+
+<ul>
+  <li>If you plan to extend SUMO yourself, or just want to know whether everything compiled OK, it is strongly recommended to have a look at <a href="/Developer/Tests" title="wikilink">Developer/Tests</a>. This tool makes it easier to check whether some existing functionality was broken by the extensions.</li>
+</ul>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<h3 id="linker-reports-something-similar-to-link--fatal-error-lnk1104-cannot-open-file-cprogramobj">Linker reports something similar to “LINK : fatal error LNK1104: cannot open file ‘C:\Program.obj’”</h3>
+
+<p>You probably have installed a library to a path containing white spaces in its name. In such a case, the according environment variable should be embedded in quotes (“).
+Example: set FOX=”D:\my libs\fox-1.6.36”.</p>
+
+<h3 id="failure-on-pre-build-event-missing-versionh-or-typemaph">Failure on pre-build event (missing version.h or *typemap.h)</h3>
+
+<p>If Visual Studio reports a failed pre-build event you can safely ignore this, unless you are building from the <a href="/FAQ#How_do_I_access_the_code_repository.3F" title="wikilink">source code repository</a>. In this case you should probably install Python. Even if python is installed the file associations may be broken which causes the generation of src/version.h via tools/build/version.py to fail. Either repair your file associations or undefine HAVE_VERSION_H in src/windows_config.h.</p>
+
+<p>If you did install Python correctly, double check that it passes <a href="http://stackoverflow.com/questions/2640971/windows-is-not-passing-command-line-arguments-to-python-programs-executed-from-t">command line arguments</a>. For a quick fix, you can also execute the following commands manually:</p>
+
+<p><code class="highlighter-rouge">tools\build\version.py</code>
+<code class="highlighter-rouge">tools\build\typemap.py</code></p>
+
+<h3 id="execution-cannot-proceed-because-msvcr120dllmsvcr140dll-was-not-found">Execution cannot proceed because MSVCR120.dll/MSVCR140.dll was not found</h3>
+
+<p>Install Microsoft <a href="https://www.microsoft.com/en-US/download/details.aspx?id=30679">Visual C++ Redistributable Packages for Visual Studio 2012</a> (for MSVCR120.dll) or <a href="https://www.visualstudio.com/downloads/">Microsoft Visual C++ Redistributable Packages for Visual Studio 2015</a> (for MSVCR140.dll). You can check if all dependences are correct using <a href="https://lucasg.github.io/Dependencies/">Dependencies</a></p>
+
+<p>Image:Dependencies.png</p>
+
+<h3 id="in-debug-mode-execution-cannot-proceed-because-msvcr120ddllmsvcr140ddll-was-not-found">In debug mode, execution cannot proceed because MSVCR120D.dll/MSVCR140D.dll was not found</h3>
+
+<p>Your version of Visual Studio doesn’t support Debugging, only can be compiled in release mode.</p>
+
+<h2 id="available-configurations">Available configurations</h2>
+
+<p>The release build is used for the distribution of sumo. The Debug build allows all debugging features. Keep in mind that <a href="/Developer/Tests" title="wikilink">Texttest</a> usually picks up the release build.</p>
+
+<ul>
+  <li>Release: All optimizations, assertions disabled, no debugging symbols, links against external release libs</li>
+  <li>Debug: No optimizations, assertions enabled, debugging symbols included, links against external debug libs</li>
+</ul>
+
+<p>Left clicking over Solution/Properties/Configuration Manager allow to change between configurations:</p>
+
+<p>Image:swichDebugRelease.png</p>
+
+<p>To switch to a different platform (e.g. 32bit instead of 64 bit) please run cmake again with a different generator.</p>
+
+<p>Naming Conventions: 64bit executables have the same name as their 32bit counterpart. The Debug build additionally carries the suffix ‘D’.</p>
+
+  </div><a class="u-url" href="/sumo-documentation/Installing/Windows_Build/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

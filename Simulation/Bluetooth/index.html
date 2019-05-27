@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Simulation Bluetooth | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Simulation Bluetooth" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Simulation/Bluetooth/" />
+<meta property="og:url" content="/sumo-documentation/Simulation/Bluetooth/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Simulation/Bluetooth/","headline":"Simulation Bluetooth","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Simulation Bluetooth</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Simulation/Bluetooth.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><strong>FORCETOC</strong></p>
+
+<h1 id="overview">Overview</h1>
+
+<p><a href="/SUMO" title="wikilink">SUMO</a> supports the simulation of wireless onboard devices to facilitate a sensor mechanism which relies on the detection of radio signals (usually bluetooth or WLAN) emitted by the vehicle. Every vehicle can act as a sender and/or a receiving device. The parameters of the detection (e.g. the range and detection probability) can be configured and a log of the detection events can be written. It is currently not possible to retrieve the detection events via <a href="/TraCI" title="wikilink">TraCI</a> or react directly in the simulation to such an event. The relevant parameters for configuring the sender and recevier devices are described at <a href="/SUMO#Communication" title="wikilink">SUMO#Communication</a>. Details on the detection process can be found in the following publication: <a href="http://elib.dlr.de/95237/">Behrisch, Michael and Gurczik, Gaby (2014) Modelling Bluetooth Inquiry for SUMO. In: SUMO2014 Modeling Mobility with Open Data. SUMO2014, 15.-16. Mai 2014, Berlin</a></p>
+
+<h1 id="output">Output</h1>
+
+<p>The option generates an XML output file of the following form:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;bt-output&gt;
+    &lt;bt id="&lt;VEHICLE_ID&gt;"&gt;
+        &lt;seen id="&lt;VEHICLE_ID&gt;" tBeg="&lt;TIME&gt;" observerPosBeg="&lt;COORD&gt;" observerSpeedBeg="&lt;SPEED&gt;" observerLaneIDBeg="&lt;LANE_ID&gt;" observerLanePosBeg="&lt;LANE_POS&gt;"
+                                              seenPosBeg="&lt;COORD&gt;" seenSpeedBeg="&lt;SPEED&gt;" seenLaneIDBeg="&lt;LANE_ID&gt;" seenLanePosBeg="&lt;LANE_POS&gt;"
+                                tEnd="&lt;TIME&gt;" observerPosEnd="&lt;COORD&gt;" observerSpeedEnd="&lt;SPEED&gt;" observerLaneIDEnd="&lt;LANE_ID&gt;" observerLanePosEnd="&lt;LANE_POS&gt;"
+                                              seenPosEnd="&lt;COORD&gt;" seenSpeedEnd="&lt;SPEED&gt;" seenLaneIDEnd="&lt;LANE_ID&gt;" seenLanePosEnd="&lt;LANE_POS&gt;"
+                                observerRoute="&lt;EDGE_ID&gt;+" seenRoute="&lt;EDGE_ID&gt;+"&gt;
+            &lt;recognitionPoint t="&lt;TIME&gt;" observerPos="&lt;COORD&gt;" observerSpeed="&lt;SPEED&gt;" observerLaneID="&lt;LANE_ID&gt;" observerLanePos="&lt;LANE_POS&gt;"
+                                         seenPos="&lt;COORD&gt;" seenSpeed="&lt;SPEED&gt;" seenLaneID="&lt;LANE_ID&gt;" seenLanePos="&lt;LANE_POS&gt;"/&gt;
+
+            ... more recognition points ...
+
+        &lt;/seen&gt;
+
+        ... more contacts of the same vehicle ...
+    &lt;/bt&gt;
+
+    ... more data of of sensor vehicles ...
+&lt;/bt-output&gt;
+</code></pre></div></div>
+
+<p>If the option is not given only the first recognition point will be printed for each encounter. The meanings of the written values are given in the following table.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id@bt</td>
+      <td>ID</td>
+      <td>The id of the observing vehicle (receiver)</td>
+    </tr>
+    <tr>
+      <td>id@seen</td>
+      <td>ID</td>
+      <td>The id of the detected vehicle (sender)</td>
+    </tr>
+    <tr>
+      <td>tBeg</td>
+      <td>s</td>
+      <td>The time the sender entered the detection range</td>
+    </tr>
+    <tr>
+      <td>observerPosBeg</td>
+      <td>x,y in m</td>
+      <td>Cartesian coordinates of the observer when the sender entered the range</td>
+    </tr>
+    <tr>
+      <td>observerSpeedBeg</td>
+      <td>m/s</td>
+      <td>Speed of the observer when the sender entered the range</td>
+    </tr>
+    <tr>
+      <td>observerLaneIDBeg</td>
+      <td>ID</td>
+      <td>Lane id of the observer when the sender entered the range</td>
+    </tr>
+    <tr>
+      <td>observerLanePosBeg</td>
+      <td>m</td>
+      <td>Longitudinal position on the lane of the observer when the sender entered the range</td>
+    </tr>
+    <tr>
+      <td>seenPosBeg</td>
+      <td>x,y in m</td>
+      <td>Cartesian coordinates of the sender when it entered the range</td>
+    </tr>
+    <tr>
+      <td>seenSpeedBeg</td>
+      <td>m/s</td>
+      <td>Speed of the sender when it entered the range</td>
+    </tr>
+    <tr>
+      <td>seenLaneIDBeg</td>
+      <td>ID</td>
+      <td>Lane id of the sender when it entered the range</td>
+    </tr>
+    <tr>
+      <td>seenLanePosBeg</td>
+      <td>m</td>
+      <td>Longitudinal position on the lane of the sender when it entered the range</td>
+    </tr>
+    <tr>
+      <td>tEnd</td>
+      <td>s</td>
+      <td>The time the sender left the detection range</td>
+    </tr>
+    <tr>
+      <td>observerPosEnd</td>
+      <td>x,y in m</td>
+      <td>Cartesian coordinates of the observer when the sender left the range</td>
+    </tr>
+    <tr>
+      <td>observerSpeedEnd</td>
+      <td>m/s</td>
+      <td>Speed of the observer when the sender left the range</td>
+    </tr>
+    <tr>
+      <td>observerLaneIDEnd</td>
+      <td>ID</td>
+      <td>Lane id of the observer when the sender left the range</td>
+    </tr>
+    <tr>
+      <td>observerLanePosEnd</td>
+      <td>m</td>
+      <td>Longitudinal position on the lane of the observer when the sender left the range</td>
+    </tr>
+    <tr>
+      <td>seenPosEnd</td>
+      <td>x,y in m</td>
+      <td>Cartesian coordinates of the sender when it left the range</td>
+    </tr>
+    <tr>
+      <td>seenSpeedEnd</td>
+      <td>m/s</td>
+      <td>Speed of the sender when it left the range</td>
+    </tr>
+    <tr>
+      <td>seenLaneIDEnd</td>
+      <td>ID</td>
+      <td>Lane id of the sender when it left the range</td>
+    </tr>
+    <tr>
+      <td>seenLanePosEnd</td>
+      <td>m</td>
+      <td>Longitudinal position on the lane of the sender when it left the range</td>
+    </tr>
+    <tr>
+      <td>observerRoute</td>
+      <td>list of IDs</td>
+      <td>the route of the observing vehicle</td>
+    </tr>
+    <tr>
+      <td>seenRoute</td>
+      <td>list of IDs</td>
+      <td>the route of the sender vehicle</td>
+    </tr>
+    <tr>
+      <td>t</td>
+      <td>s</td>
+      <td>The time the observer detected the sender</td>
+    </tr>
+    <tr>
+      <td>observerPos</td>
+      <td>x,y in m</td>
+      <td>Cartesian coordinates of the observer when it detected the sender</td>
+    </tr>
+    <tr>
+      <td>observerSpeed</td>
+      <td>m/s</td>
+      <td>Speed of the observer when it detected the sender</td>
+    </tr>
+    <tr>
+      <td>observerLaneID</td>
+      <td>ID</td>
+      <td>Lane id of the observer when it detected the sender</td>
+    </tr>
+    <tr>
+      <td>observerLanePos</td>
+      <td>m</td>
+      <td>Longitudinal position on the lane of the observer when it detected the sender</td>
+    </tr>
+    <tr>
+      <td>seenPos</td>
+      <td>x,y in m</td>
+      <td>Cartesian coordinates of the sender when it was detected</td>
+    </tr>
+    <tr>
+      <td>seenSpeed</td>
+      <td>m/s</td>
+      <td>Speed of the sender when it was detected</td>
+    </tr>
+    <tr>
+      <td>seenLaneID</td>
+      <td>ID</td>
+      <td>Lane id of the sender when it left the range</td>
+    </tr>
+    <tr>
+      <td>seenLanePos</td>
+      <td>m</td>
+      <td>Longitudinal position on the lane of the sender when it was detected</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="simulating-vehicle-to-infrastructure-v2i">Simulating Vehicle-to-Infrastructure (V2I)</h1>
+
+<p>To simulate detection events between vehicles and a road-side-unit (RSU), it is convenient to place a stopped vehicle at the side of the road. This can be accomplished by by setting <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Stops" title="wikilink">attribute <em>parking=“true”</em></a>.</p>
+
+  </div><a class="u-url" href="/sumo-documentation/Simulation/Bluetooth/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

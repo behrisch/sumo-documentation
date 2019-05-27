@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Demand Automatic Routing | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Demand Automatic Routing" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Demand/Automatic_Routing/" />
+<meta property="og:url" content="/sumo-documentation/Demand/Automatic_Routing/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Demand/Automatic_Routing/","headline":"Demand Automatic Routing","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Demand Automatic Routing</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Demand/Automatic_Routing.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="introduction">Introduction</h1>
+
+<p>Routing dynamically in the running simulation may be adequate in the following situations:</p>
+
+<ul>
+  <li>there is not enough time / computing power to wait for the dynamic user equilibrium</li>
+  <li>changes to the net occur while the simulation is running</li>
+  <li>vehicles need to adapt their route while running</li>
+</ul>
+
+<p>In this case <a href="/SUMO" title="wikilink">SUMO</a> may be used directly for routing with either routes or trip files (or a mix) as input.</p>
+
+<p>This routing approach works by giving some or all vehicles the capability to re-compute their route periodically. This routing takes into account the current and recent state of traffic in the network and thus adapts to jams and other changes in the network.</p>
+
+<p>The options listed below allow configuring which of the vehicles shall be equipped, how often rerouting decisions shall be made and how the estimation of travel times is computed from current and recent knowledge.</p>
+
+<h1 id="options">Options</h1>
+
+<p>The options related to this routing are:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td>0</td>
+      <td>The probability for a vehicle to have a routing device</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>Assign a device to named vehicles</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>false</td>
+      <td>The devices are set deterministic using a fraction of 1000 (with the defined <strong>probability</strong>)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>0</td>
+      <td>The period with which the vehicle shall be rerouted</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>60</td>
+      <td>The rerouting period before insertion/depart</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>1</td>
+      <td>The interval for updating the edge weights.</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>0.5</td>
+      <td>The weight of prior edge weights for exponential averaging from [0, 1].</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>0</td>
+      <td>The number of adaptation steps for averaging (enable for values &gt; 0).</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>false</td>
+      <td>Use <a href="/Demand/Importing_O/D_Matrices#Describing_the_TAZ" title="wikilink">traffic assignment zones (TAZ/districts)</a> as routing end points</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>false</td>
+      <td>Use option for initializing the edge weights at simulation start</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="edge-weights">Edge weights</h1>
+
+<p>If the routing is enabled for any vehicles, the average travel times in the net are collected for all edges. If a vehicle needs to be routed (either because it gets inserted or because a repeated route choice was enabled via the “.period” option) it chooses the fastest route to its destination edge (or district) according to the present edge weights (travel speeds and hence travel times). The update of the edge weights does not simply overwrite the old value but is computed as a weighted average as described below. Since updating the weights of all edges in each simulation step means a major slowdown for the simulation this interval may be altered using the “.adaption-interval” option.</p>
+
+<h2 id="adapting-by-exponential-average">Adapting by exponential average</h2>
+
+<p>By setting the option the travel speed of each edge is computed as</p>
+
+<p><code class="highlighter-rouge"> FLOAT * priorValue + (1 - FLOAT) * currentMeanSpeed</code></p>
+
+<p>This averaging takes place with the period set by .</p>
+
+<h2 id="adapting-by-moving-average">Adapting by moving average</h2>
+
+<p>By setting the option the travel speed of each edge is computed as the average of the INT latest meanSpeed values. This averaging takes place with the period set by .</p>
+
+<h1 id="incomplete-trips-and-flows">Incomplete trips and flows</h1>
+
+<p>All vehicles which are created using a trip as input (or a flow with “from” and “to” attributes) get automatically routed at insertion without the need to instantiate the device for them explicitly. Whenever an error occurs on routing because no route can be found which includes all mandatory edges (“from”, “to”, and all stop edges in the correct order) and is connected (also respecting the vehicle class permissions) this is a fatal error and stops th simulation. This can be switched off by using which will leave the route untouched in the error case. If the vehicle did not have a route yet (because it was defined using a trip) and cannot find one and is used, it will not be inserted.</p>
+
+<p>Alternatively to using attributes “from” and “to” it is also possible to use “fromTaz” and “toTaz”, if a <a href="/Demand/Importing_O/D_Matrices#Describing_the_TAZ" title="wikilink">district file is loaded</a>.</p>
+
+<h1 id="alternative-declaration-via-parameters">Alternative Declaration via Parameters</h1>
+
+<p>Another way for defining the set of vehicles that are equipped with a rerouting device is via <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Devices" title="wikilink">generic parameters</a>.</p>
+
+<h1 id="traci">TraCI</h1>
+
+<p>The device can be accessed using the TraCI function <em>vehicle.getParameter</em> and <em>vehicle.setParameter</em>:</p>
+
+<p><strong>getParameter</strong></p>
+
+<ul>
+  <li>device.rerouting.period (returns individual rerouting period in seconds)</li>
+  <li>device.rerouting.edge:EDGE_ID (returns assumed travel time for rerouting where EDGE_ID is the id of a network edge)</li>
+  <li>has.rerouting.device (returns “true” or “false” depending on whether the device is equipped)</li>
+</ul>
+
+<p><strong>setParameter</strong></p>
+
+<ul>
+  <li>device.rerouting.period (double literal, set rerouting period in seconds)</li>
+  <li>device.rerouting.edge:EDGE_ID (double literal, set assumed travel time for rerouting for all vehicles (where EDGE_ID is the id if a network edge). This value is overwritten at the next update interval (–device.rerouting.adaptation-interval).</li>
+  <li>has.rerouting.device (“true”): can be used to dynamically enable automatic rerouting</li>
+</ul>
+
+<h1 id="randomness">Randomness</h1>
+
+<p>When setting the option , edge weights for routing are dynamically distorted by a random factor drawn uniformly from [1,]. This randomization is performed every time an edge weight is used so the same vehicle could select a different route when rerouted on different time steps. The route generated this way may be longer than the fastest route by the given factor (in the worst case). This randomness is a good way to achieve a reasonable route distribution in grid networks an in other cases where many similar route alternatives are available.</p>
+
+  </div><a class="u-url" href="/sumo-documentation/Demand/Automatic_Routing/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

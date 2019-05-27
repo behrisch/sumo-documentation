@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Developer Network Building Process | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Developer Network Building Process" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Developer/Network_Building_Process/" />
+<meta property="og:url" content="/sumo-documentation/Developer/Network_Building_Process/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Developer/Network_Building_Process/","headline":"Developer Network Building Process","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Developer Network Building Process</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Developer/Network_Building_Process.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><a href="/NETCONVERT" title="wikilink">NETCONVERT</a>, <a href="/NETGENERATE" title="wikilink">NETGENERATE</a>, and <a href="/NETEDIT" title="wikilink">NETEDIT</a> share the same process of building networks which is started as soon as data are read (in <a href="/NETCONVERT" title="wikilink">NETCONVERT</a>) or after an internal description is generated (in <a href="/NETGENERATE" title="wikilink">NETGENERATE</a>).</p>
+
+<p>The process requires that at least nodes and edges are given, optionally also connections between edges and/or lanes and other optional information. Hints about how the network shall be built - whether turnarounds or highway on/off-ramps shall be added, traffic lights or roundabouts shall be guessed, etc. are retrieved from the options.</p>
+
+<p>Below, you may find a list of all steps performed while building the network. Optional steps are in <em>italics</em>.</p>
+
+<ol>
+  <li>Modifying the sets of nodes and edges
+    <ol>
+      <li><em>Joining junction clusters</em></li>
+      <li>Removing self-loops</li>
+      <li><em>Removing isolated roads</em></li>
+      <li><em>Removing unwished edges</em></li>
+      <li>Removing empty nodes <em>and geometry nodes</em></li>
+      <li>Joining similar edges</li>
+      <li><em>Splitting geometry edges</em></li>
+      <li><em>Guessing and setting on-/off-ramps</em></li>
+    </ol>
+  </li>
+  <li><em>Moving network to origin</em></li>
+  <li>TLS position computation
+    <ol>
+      <li><em>Assigning nodes to traffic lights</em></li>
+      <li><em>Joining traffic light nodes</em></li>
+    </ol>
+  </li>
+  <li>Computing connections between lanes
+    <ol>
+      <li>Computing turning directions</li>
+      <li>Sorting nodes’ edges</li>
+      <li>Computing Approached Edges</li>
+      <li>Computing Approaching Lanes</li>
+      <li>Dividing of Lanes on Approached Lanes</li>
+      <li><em>Appending Turnarounds</em></li>
+      <li>Rechecking of lane endings</li>
+    </ol>
+  </li>
+  <li>Geometry computation
+    <ol>
+      <li>Computing node shapes</li>
+      <li>Computing edge shapes</li>
+    </ol>
+  </li>
+  <li>Computing right-of-way and traffic light programs
+    <ol>
+      <li>Computing tls logics</li>
+      <li>Computing node logics</li>
+      <li>Computing traffic light logics</li>
+    </ol>
+  </li>
+  <li>Finishing inner edges</li>
+</ol>
+
+<p>These computation steps are perfomed within void NBNetBuilder::compute(OptionsCont &amp;oc). These steps are described more detailed in the following.</p>
+
+<h1 id="steps">Steps</h1>
+
+<p><em>pre-condition</em>: All input is read</p>
+
+<p><em>pre-condition</em>: Nodes have: id, cartesian coordinates, type (optional, may change)</p>
+
+<p><em>pre-condition</em>: Edges have: valid from/to-nodes, lane number, max. speed limits, allowed vehicle classes, geometry (may change), typeID, lane spread information, name (optional), priority information (optional)</p>
+
+<h2 id="1-modifying-the-sets-of-nodes-and-edges">#1: Modifying the sets of nodes and edges</h2>
+
+<p><strong>Purpose</strong>: Remove unwished edges/nodes from the internal representation; add geometry nodes if wished</p>
+
+<p><em>post-condition</em>: all unwished elements (nodes, edges) are removed, geometry nodes are inserted/removed if wished, attributes as above</p>
+
+<p>The following sub-steps are done:</p>
+
+<ul>
+  <li><strong>joinJunctions</strong> (‘<code class="highlighter-rouge">Joining junction clusters</code>’): build node clusters</li>
+</ul>
+
+<p><strong>Purpose</strong>: Join network graph nodes which form a single intersection.</p>
+
+<p><em>post-condition</em>: junction joined, attributes as above</p>
+
+<p><em>affects</em>: removes and adds nodes, removes edges, remapps connections (tbd)</p>
+
+<p><em>state</em>: tbd</p>
+
+<ul>
+  <li><strong>removeSelfLoops</strong> (‘<code class="highlighter-rouge">Removing self-loops</code>’): remove all edges where the from-node is the same as the to-node</li>
+</ul>
+
+<p><em>post-condition</em>: Each edge is a uni-directional connection between two different nodes (ok)</p>
+
+<p><em>state</em>: green for me, though I am not sure why lists of edges are built which are then given to remapping methods; wouldn’t it be enough to check within the remapping method whether a connection exists?</p>
+
+<ul>
+  <li><strong>joinSimilarEdges</strong> (‘<code class="highlighter-rouge">Joining similar edges</code>’): “join” edges which connect the same nodes</li>
+</ul>
+
+<p><em>post-condition</em>: No two edges with same geometry connecting same nodes exist</p>
+
+<p><em>state</em>: yellow, as there are two comments in the code, one about a bug, a second one about a missing check for vclasses; should be revisited (why it’s here, what would happen if not)</p>
+
+<p><em>comment</em>: ? Earlier, only one road could connect same intersections; not now. Why, explain, how does it work?</p>
+
+<p><em>comment</em>: This method uses two magic numbers to determine whether edges are “similar”:</p>
+
+<p><code class="highlighter-rouge">distanceThreshold = 7.;</code> // don’t merge edges further apart</p>
+
+<p><code class="highlighter-rouge">lengthThreshold = 0.10;</code> // don’t merge edges with higher relative length-difference</p>
+
+<ul>
+  <li><strong>removeIsolatedRoads</strong> (‘<code class="highlighter-rouge">Finding isolated roads</code>’): remove edges which are isolated (not part of the network)</li>
+</ul>
+
+<p><em>post-condition</em>: ? not defined somewhere</p>
+
+<p><em>state</em>: yellow; the method is pretty large, and there is no removal of edges within the tls control; how does it work?</p>
+
+<p><em>comment</em>: Should be revisited</p>
+
+<ul>
+  <li><strong>removeUnwishedEdges</strong> (‘<code class="highlighter-rouge">Removing unwished edges</code>’): Removes edges not in myEdges2Keep</li>
+</ul>
+
+<p><em>post-condition</em>: not wanted edges are no longer in the internal containers (ok)</p>
+
+<p><em>state</em>: yellow; the complete keep/remove/keep-postload - stuff should be revisited</p>
+
+<ul>
+  <li><strong>removeUnwishedNodes</strong> (‘<code class="highlighter-rouge">Removing empty nodes and geometry nodes</code>’ or ‘<code class="highlighter-rouge">Removing empty nodes</code>’): Removes useless nodes</li>
+</ul>
+
+<p><em>post-condition</em>: empty nodes, nodes with no incoming/outgoing edges, are removed (ok)</p>
+
+<p><em>post-condition</em>: nodes which only affect the geometry of an edge are removed if wished (ok)</p>
+
+<p><em>state</em>: yellow; should be done in two steps for a cleaner code; additionally, we had the bug that empty acosta nodes where still in the network; is this solved?</p>
+
+<ul>
+  <li><strong>splitGeometry</strong> (‘<code class="highlighter-rouge">Splitting geometry edges</code>’): Splits edges at geometry positions</li>
+</ul>
+
+<p><em>post-condition</em>: If wished, edges have a line-geometry only</p>
+
+<p><em>state</em>: yellow; the naming of built nodes is not proper</p>
+
+<ul>
+  <li><strong>Guessing on-/off-ramps</strong> (<code class="highlighter-rouge">Guessing and setting on-/off-ramps</code>)</li>
+</ul>
+
+<p><strong>Purpose</strong>: Add missing on-/off-ramps</p>
+
+<p><em>state</em>: tbd</p>
+
+<p>As a result, the internal representation of the read/generated network contains the sets of nodes/edges the user wanted.</p>
+
+<h2 id="2-moving-network-to-origin">#2: Moving network to origin</h2>
+
+<p><strong>Purpose</strong>: Let network coordinates start at 0,0</p>
+
+<p><em>state</em>: green</p>
+
+<h2 id="3-tls-position-computation">#3: TLS position computation</h2>
+
+<p><strong>Purpose</strong>: Let nodes know whether they are controlled by traffic lights</p>
+
+<ul>
+  <li><strong>guessTLs</strong> (‘<code class="highlighter-rouge">Assigning nodes to traffic lights</code>’)</li>
+</ul>
+
+<p><em>post-condition</em>: empty nodes, nodes with no incoming/outgoing edges, are removed (ok)</p>
+
+<p><em>state</em>: tbd</p>
+
+<ul>
+  <li><strong>joinTLS</strong> (‘<code class="highlighter-rouge">Joining traffic light nodes</code>’)</li>
+</ul>
+
+<p><em>post-condition</em>: empty nodes, nodes with no incoming/outgoing edges, are removed (ok)</p>
+
+<p><em>state</em>: tbd</p>
+
+<h2 id="4-connections-computation">#4: Connections Computation</h2>
+
+<p><strong>Purpose</strong>: Determine and/or assign connections over intersections between lanes</p>
+
+<h3 id="computing-turning-directions">Computing turning directions</h3>
+
+<p><strong>code</strong>: NBTurningDirectionsComputer::computeTurnDirections(…);</p>
+
+<p><strong>post-condition</strong>: The edge knows its turnaround direction, if existing.</p>
+
+<p><strong>reason</strong>: Turnarounds are treated differently in the following steps than other directions of driving.</p>
+
+<p><strong>how</strong></p>
+
+<p>For each combination of an incoming and an outgoing edge, which may be connected, we compute the angle between them. If this angle is &gt;160°, we assume that this may be a turnaround. We add 360° to this angle if both edges connect same both nodes in different direction. We store the edge pairs with angle into a list sorted decreasing by the angle. After all combinations are computed, we go through the list and set those as turnarounds which we see at first, marking both the incoming and the outgoing edge as already seen what avoids to use them twice. We warn if an edge occures twice with an angle &gt;360° - multiple edges connecting two same nodes.</p>
+
+<p><strong>state</strong>: yellow</p>
+
+<p>the check for being connected should be omitted, here, see inline-documentation</p>
+
+<p>as usual, you may find pathological intersections</p>
+
+<h3 id="sorting-nodes-edges">Sorting nodes’ edges</h3>
+
+<p><strong>code</strong>: NBNodesEdgesSorter::sortNodesEdges(…);</p>
+
+<p><strong>post-condition</strong>: each node’s edges (incoming, outgoing, and all) are sorted clockwise, starting at 12 o’clock. Incoming edges with same angle as the according outgoing are before the outgoing one in the list of all edges.</p>
+
+<p><strong>reason</strong>: this order is assumed to be given in following computation steps</p>
+
+<p><strong>how</strong></p>
+
+<p>We sort a node’s edge vectors (incoming, outgoing, all), first. Then, we go through the vector of all edges and exchange an incoming and an outgoing edge if both have the same angle, and the incoming is after the outgoing (determined using “isTurningDirection”).</p>
+
+<p><strong>state</strong>: yellow</p>
+
+<p>unvalidated for left-hand networks</p>
+
+<p>the method uses the method “NBEdge::isTurningDirectionAt(…)” which is not a plain usage of the turnaround computation performed earlier</p>
+
+<h3 id="computing-node-types">Computing node types</h3>
+
+<p><strong>code</strong>: NBNodeTypeComputer::computeNodeTypes(…);</p>
+
+<p><strong>post-condition</strong>: Each node has one of the following types: NODETYPE_PRIORITY_JUNCTION, NODETYPE_RIGHT_BEFORE_LEFT, NODETYPE_TRAFFIC_LIGHT, NODETYPE_NOJUNCTION(?).</p>
+
+<p><strong>reason</strong>: We need this to compute the right-of-way rules.</p>
+
+<p><strong>how</strong></p>
+
+<p>We investigate each node by itself. We check some special cases, first:</p>
+
+<ul>
+  <li>if the type is already set (myType != NODETYPE_UNKNOWN) -&gt; skip</li>
+  <li>if we have only one incoming edge -&gt; set to NODETYPE_PRIORITY_JUNCTION</li>
+  <li>if it is a <em>simple continuation</em> -&gt; set to NODETYPE_PRIORITY_JUNCTION</li>
+</ul>
+
+<p>At first, we assume the intersection is a NODETYPE_RIGHT_BEFORE_LEFT intersection. We then go through all incoming edge combinations which are not opposite. As soon as we encounter one where the speed limit between both edges differs by more than 10km/h (approx.), we set the type to NODETYPE_PRIORITY_JUNCTION. This is also the case if one of the edges has a speed limit of more than 49km/h (we use this value to avoid floating point issues).</p>
+
+<p><strong>state</strong>: yellow</p>
+
+<p>investigate whether NODETYPE_NOJUNCTION can be set earlier (by the user)</p>
+
+<p>the used method “getOppositeIncoming” should be revalidated</p>
+
+<h3 id="computing-priorities">Computing priorities</h3>
+
+<p><strong>code</strong>: NBEdgePriorityComputer::computeEdgePriorities(…);</p>
+
+<p><strong>post-condition</strong>: Each edge has a priority at the node it starts and ends at. The priorities at the start and the end node may differ. An edge has either the priority 1 (higher prioritized) or 0 (lower prioritized or all equal).</p>
+
+<p><strong>reason</strong>: We need this to compute the right-of-way rules.</p>
+
+<p><strong>how</strong></p>
+
+<p>All priorities are initialised to 0.</p>
+
+<p><strong>state</strong>: orange</p>
+
+<h2 id="5-geometry-computation">#5: Geometry computation</h2>
+
+<h2 id="6-computing-right-of-way-and-traffic-light-programs">#6: Computing right-of-way and traffic light programs</h2>
+
+<h2 id="7-finishing-inner-edges-optional">#7: Finishing inner edges (optional)</h2>
+
+<h1 id="old">OLD</h1>
+
+<h2 id="steps-9-10-computing-certain-signallingright-of-ways">Steps #9-#10: Computing certain signalling/right-of-ways</h2>
+
+<h2 id="steps-11-17-computing-and-setting-lane-to-lane-connections">Steps #11-#17: Computing and setting lane-to-lane connections</h2>
+
+<h2 id="steps-18-19-computing-geometries">Steps #18-#19: Computing geometries</h2>
+
+<p>I am currently concerned with the edge shapes, because even a eworld or a TrafficModeler export stops here in debug mode. It is in NBEdge::computeEdgeShape. (Actually, as far as I understand this method, it is about the lane shapes of this edge.) In this algorithm, the following three cases must be distinguished:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>[<File:laneShapeIntersectsWithNodeShape.png>](/File:laneShapeIntersectsWithNodeShape.png "wikilink")</File:laneShapeIntersectsWithNodeShape.png></td>
+      <td>The edge shape intersects with the node shape. Then, the shape is trimmed to the intersection point. This looks quite reasonable.</td>
+    </tr>
+    <tr>
+      <td>[<File:laneShapeOutsideOfNodeShape.png>](/File:laneShapeOutsideOfNodeShape.png "wikilink")</File:laneShapeOutsideOfNodeShape.png></td>
+      <td>The edge shape is outside the node shape. The the present algorithm extrapolates the last line of the edge shape and enlarges the edge to the new intersection point. This looks reasonable to me as well.</td>
+    </tr>
+    <tr>
+      <td>[<File:laneShapeInsideOfNodeShape.png>](/File:laneShapeInsideOfNodeShape.png "wikilink")</File:laneShapeInsideOfNodeShape.png></td>
+      <td>The edge shape is completely within the node shape. What should happen here? (The red dots show, what netconvert does at present.)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>So I am wondering, what the right behaviour of netconvert would be in the third case.</p>
+
+<h2 id="steps-20-22-computing-right-of-way-rules">Steps #20-#22: Computing right-of-way rules</h2>
+
+<h2 id="steps-23-applying-additional-offset">Steps #23: Applying additional offset</h2>
+
+<h1 id="table">Table</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Action</th>
+      <th>affects</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td>nodes</td>
+    </tr>
+    <tr>
+      <td><strong>Adapting the input</strong></td>
+      <td>x</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>‘<code class="highlighter-rouge">Building node clusters</code>’</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>‘<code class="highlighter-rouge">Removing self-loops</code>’</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>‘<code class="highlighter-rouge">Joining similar edges</code>’</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>‘<code class="highlighter-rouge">Finding isolated roads</code>’</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>‘<code class="highlighter-rouge">Removing unwished edges</code>’</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>‘<code class="highlighter-rouge">Removing empty nodes and geometry nodes</code>’ or ‘<code class="highlighter-rouge">Removing empty nodes</code>’</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>‘<code class="highlighter-rouge">Splitting geometry edges</code>’</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>‘<code class="highlighter-rouge">Guessing and setting on-/off-ramps</code>’</td>
+    </tr>
+    <tr>
+      <td><strong>Moving network to origin</strong></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><strong>TLS position computation</strong></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Assigning nodes to traffic lights</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Joining traffic light nodes</td>
+    </tr>
+    <tr>
+      <td><strong>Computing connections between lanes</strong></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Computing turning directions</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Sorting nodes’ edges</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Computing Approached Edges</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Computing Approaching Lanes</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Dividing of Lanes on Approached Lanes</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Appending Turnarounds (optional)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Rechecking of lane endings</td>
+    </tr>
+    <tr>
+      <td><strong>Geometry computation</strong></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Computing node shapes</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Computing edge shapes</td>
+    </tr>
+    <tr>
+      <td><strong>Computing right-of-way and traffic light programs</strong></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Computing tls logics</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Computing node logics</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Computing traffic light logics</td>
+    </tr>
+    <tr>
+      <td><strong>Finishing inner edges (optional)</strong></td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+
+  </div><a class="u-url" href="/sumo-documentation/Developer/Network_Building_Process/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

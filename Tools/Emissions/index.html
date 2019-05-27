@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Tools Emissions | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Tools Emissions" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Tools/Emissions/" />
+<meta property="og:url" content="/sumo-documentation/Tools/Emissions/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Tools/Emissions/","headline":"Tools Emissions","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Tools Emissions</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Tools/Emissions.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>SUMO includes some small-sized tools and tests that help to develop and evalue the implemented <a href="/Topics/Environmental_Issues#Models" title="wikilink">emission models</a>. These tools are presented in the following.</p>
+
+<h1 id="emissionsmap">emissionsMap</h1>
+
+<p>This tool generates matrices of emissions for a given range of velocities, accelerations, and slopes, given the vehicle’s emission class mainly.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="/Image:P_7_6_CO2.png" title="wikilink">300px</a></td>
+      <td>The tool obtains parameter that describe the ranges and the emission classes to generate. If the option is set, emissionsMap iterates over all available emission classes. In this case, the option should denote a folder the emission maps shall be written into. If is not set, should name the file to generate and the emission class to write the map for must be defined using the option . If PHEMlight shall be used, one has to define the path to the CEP-files using the option .</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The tool is located in /bin.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>The image shows the visualisation of CO<sub>2</sub> emission of the <a href="/Models/Emissions/HBEFA-based" title="wikilink">HBEFA v2.1-based</a> “P_7_6” emission class.</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="options">Options</h2>
+
+<h3 id="processing">Processing</h3>
+
+<table>
+<thead>
+<tr class="header">
+<th><p>Option</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>If set, maps for all available emissions are written</p></td>
+</tr>
+<tr class="even">
+<td>
+<p><br />
+</p></td>
+<td><p>Defines the name of the emission class to generate the map for</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>Defines the minimum velocity boundary of the map to generate (in [m/s]); <em>default: <strong>0</strong></em></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>Defines the maximum velocity boundary of the map to generate (in [m/s]); <em>default: <strong>50</strong></em></p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>Defines the velocity step size (in [m/s]); <em>default: <strong>2</strong></em></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>Defines the minimum acceleration boundary of the map to generate (in [m/s^2]); <em>default: <strong>-4</strong></em></p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>Defines the maximum acceleration boundary of the map to generate (in [m/s^2]); <em>default: <strong>4</strong></em></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>Defines the acceleration step size (in [m/s^2]); <em>default: <strong>.5</strong></em></p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>Defines the minimum slope boundary of the map to generate (in [°]); <em>default: <strong>-10</strong></em></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>Defines the maximum slope boundary of the map to generate (in [°]); <em>default: <strong>10</strong></em></p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>Defines the slope step size (in [°]); <em>default: <strong>1</strong></em></p></td>
+</tr>
+<tr class="even">
+</tr>
+</tbody>
+</table>
+
+<h3 id="output">Output</h3>
+
+<table>
+<thead>
+<tr class="header">
+<th><p>Option</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>Defines the file (or the path if  was set) to write the map(s) into</p></td>
+</tr>
+<tr class="even">
+</tr>
+</tbody>
+</table>
+
+<p>The format of the output is a CSV-like with <strong>;</strong> as the column separator:</p>
+
+<speed>`;`<acceleration>`;`<slope>`;`<Pollutant-Type>`;`&lt;Polutant-Value-in-mg/s-or-ml/s&gt;
+
+### Emissions
+
+<table>
+<thead>
+<tr class="header">
+<th><p>Option</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>Determines where to load <a href="/Models/Emissions/PHEMlight" title="wikilink">PHEMlight</a> definitions from.</p></td>
+</tr>
+<tr class="even">
+</tr>
+</tbody>
+</table>
+
+### Report
+
+<table>
+<thead>
+<tr class="header">
+<th><p>Option</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>Switches to verbose output; <em>default: <strong>false</strong></em></p></td>
+</tr>
+<tr class="even">
+<td>
+<p><br />
+</p></td>
+<td><p>Prints the help screen</p></td>
+</tr>
+<tr class="odd">
+</tr>
+</tbody>
+</table>
+
+emissionsDrivingCycle
+=====================
+
+This tools computes emissions given a timeline of speeds/accelerations for a single vehicle. The driving cycle definition must be given using the option . It must be a ';'-separated .csv-file with the following columns:
+
+-   time (in \[s\]); must start at zero and be increasing in steps of 1 s
+-   velocity (in \[m/s\] unless is set, see below)
+-   acceleration (in \[m/s^2\]); this column may be omitted or recalculated using the option
+-   optional: slope (in \[°\]); if given, one has to enable it using the option
+
+The tool generates a ';'-separated .csv file which contains the following columns:
+
+-   time (in \[s\])
+-   velocity (in \[m/s\])
+-   acceleration (in \[m/s^2\])
+-   slope (in \[°\])
+-   CO emissions (in \[mg/s\])
+-   CO2 emissions (in \[mg/s\])
+-   HC emissions (in \[mg/s\])
+-   PMx emissions (in \[mg/s\])
+-   NOx emissions (in \[mg/s\])
+-   fuel consumption (in \[ml/s\])
+-   electricity consumption (in \[Wh/s\])
+
+Additionally, the sums of the generated emissions / the consumed fuel are printed on the screen.
+
+The tool is located in /bin.
+
+Options
+-------
+
+### Input
+
+<table>
+<thead>
+<tr class="header">
+<th><p>Option</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>Defines the file to read the driving cycle from.</p></td>
+</tr>
+<tr class="even">
+<td>
+<p><br />
+</p></td>
+<td><p>Defines the file to read the trajectory from either in netstate or in Amitran format.</p></td>
+</tr>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>Defines for which emission class the emissions shall be generated.</p></td>
+</tr>
+<tr class="even">
+</tr>
+</tbody>
+</table>
+
+### Processing
+
+<table>
+<thead>
+<tr class="header">
+<th><p>Option</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>If set, the acceleration is computed instead of being read from the file.</p></td>
+</tr>
+<tr class="even">
+<td>
+<p><br />
+</p></td>
+<td><p>If set, the first line of the read file is skipped.</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>If set, the given speed is interpreted as being given in km/h.</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>If set, the fourth column is read and used as slope (in [°]).</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>Sets a global slope (in [°]) that is used if the file does not contain slope information.</p></td>
+</tr>
+<tr class="even">
+</tr>
+</tbody>
+</table>
+
+### Output
+
+<table>
+<thead>
+<tr class="header">
+<th><p>Option</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>Defines the file to write the emission cycle results into.</p></td>
+</tr>
+<tr class="even">
+</tr>
+</tbody>
+</table>
+
+### Emissions
+
+<table>
+<thead>
+<tr class="header">
+<th><p>Option</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>Determines where to load <a href="/Models/Emissions/PHEMlight" title="wikilink">PHEMlight</a> definitions from.</p></td>
+</tr>
+<tr class="even">
+</tr>
+</tbody>
+</table>
+
+### Report
+
+<table>
+<thead>
+<tr class="header">
+<th><p>Option</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>
+<p><br />
+</p></td>
+<td><p>When set, the tool does not report anything; <em>default: <strong>false</strong></em></p></td>
+</tr>
+<tr class="even">
+<td>
+<p><br />
+</p></td>
+<td><p>Prints the help screen</p></td>
+</tr>
+<tr class="odd">
+</tr>
+</tbody>
+</table>
+
+------------------------------------------------------------------------
+
+[Category:ApplicationDescription](/Category:ApplicationDescription "wikilink")
+</Pollutant-Type></slope></acceleration></speed>
+
+  </div><a class="u-url" href="/sumo-documentation/Tools/Emissions/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

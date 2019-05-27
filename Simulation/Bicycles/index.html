@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Simulation Bicycles | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Simulation Bicycles" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Simulation/Bicycles/" />
+<meta property="og:url" content="/sumo-documentation/Simulation/Bicycles/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Simulation/Bicycles/","headline":"Simulation Bicycles","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Simulation Bicycles</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Simulation/Bicycles.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="bicycle-simulation">Bicycle Simulation</h1>
+
+<p>This page describes simulations of bicycles in SUMO. To build an intermodal simulation scenario with bicycles, additional steps have to be take in comparison to a plain vehicular simulation.</p>
+
+<h1 id="approaches-to-bicycle-modelling">Approaches to bicycle modelling</h1>
+
+<p>Currently, no exclusive movement model for bicycles is implemented. Existing models need to be re-purposed</p>
+
+<h2 id="bicycles-as-slow-vehicles">Bicycles as slow vehicles</h2>
+
+<p>In this case, vehicles are specified as vehicles with the appropriate type:</p>
+
+<vType id="bike" vClass="bicycle" />
+
+<p>&lt;vehicle type=”bike” …/&gt;</p>
+
+<p>Note, that that the along with <a href="/Vehicle_Type_Parameter_Defaults" title="wikilink">sensible default parameters</a> are automatically used when specifying . By adapating <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicle_Types" title="wikilink">vType-parameters for acceleration,deceleration,maximumSpeed,etc..</a> different cyclist types can be modelled.</p>
+
+<h3 id="problems-and-workarounds">Problems and workarounds</h3>
+
+<ul>
+  <li>Turning left by crossing twice does not work. Extra edges need to be added to accommodate these trajectories.</li>
+  <li>No bi-directional movements on bicycle lanes</li>
+  <li>No shared space for bicycles and pedestrians</li>
+  <li>No overtaking by vehicles on a single-lane road. This can be fixed by using the <a href="/Simulation/SublaneModel" title="wikilink">Sublane Model</a>.</li>
+  <li>The intersection model has no special adaptations for bicycles. This results in unrealistic (large) safety gaps when bicycles are approaching a large priority intersection from a prioritized road</li>
+  <li>The road speed limit is not meaningful for bicycles. To <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Speed_Distributions" title="wikilink">model a speed distribution for bicycles with a single vehicle type</a>, a speed limit corresponding to the median speed of the bicycles should be set for the cycling lanes.</li>
+</ul>
+
+<p>One way for overcoming most of these problems is to control bicycle movements at intersections with an <a href="/TraCI" title="wikilink">external control script</a>. This approach is described in <a href="https://www.researchgate.net/publication/302909195_Integration_of_an_External_Bicycle_Model_in_SUMO">Integration of an external bicycle model in SUMO, Heather Twaddle 2016</a>.</p>
+
+<h2 id="bicyles-as-fast-pedestrians">Bicyles as fast pedestrians</h2>
+
+<p>In this case, persons walking at high speed are used.</p>
+
+<h3 id="problems-and-workarounds-1">Problems and workarounds</h3>
+
+<ul>
+  <li>No support for proper visualization</li>
+  <li>Movement model is not validated</li>
+</ul>
+
+<h1 id="building-a-network-for-bicycle-simulation">Building a network for bicycle simulation</h1>
+
+<h2 id="automatic-import">Automatic import</h2>
+
+<p>The import of bicycle lanes from OpenStreetMap is supported since version 0.24.0. To use this, <a href="/Networks/Import/OpenStreetMap#Recommended_Typemaps" title="wikilink">an appropriate typemap</a> must be loaded.</p>
+
+<h3 id="explicity-specification">Explicity specification</h3>
+
+<p>Bike lanes may be defined explicitly in plain XML input when describing <a href="/Networks/Building_Networks_from_own_XML-descriptions#Lane-specific_Definitions" title="wikilink">edges (plain.edg.xml)</a>. This is done by defining an additional lane which only permits the vClass “bicycle” and setting the appropriate width. In this case it is important to disallow bicycles on all other lanes. Also, any pre-exisiting connection definitions must be modified to account for the new sidewalk lane.</p>
+
+<h2 id="notes-on-right-of-way-rules">Notes on Right-of-Way rules</h2>
+
+<p>When using bicycle lanes in a network, right-turning vehicles must yield for straight-going bicycles. The intersection model supports these right-of-way rules and builds internal junctions where appropriate.</p>
+
+<p>Likewise, left-turning bicycles one a bicycle lane (on the right side of the road) must yield to straight-going vehicles.</p>
+
+  </div><a class="u-url" href="/sumo-documentation/Simulation/Bicycles/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

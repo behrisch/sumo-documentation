@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Simulation Safety | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Simulation Safety" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Simulation/Safety/" />
+<meta property="og:url" content="/sumo-documentation/Simulation/Safety/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Simulation/Safety/","headline":"Simulation Safety","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Simulation Safety</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Simulation/Safety.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><strong>FORCETOC</strong></p>
+
+<h1 id="collisions">Collisions</h1>
+
+<p><a href="/SUMO" title="wikilink">SUMO</a> tracks gaps between vehicles that are on the same edge either fully or partially. By default, whenever these gaps are reduced to below a vehicles <em>minGap</em> a collision is registered (default 2.5m). This (potentially) surprising behavior is used to detect issues with the default car-following model that is supposed to never reduce the gap below the minGap. By setting the option this threshold can be reduced. When setting , only <em>physical collisions</em> (i.e. front and back bumper meet or overlap) are registered.</p>
+
+<p>When setting the option , collisions between vehicles on the same intersection are also checked by detecting overlap of the vehicles shapes.</p>
+
+<p>The consequence of a collision is configured using the option using one of the following keywords:</p>
+
+<ul>
+  <li><strong>teleport</strong>: (the default): the follower vehicle is moved (teleported) to the next edge on its route</li>
+  <li><strong>warn</strong>: a warning is issued</li>
+  <li><strong>none</strong>: no action is take</li>
+  <li><strong>remove</strong>: both vehicles are removed from the simulation</li>
+</ul>
+
+<p>Additionally there is the possibility of stopping vehicles for a fixed time before the <em>collision action</em> takes place. This allows for pile-ups and traffic disturbance. To enable stopping, the option must be set with the stopping time in seconds.</p>
+
+<h2 id="deliberately-causing-collisions">Deliberately causing collisions</h2>
+
+<p>To force collisions at a set time, TraCI must be used. Besides setting the speed, it is also necessary to disable safety checks using <a href="/TraCI/Change_Vehicle_State" title="wikilink">the commands speedMode and laneChangeMode</a>.</p>
+
+<p>To create rear-end collisions with some probability one can configure vehicles with a value of <em>tau</em> that is lower than the simulation step size (default 1s) and use the default Krauss model.</p>
+
+<p>Collisions at intersections may be caused by any of the following:</p>
+
+<ul>
+  <li>yellow phases which are too short in relation to the vehicle speed (giving insufficient time to come to a stop). By default this causes strong braking (<em>Warning: emergency braking</em>) potentially followed by rear-end collisions</li>
+  <li>Green phases that allow conflicting streams to drive at the same time. Collision beyond the intersection due to this are always detected but collisions on the intersection are only registered when setting the option .</li>
+  <li><a href="/Networks/Building_Networks_from_own_XML-descriptions#Multiple_connections_from_the_same_edge_to_the_same_target_lane" title="wikilink">Double connections</a> from a traffic-light-controlled edge: If two lanes from the same edge with the same target lane get the green light at the same time, collisions are likely</li>
+  <li>If all <a href="/Networks/Building_Networks_from_own_XML-descriptions#Multiple_connections_from_the_same_edge_to_the_same_target_lane" title="wikilink">Double connections</a> at an edge are configured with</li>
+  <li>If connections from the minor road of a priority junction are configured with</li>
+</ul>
+
+<p>To simulate the <strong>effects</strong> of an accident see <a href="/FAQ#How_to_simulate_an_accident" title="wikilink">FAQ#How_to_simulate_an_accident</a>.</p>
+
+<h1 id="reaction-times">Reaction Times</h1>
+
+<p>In Reality, drivers take actions with some delay in regard to the evolving traffic situation. This reaction time is modelled in the simulation in various ways.</p>
+
+<h2 id="simulation-step-length">Simulation Step Length</h2>
+
+<p>All simulation vehicles select their speed simultaneously with regard to the traffic state from the previous simulation step. This means, there is at least a reaction time of the simulation step-length.</p>
+
+<p>In contrast, lane-changing within an edge happens sequentially (in the upstream direction) within each step . Consequently, two vehicles that are driving almost parallel on a 3-lane road may both change their lanes in parallel within a single simulation step because the vehicle further behind already takes into account the lateral movement of the vehicle ahead.</p>
+
+<h2 id="action-step-length">Action Step Length</h2>
+
+<p>By default, vehicles recompute their speed and lane-changing decisions every simulation step. When running with sub-second time resultion (i.e. ), this also gives very low effective reaction times.</p>
+
+<p>To decouple the decision interval from the simulation step length, the vehicle <em>action-step-length</em> can be defined as the duration between subsequent vehicle decisions. Decision-making starts direclty after insertion which means vehicles inserted at different times may take decisions during different simulation steps. During simulation steps without decision-making, vehicle positions are updated according to the previously computed acceleration. Lateral dynamics (when using the sublane model) use a dynamic acceleration curve that to complete the current lateral driving manoeuvre.</p>
+
+<p>The action step length can be defined in any of the following ways:</p>
+
+<ul>
+  <li>setting the option which sets the default action step length for all vehicles</li>
+  <li>setting the attribute <em>actionStepLength</em></li>
+  <li>calling <em>traci.vehicle.setActionStepLength</em></li>
+</ul>
+
+<h1 id="safety-related-parameters">Safety-related parameters</h1>
+
+<p>Simulation of unsafe behavior is a developing subject. Expect model additions and extensions. The following <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicle_Types" title="wikilink">vehicle type parameters</a> are safety related:</p>
+
+<h2 id="car-following-model">car-following model</h2>
+
+<ul>
+  <li><strong>speedFactor</strong>: higher value causes speeding (driving above the speed limit)</li>
+  <li><strong>accel</strong>, <strong>decel</strong>: higher values lead to abrupt speed changes</li>
+  <li><strong>tau</strong>: lower values lead to reduced gaps to the leader vehicle. When setting tau lower than the simulation parameter (default 1s), resp. the vehicle’s action step length ( or vehicle parameter <code class="highlighter-rouge">actionStepLength</code>), collisions may occur</li>
+  <li><strong>emergencyDecel</strong>: this is the maximum deceleration a vehicle can take to avoid an accident. By default this takes the same value as <strong>decel</strong></li>
+  <li><strong>apparentDecel</strong>: this is the deceleration value that will be assumed by other vehicles of the configured vehicle. By default this takes the same value as <strong>decel</strong></li>
+</ul>
+
+<h2 id="lane-changing-model">Lane-Changing Model</h2>
+
+<ul>
+  <li>lcCooperative: lower values cause less cooperation during lane changing</li>
+  <li>lcSpeedGain: higher values cause more overtaking for speed</li>
+  <li>lcKeepRight: lower values cause less driving on the right</li>
+  <li>lcPushy: setting this to values between 0 and 1 causes aggressive lateral encroachment (only when using the <a href="/Simulation/SublaneModel" title="wikilink">Sublane Model</a>)</li>
+  <li>lcAssertive: setting this values above 1 cause acceptance of smaller longitudinal gaps in proportion to driver impatience(only when using the <a href="/Simulation/SublaneModel" title="wikilink">Sublane Model</a>)</li>
+</ul>
+
+<h2 id="junction-model">Junction Model</h2>
+
+<p>There are further parameters which affect safety-related junction behavior. For a description see <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Junction_Model_Parameters" title="wikilink">Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Junction_Model_Parameters</a>.</p>
+
+<ul>
+  <li>impatience: higher values lead to acceptance of smaller time gaps at intersections. These are still safe in the sense of collision avoidance.</li>
+  <li>jmCrossingGap: lower values lead to more aggressive driving at pedestrian intersections (safe)</li>
+  <li>jmDriveAfterRedTime: Violate red lights some time after the switch (safety decreases with growing values)</li>
+  <li>jmDriveRedSpeed: Speed when violating red lights (higher values decrease safety)</li>
+  <li>jmIgnoreFoeProb: Probability to ignore foes with right-of-way (higher values decrease safety)</li>
+  <li>jmIgnoreFoeSpeed: Foe speed threshold which prevents fast vehicles from being ignored (Higher values decrease safety)</li>
+  <li>jmSigmaMinor: When planning to pass a minor link, optimum acceleration is assumed. (higher values cause reduced acceleration and thus decrease time gaps and safety)</li>
+  <li>jmTimegapMinor: Minimum time gap when passing a minor link ahead of a prioritzed vehicle (lower values decrease safety)</li>
+</ul>
+
+<h1 id="safety-related-outputs">Safety-Related Outputs</h1>
+
+<ul>
+  <li><a href="/Simulation/Output/SSM_Device" title="wikilink">Surrogate Safety Measures</a> (headway, brake rates, time to collision etc.)</li>
+  <li>The <a href="/Simulation/Output/Instantaneous_Induction_Loops_Detectors" title="wikilink">Instant Induction Loop</a> output records the <em>gap</em> attribute which gives the time gap between successive vehicles with sub-second precision.</li>
+  <li>The <a href="/Simulation/Output/Lanechange" title="wikilink">Lanechange output</a> generates a record of all lane-changes that take place in the simulation. It includes the longitudinal gap to the leader and follower vehicle on the target lane (both the actual gap and the one that would have been required to ensure stringent deceleration bounds under all circumstances). When using the <a href="/Simulation/SublaneModel" title="wikilink">sublane model</a>, the attribute <em>latGap</em> records the lateral gap to the neighboring vehicle in the direction of the change if such a vehicle exists.</li>
+</ul>
+
+  </div><a class="u-url" href="/sumo-documentation/Simulation/Safety/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

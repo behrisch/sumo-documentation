@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Topics Environmental Issues | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Topics Environmental Issues" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Topics/Environmental_Issues/" />
+<meta property="og:url" content="/sumo-documentation/Topics/Environmental_Issues/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Topics/Environmental_Issues/","headline":"Topics Environmental Issues","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Topics Environmental Issues</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Topics/Environmental_Issues.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>One of the major burdens traffic poses to society is its impact on the environment in means of air and noise pollution as well as the consumption of non-renewable materials. Much work is put into the development of solutions that reduce these harms. A traffic simulation should support such development by allowing to measure the amount of generated pollution and the amount of consumed fuel. <a href="/SUMO" title="wikilink">SUMO</a> (used for both, <a href="/SUMO" title="wikilink">SUMO</a> and <a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a> in the following) includes models and interfaces that fulfill these needs.</p>
+
+<p>In the following, the topic of “environmental issues” as seen from <a href="/SUMO" title="wikilink">SUMO</a> perspective is described in the following.</p>
+
+<h1 id="user-interaction">User Interaction</h1>
+
+<p>Pollutants/noise/consumption is computed only if the user asks for it or if it is used for visualisation. Pollutants emitted by the simulated vehicles can be visualised using <a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a> or be written into output files, both by <a href="/SUMO" title="wikilink">SUMO</a> and <a href="/SUMO-GUI" title="wikilink">SUMO-GUI</a>. The following output can be used:</p>
+
+<ul>
+  <li><a href="/Simulation/Output/TripInfo" title="wikilink">trip information</a>: in combination with the emissions device, the tripinfo output contains the sum of all pollutants emitted / fuel consumed during a vehicle’s journey;</li>
+  <li><a href="/Simulation/Output/Lane-_or_Edge-based_Emissions_Measures" title="wikilink">edge/lane emissions</a>: these output files contain the pollutants emitted and fuel consumed at an edge / a lane, aggregated over a variable time span;</li>
+  <li><a href="/Simulation/Output/Lane-_or_Edge-based_Noise_Measures" title="wikilink">edge/lane noise</a>: these output files contain the noise produced at an edge / a lane, aggregated over a variable time span.</li>
+</ul>
+
+<p>Further information can be found in the outputs’ documentation.</p>
+
+<p>A SUMO-vehicle owns the attribute “<span class="inlxml">emissionClass</span>” (see <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicle_Emission_Classes" title="wikilink">Vehicle Emission Classes</a>). This attribute defines which emission model and which of its parameter sets shall be used to compute the emissions. The models’ resolutions and coverage of the vehicle population differ among the emission models.</p>
+
+<p>Currently, the noise model only distinguishes two vehicle types: passenger and heavy duty vehicles. The discrimination is done based on the vehicle’s <span class="inlxml">emissionClass</span>; if the vehicle belongs to a passenger emission class, the noise parameter for a passenger vehicle are used, otherwise those of a heavy duty vehicle.</p>
+
+<h1 id="models">Models</h1>
+
+<p>SUMO includes the following emission models:</p>
+
+<ul>
+  <li><a href="/Models/Emissions/HBEFA-based" title="wikilink">HBEFA v2.1-based</a>: A continuous reformulation of the <a href="http://www.hbefa.net/">HBEFA</a> [1] v2.1 emissions data base;</li>
+  <li><a href="/Models/Emissions/PHEMlight" title="wikilink">PHEMlight</a>, a derivation of the original <a href="http://www.ivt.tugraz.at/de/forschung/emissionen.html">PHEM</a>[2] emission model.</li>
+</ul>
+
+<p>Both models implement different vehicle emission classes. These classes can be assigned to vehicles by using the vehicle type attribute “<span class="inlxml">emissionClass</span>” (see <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Vehicle_Emission_Classes" title="wikilink">Vehicle Emission Classes</a>). Available emission classes can be found within the emission model descriptions (<a href="/Models/Emissions/HBEFA-based" title="wikilink">HBEFA v2.1-based</a>, <a href="/Models/Emissions/PHEMlight" title="wikilink">PHEMlight</a>).</p>
+
+<p>The noise model is based on HARMONOISE.</p>
+
+<center>
+'''Table: pollutants covered by models
+
+| model                                                        | pollutant / measurement |
+|--------------------------------------------------------------|-------------------------|
+| CO<sub>2</sub>                                               | CO                      |
+| [HBEFA v2.1-based](/Models/Emissions/HBEFA-based "wikilink") | x                       |
+| [PHEMlight](/Models/Emissions/PHEMlight "wikilink")          | x                       |
+||
+
+</center>
+<p>Research
+========</p>
+
+<h2 id="emissions-modelling">Emissions Modelling</h2>
+
+<p>The emission models implemented in <a href="/SUMO" title="wikilink">SUMO</a> re-use existing models and data bases. The first steps including an overview of fifteen reviewed models as well as the derivation of the <a href="/Models/Emissions/HBEFA-based" title="wikilink">HBEFA v2.1-based</a> model are given in the deliverable “<em>D3.1 – Traffic Modelling: Environmental Factors</em>”[3] of the <a href="http://www.ict-itetris.eu/">iTETRIS</a>[4] project. The development of <a href="/Models/Emissions/PHEMlight" title="wikilink">PHEMlight</a> is described in the deliverable “<em>Deliverable 4.1 - Extended Simulation Tool PHEM coupled to SUMO with User Guide</em> (Draft)”[5] of the <a href="http://colombo-fp7.eu/">COLOMBO</a>[6] project.</p>
+
+<h2 id="emission-optimal-routing">Emission-optimal Routing</h2>
+
+<p>Usually, route computation is performed using travel times as weights for the edges of a road network. But what if one would use the emitted pollutants instead? Would their emission be reduced? The first investigations on this topic were performed using a real-world network within the <a href="http://www.ict-itetris.eu/">iTETRIS</a>[7] project and were reported in its deliverable D3.1[8]. Further steps using real-world scenarios are given in [9], [10] and [11]. To gain deeper knowledge about the dynamics of the processes, later investigations (<a href="/!!!" title="wikilink">!!!</a>, [12], [13]) were performed using synthetic scenarios.</p>
+
+<h2 id="evaluation-of-real-traffic-management-actions">Evaluation of real Traffic Management Actions</h2>
+
+<p>European authorities are forced by the “Directive 2008/50/EC of the European Parliament and of the Council”[14] to assure certain air quality. Traffic management, usually operated by local authorities, has the duty to perform corrective actions that reduce road traffic’s impact, if needed. <a href="http://www.bast.de/nn_42544/DE/Publikationen/Datenbanken/MARLIS/MARLIS.html">MARLIS</a>[15] is a database that lists such actions performed by traffic management authorities. A proof-of-concept for simulating such actions using SUMO is presented in [16]. Tomàs Josep Vergés used this approach to simulate and evaluate some of such actions in his Master thesis[17]</p>
+
+<h1 id="further-resources">Further Resources</h1>
+
+<h2 id="further-interfaces">Further Interfaces</h2>
+
+<ul>
+  <li>The tool <a href="/Tools/TraceExporter" title="wikilink">traceExporter.py</a> converts SUMO’s <a href="/Simulation/Output/FCDOutput" title="wikilink">fcd-output</a> into files that can be directly read by the <a href="http://www.ivt.tugraz.at/de/forschung/emissionen.html">PHEM</a>[18] application. A <a href="/Tutorials/Trace_File_Generation" title="wikilink">tutorial on generating trace files (including PHEM input files)</a> using this tool is available.</li>
+</ul>
+
+<h2 id="tools">Tools</h2>
+
+<ul>
+  <li><a href="/Tools/Emissions#emissionsMap" title="wikilink">emissionsMap</a> generates a map of emission for a named or all emission classes by iterating over velocity, acceleration, and slope</li>
+  <li><a href="/Tools/Emissions#emissionsDrivingCycle" title="wikilink">emissionsDrivingCycle</a> generates emissions for a vehicle by virtually following a driving cycle</li>
+</ul>
+
+<h1 id="references">References</h1>
+
+<references />
+
+<p>[1] <a href="http://www.hbefa.net/"><em>HBEFA</em> - Handbook emission factors for road transport</a> (German). INFRAS. Last visited on 8th of January 2014.</p>
+
+<p>[2] <a href="http://www.ivt.tugraz.at/de/forschung/emissionen.html"><em>Emissionen und Energieverbrauch von Antriebskonzepten</em></a> (German). Institute for Internal Combustion Engines and Thermodynamics at Graz University of Technology. Last visited on 8th of January 2014.</p>
+
+<p>[3] Krajzewicz, D.; Nippold, R. and Lazaro, O. <em>D3.1 – Traffic Modelling: Environmental Factors</em>. iTETRIS consortium, 2009</p>
+
+<p>[4] <a href="http://www.ict-itetris.eu/"><em>iTETRIS</em> - An Integrated Wireless and Traffic Platform for Real-Time Road Traffic Management Solutions</a>. iTETRIS web site. iTETRIS consortium. Last visited on 8th of January 2014.</p>
+
+<p>[5] N. Furian, S. Hausberger and D. Krajzewicz <em>Deliverable 4.1 - Extended Simulation Tool PHEM coupled to SUMO with User Guide</em> (Draft). COLOMBO consortium, 2013</p>
+
+<p>[6] <a href="http://colombo-fp7.eu/"><em>COLOMBO</em> - Cooperative Self-Organizing System for low Carbon Mobility at low Penetration Rates</a>. COLOMBO web site. COLOMBO consortium. Last visited on 8th of January 2014.</p>
+
+<p>[7]</p>
+
+<p>[8]</p>
+
+<p>[9] D. Krajzewicz and L. Bieker. <em>Investigating Ecological Impacts on selected Traffic Management Methods</em>. 3rd NEARCTIS Workshop, 2010</p>
+
+<p>[10] D. Krajzewicz, L. Bieker, E. Brockfeld, R. Nippold and J. Ringel. <em>Ökologische Einflüsse ausgewählter Verkehrsmanagementansätze</em>. Heureka ‘11, 2011</p>
+
+<p>[11] D. Krajzewicz and P. Wagner. <em>Large-scale Vehicle Routing Scenarios based on Pollutant Emission</em>. In: G. Meyer and J. Valldorf (Eds.). <em>Advanced Microsystems for Automotive Applications 2011</em>, AMAA 2011, Springer, 2011, pp. 237-246.</p>
+
+<p>[12] M. Behrisch and Y.-P. Flötteröd and D. Krajzewicz and P. Wagner. <em>Ecological User Equilibrium?</em> DTA 2012, 2011</p>
+
+<p>[13] Y.-P. Flötteröd and P. Wagner and M. Behrisch and D. Krajzewicz. <em>Simulated-based Validity Analysis of Ecological User Equilibrium</em>. In: Winter Simulation Conference Archive, 2012 Winter Simulation Conference, 2012</p>
+
+<p>[14] The European Parliament and the Council of the European Union. <em>Directive 2008/50/EC</em>. Official Journal of the European Union, L 152/1. 2008.</p>
+
+<p>[15] <a href="http://www.bast.de/nn_42544/DE/Publikationen/Datenbanken/MARLIS/MARLIS.html"><em>MARLIS</em> - Datenbank mit Maßnahmen zur Reinhaltung der Luft in Bezug auf Immissionen an Straßen, Version 3.1</a> (German). BASt database index. Last visited on 8th of January 2014.</p>
+
+<p>[16] D. Krajzewicz and Y.-P. Flötteröd. <em>Simulative Untersuchung abstrakter und realer Verkehrsmanagementansätze zur Emissionsreduktion</em>. In: <em>Kolloquium Luftqualität an Straßen 2013</em>, pp. 42-57. Bundesanstalt für Straßenwesen. 2013.</p>
+
+<p>[17] Tomàs Josep Vergés. <em>Analysis and simulation of traffic management actions for traffic emission reduction</em>. TU Berlin. 2013.</p>
+
+<p>[18]</p>
+
+  </div><a class="u-url" href="/sumo-documentation/Topics/Environmental_Issues/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

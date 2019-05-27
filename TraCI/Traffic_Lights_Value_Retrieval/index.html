@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>TraCI Traffic Lights Value Retrieval | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="TraCI Traffic Lights Value Retrieval" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/TraCI/Traffic_Lights_Value_Retrieval/" />
+<meta property="og:url" content="/sumo-documentation/TraCI/Traffic_Lights_Value_Retrieval/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/TraCI/Traffic_Lights_Value_Retrieval/","headline":"TraCI Traffic Lights Value Retrieval","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">TraCI Traffic Lights Value Retrieval</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/TraCI/Traffic_Lights_Value_Retrieval.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="command-0xa2-get-traffic-lights-variable">Command 0xa2: Get Traffic Lights Variable</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">string</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Variable</td>
+      <td style="text-align: center">Traffic Lights ID</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Asks for the value of a certain variable of the named traffic light. The value returned is the state of the asked variable/value within the last simulation step. The following variable values can be retrieved, the type of the return value is also shown in the table.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>ValueType</th>
+      <th>Description</th>
+      <th><a href="/TraCI/Interfacing_TraCI_from_Python" title="wikilink">Python Method</a></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id list (0x00)</td>
+      <td>stringList</td>
+      <td>Returns a list of ids of all traffic lights within the scenario (the given Traffic Lights ID is ignored)</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._trafficlight.html#TrafficLightDomain-getIDList">getIDList</a></td>
+    </tr>
+    <tr>
+      <td>count (0x01)</td>
+      <td>int</td>
+      <td>Returns the number of traffic lights within the scenario (the given Traffic Lights ID is ignored)</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._trafficlight.html#TrafficLightDomain-getIDCount">getIDCount</a></td>
+    </tr>
+    <tr>
+      <td>state (light/priority tuple) (0x20)</td>
+      <td>string</td>
+      <td>Returns the named tl’s state as a tuple of light definitions from rRgGyYoO, for red, green, yellow, off, where lower case letters mean that the stream has to decelerate</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._trafficlight.html#TrafficLightDomain-getRedYellowGreenState">getRedYellowGreenState</a></td>
+    </tr>
+    <tr>
+      <td>default current phase duration (0x24)</td>
+      <td>int</td>
+      <td>Returns the default total duration of the currently active phase [ms]; To obtain the remaining duration use <em>(getNextSwitch - simulation.getCurrentTime())</em>; to obtain the spent duration subtract the remaining from the total duration</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._trafficlight.html#TrafficLightDomain-getPhaseDuration">getPhaseDuration</a></td>
+    </tr>
+    <tr>
+      <td>controlled lanes (0x26)</td>
+      <td>stringList</td>
+      <td>Returns the list of lanes which are controlled by the named traffic light. Returns at least one entry for every element of the phase state (signal index)<sup>(1)(2)</sup>.</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._trafficlight.html#TrafficLightDomain-getControlledLanes">getControlledLanes</a></td>
+    </tr>
+    <tr>
+      <td>controlled links (0x27)</td>
+      <td>compound object</td>
+      <td>Returns the links controlled by the traffic light, sorted by the signal index and described by giving the incoming, outgoing, and via lane. <sup>(2)</sup></td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._trafficlight.html#TrafficLightDomain-getControlledLinks">getControlledLinks</a></td>
+    </tr>
+    <tr>
+      <td>current phase (0x28)</td>
+      <td>int</td>
+      <td>Returns the index of the current phase in the current program</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._trafficlight.html#TrafficLightDomain-getPhase">getPhase</a></td>
+    </tr>
+    <tr>
+      <td>current program (0x29)</td>
+      <td>string</td>
+      <td>Returns the id of the current program</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._trafficlight.html#TrafficLightDomain-getProgram">getProgram</a></td>
+    </tr>
+    <tr>
+      <td>complete definition (light/priority tuple) (0x2b)</td>
+      <td>compound object</td>
+      <td>Returns the complete traffic light program, structure described under data types</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._trafficlight.html#TrafficLightDomain-getCompleteRedYellowGreenDefinition">getCompleteRedYellowGreenDefinition</a></td>
+    </tr>
+    <tr>
+      <td>assumed time of next switch (0x2d)</td>
+      <td>int</td>
+      <td>Returns the assumed time (in milliseconds) at which the tls changes the phase. Please note that the time to switch is not relative to current simulation step (the result returned by the query will be absolute time, counting from simulation start); to obtain relative time, one needs to subtract current simulation time from the result returned by this query. Please also note that the time may vary in the case of actuated/adaptive traffic lights</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._trafficlight.html#TrafficLightDomain-getNextSwitch">getNextSwitch</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Please note:</p>
+
+<ol>
+  <li>Each lane may be the start of multiple links (connections across the intersection). Thus a lane may occur multiple times in the output</li>
+  <li>If one signal index controls multiple links, their incoming lanes and links are all returned sequentially. This only happens if set explicitly by the user when building the network.</li>
+</ol>
+
+<h2 id="response-0xb2-traffic-lights-variable">Response 0xb2: Traffic Lights Variable</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center"><return_type></return_type></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Variable</td>
+      <td style="text-align: center">Traffic Light ID</td>
+      <td style="text-align: center">Return type of the variable</td>
+      <td style="text-align: center"><RETURN_VALUE></RETURN_VALUE></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The respond to a <strong>“Command Get Traffic Lights Variable”</strong>.</p>
+
+<h3 id="structure-of-compound-object-traffic-light-program-both-0x25-and-0x2b">Structure of compound object traffic light program (both 0x25 and 0x2b)</h3>
+
+<p>If you request a complete traffic light program, the compound object is structured as following. Attention, each part is preceded by a byte which represents its data type, except “length”.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center">type + integer</td>
+      <td style="text-align: center">logic</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">logic</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Length</td>
+      <td style="text-align: center">Number of logics</td>
+      <td style="text-align: center">logic 1</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">logic n</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>where <strong>logic</strong> is decribed by:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">type + string</td>
+      <td style="text-align: center">type + integer</td>
+      <td style="text-align: center">type + compound</td>
+      <td style="text-align: center">type + integer</td>
+      <td style="text-align: center">type + integer</td>
+      <td style="text-align: center">phase</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">phase</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">SubID</td>
+      <td style="text-align: center">Type</td>
+      <td style="text-align: center">SubParameter</td>
+      <td style="text-align: center">Current phase index</td>
+      <td style="text-align: center">Number of phases</td>
+      <td style="text-align: center">Phase 1</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">Phase n</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Type and SubParameter aren’t currently implemented therefore they are 0.</p>
+
+<p>where <strong>phase</strong> is described by:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">type + integer</td>
+      <td style="text-align: center">type + integer</td>
+      <td style="text-align: center">type + integer</td>
+      <td style="text-align: center">type + stringList</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Duration</td>
+      <td style="text-align: center">MinDuration</td>
+      <td style="text-align: center">MaxDuration</td>
+      <td style="text-align: center">Phase definition</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>MinDuration and MaxDuration are only relevant in the context of actuated traffic lights. The phase definition differs for 0x25 and 0x2b. The first (0x25) contains the old, deprecated definition which uses three strings that describe the tl’s state, the first green y/n, the second for brake y/n, the third for yellow y/n. The second (0x2b) contains a single string representing the lights. Note, that the first (0x25) is also reversed.</p>
+
+<h3 id="structure-of-compound-object-controlled-links">Structure of compound object controlled links</h3>
+
+<p>If you request the list of links, the compound object is structured as following. Attention, each part is preceded by a byte which represents its data type, except “length”.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center">controlled links</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">controlled links</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Length (number of signals)</td>
+      <td style="text-align: center">links controlled by signal 0</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">links controlled by signal n-1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>’’’ Controlled links: ‘’’</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">int</td>
+      <td style="text-align: center">stringlist</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">stringlist</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">number of controlled links</td>
+      <td style="text-align: center">link 0</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">link n-1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Each link is described by a string list with three entries: the lane which is incoming into the junction, the lane which is outgoing from the junction, and the lane across the junction (junction-internal). Empty strings indicate missing lanes.</p>
+
+  </div><a class="u-url" href="/sumo-documentation/TraCI/Traffic_Lights_Value_Retrieval/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

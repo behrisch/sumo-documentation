@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Simulation ParkingArea | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Simulation ParkingArea" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Simulation/ParkingArea/" />
+<meta property="og:url" content="/sumo-documentation/Simulation/ParkingArea/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Simulation/ParkingArea/","headline":"Simulation ParkingArea","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Simulation ParkingArea</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Simulation/ParkingArea.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><strong>FORCETOC</strong></p>
+
+<h1 id="parking-areas">Parking Areas</h1>
+
+<p>Areas for parking outside the road network (either road-side parking or car parks) can be defined using the element. This accomplishes the following purposes:</p>
+
+<ul>
+  <li>arbitrary parking positions and angles can be defined to visualize fishbone or parallel parking</li>
+  <li>parking space outside the road network can be limited to a set capacity</li>
+  <li>automatic rerouting to an alternative parking area can be triggered whenever a parking area becomes full</li>
+</ul>
+
+<h1 id="definition">Definition</h1>
+
+<p>A road-side parkingArea is defined as in the following:</p>
+
+<parkingArea id="ParkAreaA" lane="a_0" startPos="200" endPos="250" roadsideCapacity="5" angle="45" length="30" />
+
+<p>Additionally, individual parking spaces can be defined:</p>
+
+<parkingArea id="ParkAreaB" lane="b_0" startPos="240" endPos="260" roadsideCapacity="0" width="5" length="10" angle="30">
+`    `<space x="853" y="623" />
+`    `<space x="863" y="618" />
+`    `<space x="873" y="613" />
+`    `<space x="883" y="608" />
+`    `<space x="893" y="603" />
+`    `<space x="848" y="611" width="4" length="8" angle="120" />
+`    `<space x="858" y="606" width="4" length="8" angle="120" />
+`    `<space x="868" y="601" width="4" length="8" angle="120" />
+`    `<space x="878" y="596" width="4" length="8" angle="120" />
+`    `<space x="888" y="591" width="4" length="8" angle="120" />
+</parkingArea>
+
+<p>The total capacity of a parking area is given by the sum of its <em>roadsideCapacity</em> and the number of its elements.</p>
+
+<p>The parkingArea supports the following attributes:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute Name</th>
+      <th>Value Type</th>
+      <th>Value Range</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>id</strong></td>
+      <td>string</td>
+      <td>id</td>
+      <td> </td>
+      <td>The name of the parking area; must be unique</td>
+    </tr>
+    <tr>
+      <td><strong>lane</strong></td>
+      <td>string</td>
+      <td>valid lane id</td>
+      <td> </td>
+      <td>The name of the lane the parking area shall be located at</td>
+    </tr>
+    <tr>
+      <td><strong>startPos</strong></td>
+      <td>float</td>
+      <td>-lane.length &lt; x &lt; lane.length (negative values count backwards from the end of the lane)</td>
+      <td>0</td>
+      <td>The begin position on the lane (the lower position on the lane) in meters</td>
+    </tr>
+    <tr>
+      <td>endPos</td>
+      <td>float</td>
+      <td>-lane.length &lt; x &lt; lane.length (negative values count backwards from the end of the lane)</td>
+      <td>lane.length</td>
+      <td>The end position on the lane (the higher position on the lane) in meters, must be larger than <em>startPos</em> by more than 0.1m</td>
+    </tr>
+    <tr>
+      <td>friendlyPos</td>
+      <td>bool</td>
+      <td><em>true,false</em></td>
+      <td><em>false</em></td>
+      <td>whether invalid stop positions should be corrected automatically (default <em>false</em>)</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>string</td>
+      <td>simple String</td>
+      <td> </td>
+      <td>Arbitrary text to describe the parking area. This is only used for visualization purposes.</td>
+    </tr>
+    <tr>
+      <td>roadsideCapacity</td>
+      <td>int</td>
+      <td>non-negative</td>
+      <td>0</td>
+      <td>The number of parking spaces for road-side parking</td>
+    </tr>
+    <tr>
+      <td>width</td>
+      <td>float</td>
+      <td>positive</td>
+      <td>3.2</td>
+      <td>The width of the road-side parking spaces</td>
+    </tr>
+    <tr>
+      <td>length</td>
+      <td>float</td>
+      <td>positive</td>
+      <td>(endPos - startPos) / roadsideCapacity</td>
+      <td>The length of the road-side parking spaces</td>
+    </tr>
+    <tr>
+      <td>angle</td>
+      <td>float (degree)</td>
+      <td> </td>
+      <td>0</td>
+      <td>The angle of the road-side parking spaces relative to the lane angle, positive means clockwise</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="custom-parking-spaces">Custom parking spaces</h2>
+
+<p>The space element supports the following attributes:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute Name</th>
+      <th>Value Type</th>
+      <th>Value Range</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>x</strong></td>
+      <td>float</td>
+      <td> </td>
+      <td> </td>
+      <td>The x-position in meters of the parking vehicle</td>
+    </tr>
+    <tr>
+      <td><strong>y</strong></td>
+      <td>float</td>
+      <td> </td>
+      <td> </td>
+      <td>The y-position in meters of the parking vehicle</td>
+    </tr>
+    <tr>
+      <td>z</td>
+      <td>float</td>
+      <td> </td>
+      <td>0</td>
+      <td>The z-position in meters of the parking vehicle</td>
+    </tr>
+    <tr>
+      <td>width</td>
+      <td>float</td>
+      <td> </td>
+      <td>width value of the parent parking area</td>
+      <td>The width of the parking space</td>
+    </tr>
+    <tr>
+      <td>length</td>
+      <td>float</td>
+      <td> </td>
+      <td>length value of the parent parking area</td>
+      <td>The length of the parking space</td>
+    </tr>
+    <tr>
+      <td>angle</td>
+      <td>float (degree)</td>
+      <td> </td>
+      <td>absolute angle of the parent parking area (lane angle + angle attribute)</td>
+      <td>Absolute angle of the parking space</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="letting-vehicles-stop-at-a-parking-area">Letting Vehicles stop at a parking area</h1>
+
+<p>The declare a vehicle that stops at a parkingPlace, a -definition must be part of the vehicle or it’s route:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    &lt;vehicle id="0" depart="0"&gt;
+        &lt;route edges="e1 e2 e3"/&gt;
+        &lt;stop parkingArea="pa0" duration="20"/&gt;
+    &lt;/vehicle&gt;
+</code></pre></div></div>
+
+<p>What is defined here is a vehicle named “0” that stops as at parkingArea “pa0”. Note, that the lane of that parking area must belong to one of the edges “e1, e2, e3” of the vehicles route.</p>
+
+<p>For a complete list of attributes for the “stop”-element of a vehicle see <a href="/Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Stops" title="wikilink">Definition_of_Vehicles,_Vehicle_Types,_and_Routes#Stops</a>.</p>
+
+<p>If a vehicle reaches a parkingArea that is filled to capacity it must wait on the road until a space becomes available or <a href="/Simulation/Rerouter#Rerouting_to_an_alternative_Parking_Area" title="wikilink">reroute to a new parking area</a>.</p>
+
+<h1 id="traci">TraCI</h1>
+
+<p>Some information regarding parking areas can be accessed directly using <a href="/TraCI/Simulation_Value_Retrieval#Generic_Parameter_Retrieval_0x7e" title="wikilink">traci.simulation.getParameter() calls</a>.</p>
+
+<ul>
+  <li><strong>parkingArea.capacity</strong>: total number of parking spaces (roadsideCapacity + number of elements)</li>
+  <li><strong>parkingArea.occupancy</strong>: number of vehicles parking at this parking area</li>
+</ul>
+
+  </div><a class="u-url" href="/sumo-documentation/Simulation/ParkingArea/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

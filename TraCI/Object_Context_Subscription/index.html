@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>TraCI Object Context Subscription | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="TraCI Object Context Subscription" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/TraCI/Object_Context_Subscription/" />
+<meta property="og:url" content="/sumo-documentation/TraCI/Object_Context_Subscription/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/TraCI/Object_Context_Subscription/","headline":"TraCI Object Context Subscription","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">TraCI Object Context Subscription</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/TraCI/Object_Context_Subscription.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><strong>FORCETOC</strong></p>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>Context subscriptions are allowing the obtaining of specific values from surrounding objects of a certain so called “EGO” object. With these datas one can determine the traffic status around that EGO object. Such an EGO Object can be any possible Vehicle, inductive loop, points-of-interest, and such like. A vehicle driving through a city, for example, is surrounded by a lot of different and changing vehicles, lanes, junctions, or points-of-interest along his ride. Context subscriptions can provide selected variables of those objects that surround the EGO object within a certain range.</p>
+
+<p>The subscription for a structure’s context is initiated using a “Subscribe … Context” command (0x80-0x8e). The command is evaluated immediately on request, verifying it this way. It returns a “Subscribe … Context” response (0x90-0x9e). If EGO is a vehicle, the subscription is descheduled as soon as the vehicle leaves the simulation.</p>
+
+<p>As soon as the subscription was accepted, it is executed after each call of <a href="/TraCI/Control-related_commands#Command_0x02:_Simulation_Step.282.29" title="wikilink">Simulation Step(2)</a> command.</p>
+
+<p>The command ID describes the type of the EGO-object which is the center of the context; currently, the following EGO-objects are supported:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Command ID</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>inductive loops</td>
+      <td>0x80</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>lanes</td>
+      <td>0x83</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>vehicles</td>
+      <td>0x84</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>points-of-interest</td>
+      <td>0x87</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>polygons</td>
+      <td>0x88</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>junctions</td>
+      <td>0x89</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>edges</td>
+      <td>0x8a</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>For a given EGO-structure, each subscription allows to address multiple variables from structures of a certain kind. This means, if you have an EGO-vehicle, you may ask for speeds and positions of vehicles in range of EGO. If you also need information about surrounding points-of-interest, you have to add a further context subscription for PoIs. Vehicles, and PoIs belong to different “context domains”. The following domains are available:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Context Domain ID</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>inductive loops</td>
+      <td>0xa0</td>
+      <td><a href="/TraCI/Induction_Loop_Value_Retrieval" title="wikilink">retrievable variables</a></td>
+    </tr>
+    <tr>
+      <td>lanes</td>
+      <td>0xa3</td>
+      <td><a href="/TraCI/Lane_Value_Retrieval" title="wikilink">retrievable variables</a></td>
+    </tr>
+    <tr>
+      <td>vehicles</td>
+      <td>0xa4</td>
+      <td><a href="/TraCI/Vehicle_Value_Retrieval" title="wikilink">retrievable variables</a></td>
+    </tr>
+    <tr>
+      <td>points-of-interest</td>
+      <td>0xa7</td>
+      <td><a href="/TraCI/POI_Value_Retrieval" title="wikilink">retrievable variables</a></td>
+    </tr>
+    <tr>
+      <td>polygons</td>
+      <td>0xa8</td>
+      <td><a href="/TraCI/Polygon_Value_Retrieval" title="wikilink">retrievable variables</a></td>
+    </tr>
+    <tr>
+      <td>junctions</td>
+      <td>0xa9</td>
+      <td><a href="/TraCI/Junction_Value_Retrieval" title="wikilink">retrievable variables</a></td>
+    </tr>
+    <tr>
+      <td>edges</td>
+      <td>0xaa</td>
+      <td><a href="/TraCI/Edge_Value_Retrieval" title="wikilink">retrievable variables</a></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>For each domain, the same variables can be retrieved as using the Get … Variable commands (see above).</p>
+
+<h1 id="command-0x8x-subscribe--context">Command 0x8<i>X</i>: Subscribe … Context</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">time</td>
+      <td style="text-align: center">time</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">double</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte[n]</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">begin Time</td>
+      <td style="text-align: center">end Time</td>
+      <td style="text-align: center">Object ID</td>
+      <td style="text-align: center">Context Domain</td>
+      <td style="text-align: center">Context Range</td>
+      <td style="text-align: center">Variable Number</td>
+      <td style="text-align: center">The list of variables to return</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Some notes:</p>
+
+<ul>
+  <li>begin Time: the subscription is executed only in time steps &gt;= this value; in ms</li>
+  <li>end Time: the subscription is executed in time steps &lt;= this value; the subscription is removed if the simulation has reached a higher time step; in ms</li>
+  <li>Context Domain: the type of objects in the addressed object’s surrounding to ask values from</li>
+  <li>Context Range: the radius of the surrounding</li>
+  <li>The size of the variables list must be equal to the field “Variable Number”.</li>
+</ul>
+
+<h1 id="response-0x9x--subscription-response">Response 0x9<i>X</i>: … Subscription Response</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">int</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center"><return_type></return_type></td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center"><return_type></return_type></td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center"><return_type></return_type></td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center"><return_type></return_type></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Object ID</td>
+      <td style="text-align: center">Context Domain</td>
+      <td style="text-align: center">Variable Count</td>
+      <td style="text-align: center">Objects Count</td>
+      <td style="text-align: center">Object #1 ID</td>
+      <td style="text-align: center">Object #1 / Variable #1 Id</td>
+      <td style="text-align: center">Object #1 / Variable #1 status</td>
+      <td style="text-align: center">Object #1 / Return type of the variable #1</td>
+      <td style="text-align: center">Object #1 / &lt;VALUE#1&gt;</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">Object #1 / Variable #n Id</td>
+      <td style="text-align: center">Object #1 / Variable #n status</td>
+      <td style="text-align: center">Object #1 / Return type of the variable #n</td>
+      <td style="text-align: center">Object #1 / &lt;VALUE#n&gt;</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">Object #m ID</td>
+      <td style="text-align: center">Object #m / Variable #1 Id</td>
+      <td style="text-align: center">Object #m / Variable #1 status</td>
+      <td style="text-align: center">Object #m / Return type of the variable #1</td>
+      <td style="text-align: center">Object #m / &lt;VALUE#1&gt;</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">Object #m / Variable #n Id</td>
+      <td style="text-align: center">Object #m / Variable #n status</td>
+      <td style="text-align: center">Object #m / Return type of the variable #n</td>
+      <td style="text-align: center">Object #m / &lt;VALUE#n&gt;</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The respond to a <strong>“Subscribe … Variable”</strong>.</p>
+
+<p>The status is 0x00 (RTYPE_OK) if the variable could be retrieved successfully. If not, the status is 0xff (RTYPE_ERR). In the second case, the variable type is set to string and the variable value contains the error message. Please note, that the status should be ok in all cases.</p>
+
+<ul>
+  <li><strong><em>Variable Count</em></strong> is the number of returned variables per object</li>
+  <li><strong><em>Objects Count</em></strong> is the number of objects in range</li>
+</ul>
+
+<p>This implies that n*m values are returned (Variable Count * Objects Count).</p>
+
+<h1 id="client-library-methods">Client library methods</h1>
+
+<ul>
+  <li>In the <a href="/TraCI/Interfacing_TraCI_from_Python#Context_Subscriptions" title="wikilink">python library</a>, all domains support the methods <a href="http://www.sumo.dlr.de/daily/pydoc/traci.domain.html#Domain"><em>subscribeContext</em> and <em>unsubscribeContext</em></a></li>
+  <li>In the <a href="/TraCI/C%2B%2BTraCIAPI" title="wikilink">C++ library</a>, the method <em>simulation.subscribeContext</em> takes an additional argument that encodes the source domain</li>
+</ul>
+
+<h1 id="notes">Notes</h1>
+
+<ul>
+  <li>When asking for domains “point-of-interest” and “polygon”, the current version does not support asking for these structures when their position was changed using TraCI</li>
+</ul>
+
+  </div><a class="u-url" href="/sumo-documentation/TraCI/Object_Context_Subscription/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

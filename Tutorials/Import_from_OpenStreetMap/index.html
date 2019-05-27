@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Tutorials Import from OpenStreetMap | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Tutorials Import from OpenStreetMap" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Tutorials/Import_from_OpenStreetMap/" />
+<meta property="og:url" content="/sumo-documentation/Tutorials/Import_from_OpenStreetMap/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Tutorials/Import_from_OpenStreetMap/","headline":"Tutorials Import from OpenStreetMap","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Tutorials Import from OpenStreetMap</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Tutorials/Import_from_OpenStreetMap.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <table>
+  <tbody>
+    <tr>
+      <td>[thumb</td>
+      <td>400px</td>
+      <td>Overview of the steps: Make up the map, compile an edge type file, and generate the SUMO network file.](/Image:OpenStreetMapOverview.svg “wikilink”) OpenStreetMap is a valuable source for real-world map data. This tutorial shows you</td>
+    </tr>
+  </tbody>
+</table>
+
+<ol>
+  <li>how to prepare a map of OpenStreetMap to be useful for traffic simulation and</li>
+  <li>how to import this map to SUMO.</li>
+</ol>
+
+<p>You may also find the following pages useful: <a href="/OpenStreetMap_file" title="wikilink">OpenStreetMap file</a>, <a href="/Networks/Import/OpenStreetMap" title="wikilink">Networks/Import/OpenStreetMap</a> and <a href="/Networks/Import/OpenStreetMapDownload" title="wikilink">Networks/Import/OpenStreetMapDownload</a>.</p>
+
+<h2 id="prepare-the-map-of-openstreetmap">Prepare the Map of OpenStreetMap</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[thumb</td>
+      <td>400px</td>
+      <td>The OpenStreetMap file created in this step. It shows the German city Eichstätt opened in JOSM.](/Image:eichstaett.osm.png “wikilink”) The first step in this tutorial is to obtain a map the vehicles can drive in. If you do not want to perform this step, you can take <a href="/Tutorials/OSMActivityGen/eichstaett.osm" title="wikilink">Tutorials/OSMActivityGen/eichstaett.osm</a>. It has been prepared with this tutorial.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>To get a detail out of OpenStreetMap, you can either use the export function of the web site or the program JOSM. Both can save a selection of objects (usually given as a rectangular range) into a file: the <a href="/OpenStreetMap_file" title="wikilink">OpenStreetMap file</a>. You can simply use this file as the map for your traffic simulation with SUMO.</p>
+
+<p>The data in OpenStreetMap is often not completely ready for traffic simulation though. For a good simulation, the map must usually be enhanced. I recommend you to do the following steps:</p>
+
+<ol>
+  <li>
+    <p>Complete the map directly in OpenStreetMap. Follow the guidelines on the <a href="http://wiki.openstreetmap.org">OpenStreetMap wiki</a> in the area <em>Map Making</em>. They give valuable hints what software to use and how to encode all attributes of the map. You should ensure that the map contains all data related to traffic simulation. (At this stage, fill in only correct data that can be well understood by others. Do not tweak the map just for your simulation. This comes below.)
+For the given example of the city Eichstätt, I found that most streets were already in the map – they were sufficient for my simulation. So I did only look at the tags (description of properties) of the streets in OpenStreetMap and did not add new streets. I took a notebook with the OpenStreetMap editor JOSM, drove through the city and corrected the following attributes:</p>
+
+    <ul>
+      <li>The type (importance) of a street is defined with the tag <em>highway</em>. This attribute helps SUMO to determine the implicit speed limit and right of way rule.</li>
+      <li>All streets with speed limits that differ from the implicit regulatory limits (i.e. speed limits set by traffic signs) should have a tag <em>maxspeed</em>. The correct speed limits help SUMO to find reasonable routes through the road network.</li>
+      <li>One-way streets often have a significant impact on the traffic flow. They can be marked in OpenStreetMap with the key-value pair <em>oneway=yes</em>.</li>
+      <li>The correct number of lanes helps to avoid unrealistic traffic congestions in the simulation. The tag <em>lanes</em> specifies the total number of lanes of a street, for both directions together. So you cannot describe various complex lane configurations in OpenStreetMap (like two lanes in one direction, another lane for turning right and one lane for the opposite direction). They can only be defined in the <a href="/Networks/SUMO_Road_Networks" title="wikilink">SUMO network file</a> directly or its corresponding <a href="/Networks/Building_Networks_from_own_XML-descriptions" title="wikilink">SUMO XML description files</a>. Such lane configurations go beyond this tutorial.</li>
+      <li>In OpenStreetMap, traffic lights are nodes marked with the key-value pair <em>highway=traffic_signals</em>. Each traffic light is independent; you cannot associate several interdependent traffic lights at a big junction with each other. Again the <a href="/Networks/SUMO_Road_Networks" title="wikilink">SUMO network file</a> can contain such a complex logic and netconvert tries to detect such interdependent traffic lights when you use the option –try-join-tls (see section <a href="/#Convert_the_Map_in_the_SUMO_Net_Format" title="wikilink">#Convert the Map in the SUMO Net Format</a> below).</li>
+      <li>Finally go through the warnings of JOSM. Most of them do not affect your work, but some of them help you to find significant errors in the map (like unconnected streets).</li>
+    </ul>
+
+    <p>During this step, do regularly upload your modifications to OpenStreetMap to avoid conflicts with the modifications of other editors.</p>
+  </li>
+  <li>Now the map in OpenStreetMap should have the necessary quality for your simulation. Next you should determine the desired detail of the map and export it in an <a href="/OpenStreetMap_file" title="wikilink">OpenStreetMap file</a>. Be careful to never upload the map back to OpenStreetMap from now on.</li>
+  <li>Finally you can enhance the map for your specific purpose: Open the OpenStreetMap file in JOSM. Find the right nodes at which streets should end and remove unnecessary objects (which are out of the desired detail). The section <a href="/Networks/Import/OpenStreetMap#Editing_OSM_networks" title="wikilink">Networks/Import/OpenStreetMap#Editing OSM networks</a> describes further ways to clean up the OSM file. But actually, most clean up is done by netconvert anyway (see section <a href="/#Convert_the_Map_in_the_SUMO_Net_Format" title="wikilink">#Convert the Map in the SUMO Net Format</a> below). You are able to tweak the map for your purpose, for example, by adding or removing roads, changing their type, …</li>
+</ol>
+
+<p>Now you have a good map for your simulation in an <a href="/OpenStreetMap_file" title="wikilink">OpenStreetMap file</a>. The image on the top shows the map of the city Eichstätt, which I have prepared for traffic simulation. You can <a href="/Tutorials/OSMActivityGen/eichstaett.osm" title="wikilink">download the map (eichstaett.osm)</a> to follow this tutorial.</p>
+
+<p>While the OpenStreetMap format is a widely spread format to describe a map, SUMO has its own format for this: the <a href="/Networks/SUMO_Road_Networks" title="wikilink">SUMO network format</a>. As a consequence, you must first convert the OpenStreetMap file in a SUMO network file. The next two steps guide you through the conversion process.</p>
+
+<h2 id="configure-implicit-attributes-of-the-map">Configure Implicit Attributes of the Map</h2>
+
+<p>In a <a href="/OpenStreetMap_file" title="wikilink">OpenStreetMap file</a>, the highway attribute implicitly determines values of some other attributes, like the speed limit. You must tell SUMO these implicit values in the <a href="/SUMO_edge_type_file" title="wikilink">SUMO edge type file</a>. It assigns default values to the road attributes speed limit, number of lanes, priority, one-way street and allowed vehicle classes depending on the highway type. The article <a href="/SUMO_edge_type_file" title="wikilink">SUMO edge type file</a> provides several pre-defined SUMO edge type files and explains how you can compile your own edge type file.</p>
+
+<p>So determine in this step of the tutorial the implicit values of every highway type as defined by the OpenStreetMap community. Check whether one of the template in <a href="/SUMO_edge_type_file" title="wikilink">SUMO edge type file</a> meets your needs or compile your own file. For this tutorial, I used the template . Please make a copy to your local directory if you want to modify it.</p>
+
+<h2 id="convert-the-map-in-a-sumo-network">Convert the Map in a SUMO Network</h2>
+
+<p>You can now create a <a href="/Networks/SUMO_Road_Networks" title="wikilink">SUMO network file</a>. To do so, call</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>netconvert --xml-type-files osmNetconvertUrbanDe.typ.xml --osm-files eichstaett.osm --output-file eichstaett.net.xml
+</code></pre></div></div>
+
+<p>netconvert extracts the simulation-related information from the OpenStreetMap file (see the image of <a href="/Tutorials/OSMActivityGen/eichstaett.osm" title="wikilink">Tutorials/OSMActivityGen/eichstaett.osm</a> above) and puts it out in the SUMO network file (see the image of <a href="/Tutorials/OSMActivityGen/eichstaett.net.xml" title="wikilink">Tutorials/OSMActivityGen/eichstaett.net.xml</a> below). During this process, it adds some assumptions about the traffic lights and the connections between lanes at junctions. You can read further information on this process in <a href="/NETCONVERT" title="wikilink">NETCONVERT</a>, <a href="/Networks/Import/OpenStreetMap" title="wikilink">Networks/Import/OpenStreetMap</a> and <a href="/Networks/SUMO_Road_Networks" title="wikilink">SUMO Road Networks</a>.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[thumb</td>
+      <td>400px</td>
+      <td>The map stored in the file eichstaett.net.xml. In this map, SUMO runs its simulation. Compare it with its source, the OpenStreetMap file shown in the image above.](/Image:eichstaett.net.png “wikilink”) I found the following options of netconvert to be very useful for the OpenStreetMap import:</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>–guess-ramps : Guesses ramps for highways at junctions with two incoming and one outgoing road.
+–remove-edges.by-vclass : In the SUMO edge type file, you could discard roads of a certain type. In addition, SUMO can discard roads that are restricted to certain vehicle classes. These classes are given with this option. In <a href="/SUMO_edge_type_file" title="wikilink">SUMO edge type file</a> you can find a list of SUMO vehicle classes.
+–remove-geometry : Removes unnecessary nodes. These are nodes without incoming/outgoing edges or nodes that split edges without being at a junction. (In OpenStreetMap, nodes are necessary to make up the shape of a street; in the SUMO network file, they are only necessary at junctions.) Warning: This could remove roads you would like to keep. So check the messages of netconvert.
+–remove-isolated : Removes roads that are not connected to the remaining network. This option helps to find errors in the OSM file (unconnected roads). Warning: This could remove roads you would like to keep. So check the messages of netconvert.
+–try-join-tls : Clusters junctions with traffic lights and joins the traffic light logic if possible.
+–verbose : Prints additional output. Some find it useful, others find it confusing.</p>
+
+<p>So the options –guess-ramps and -try-join-tls are useful here because the OpenStreetMap file misses some information necessary for traffic simulation. netconvert tries to guess this information when these options are given. –remove-isolated provides warnings that help to find a certain error in the OpenStreetMap file. –remove-geometry cleans up the nodes in the resulting SUMO network file. So does –remove-edges.by-vclass in case you want to simulate the traffic for certain vehicle classes only.</p>
+
+<p>Alltogether I used the following command line to derive the SUMO network file <a href="/Tutorials/OSMActivityGen/eichstaett.net.xml" title="wikilink">Tutorials/OSMActivityGen/eichstaett.net.xml</a> from OpenStreetMap file <a href="/Tutorials/OSMActivityGen/eichstaett.osm" title="wikilink">Tutorials/OSMActivityGen/eichstaett.osm</a>. (It contains so many options that you might use a configuration file for it.)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>netconvert --xml-type-files osmNetconvertUrbanDe.typ.xml --guess-ramps --remove-edges.by-vclass hov,taxi,bus,delivery,transport,lightrail,cityrail,rail_slow,rail_fast,motorcycle,bicycle,pedestrian --geometry.remove --remove-edges.isolated --try-join-tls --verbose --osm-files eichstaett.osm --output-file eichstaett.net.xml
+</code></pre></div></div>
+
+<p>Now read the messages netconvert printed out very carefully. Try to understand the warnings. They give you a hint how your OpenStreetMap file could be improved to make it suitable for conversion. Get back to your OpenStreetMap file in JOSM to fix errors or tweak the map for conversion. I found, for example, unconnected roads with this process. I also moved some junctions slightly, because netconvert had problems if two junctions are very close together. But finally, I managed to convert the OpenStreetMap file without any warnings in a SUMO network file. (Certainly the OpenStreetMap file eichstaett.osm I provided above is already the improved version.)</p>
+
+<p><em>Congratulations! When you performed all the steps so far, you have a map suitable for traffic simulation with SUMO.</em> It is in the <a href="/Networks/SUMO_Road_Networks" title="wikilink">SUMO network format</a>. The map of the tutorial’s example is in the file <a href="/Tutorials/OSMActivityGen/eichstaett.net.xml" title="wikilink">Tutorials/OSMActivityGen/eichstaett.net.xml</a>. Above on the right, you see an image that visualises the file. I opened eichstaett.net.xml with the program sumo-gui and took a screenshot.</p>
+
+<p>When you look back at the work you have done so far, most of it was necessary to polish the OpenStreetMap data for traffic simulation and to add missing information. A good map is hard to obtain but very important for traffic simulation.</p>
+
+  </div><a class="u-url" href="/sumo-documentation/Tutorials/Import_from_OpenStreetMap/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

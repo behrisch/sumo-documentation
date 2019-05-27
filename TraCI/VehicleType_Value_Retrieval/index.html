@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>TraCI VehicleType Value Retrieval | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="TraCI VehicleType Value Retrieval" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/TraCI/VehicleType_Value_Retrieval/" />
+<meta property="og:url" content="/sumo-documentation/TraCI/VehicleType_Value_Retrieval/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/TraCI/VehicleType_Value_Retrieval/","headline":"TraCI VehicleType Value Retrieval","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">TraCI VehicleType Value Retrieval</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/TraCI/VehicleType_Value_Retrieval.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><strong>FORCETOC</strong></p>
+
+<h2 id="command-0xa5-get-vehicle-type-variable">Command 0xa5: Get Vehicle Type Variable</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">string</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Variable</td>
+      <td style="text-align: center">Vehicle Type ID</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Asks for the value of a certain variable of the named vehicle type.</p>
+
+<p>The following variable values can be retrieved, the type of the return value is also shown in the table.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>ValueType</th>
+      <th>Description</th>
+      <th><a href="/TraCI/Interfacing_TraCI_from_Python" title="wikilink">Python Method</a></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id list (0x00)</td>
+      <td>stringList</td>
+      <td>Returns a list of ids of currently loaded vehicle types (the given vehicle type ID is ignored)</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._vehicletype.html#VehicleTypeDomain-getIDList">getIDList</a></td>
+    </tr>
+    <tr>
+      <td>count (0x01)</td>
+      <td>int</td>
+      <td>Returns the number of currently loaded vehicle types (the given vehicle type ID is ignored)</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._vehicletype.html#VehicleTypeDomain-getIDCount">getIDCount</a></td>
+    </tr>
+    <tr>
+      <td>length (0x44)</td>
+      <td>double</td>
+      <td>Returns the length of the vehicles of this type [m]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._vehicletype.html#VehicleTypeDomain-getLength">getLength</a></td>
+    </tr>
+    <tr>
+      <td>vmax (0x41)</td>
+      <td>double</td>
+      <td>Returns the maximum speed of vehicles of this type [m/s]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._vehicletype.html#VehicleTypeDomain-getMaxSpeed">getMaxSpeed</a></td>
+    </tr>
+    <tr>
+      <td>accel (0x46)</td>
+      <td>double</td>
+      <td>Returns the maximum acceleration possibility of vehicles of this type [m/s^2]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._vehicletype.html#VehicleTypeDomain-getAccel">getAccel</a></td>
+    </tr>
+    <tr>
+      <td>decel (0x47)</td>
+      <td>double</td>
+      <td>Returns the maximum deceleration possibility of vehicles of this type [m/s^2]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._vehicletype.html#VehicleTypeDomain-getDecel">getDecel</a></td>
+    </tr>
+    <tr>
+      <td>tau (0x48)</td>
+      <td>double</td>
+      <td>Returns the driver’s desired time headway for vehicles of this type [s]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._vehicletype.html#VehicleTypeDomain-getTau">getTau</a></td>
+    </tr>
+    <tr>
+      <td>sigma(0x5d)</td>
+      <td>double</td>
+      <td>Returns the driver’s imperfection (dawdling) [0,1]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._vehicletype.html#VehicleTypeDomain-getImperfection">getImperfection</a></td>
+    </tr>
+    <tr>
+      <td>speedFactor(0x5e)</td>
+      <td>double</td>
+      <td>Returns the road speed multiplier for drivers of this type [double]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._vehicletype.html#VehicleTypeDomain-getSpeedFactor">getSpeedFactor</a></td>
+    </tr>
+    <tr>
+      <td>speedDev(0x5f)</td>
+      <td>double</td>
+      <td>Returns the deviation of speedFactor for drivers of this type [double]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._vehicletype.html#VehicleTypeDomain-getSpeedDeviation">getSpeedDeviation</a></td>
+    </tr>
+    <tr>
+      <td>vclass (0x49)</td>
+      <td>string</td>
+      <td>Returns the class of vehicles of this type</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._vehicletype.html#VehicleTypeDomain-getVehicleClass">getVehicleClass</a></td>
+    </tr>
+    <tr>
+      <td>emission_class (0x4a)</td>
+      <td>string</td>
+      <td>Returns the emission class of vehicles of this type</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._vehicletype.html#VehicleTypeDomain-getEmissionClass">getEmissionClass</a></td>
+    </tr>
+    <tr>
+      <td>shape (0x4b)</td>
+      <td>string</td>
+      <td>Returns the shape of vehicles of this type</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._vehicletype.html#VehicleTypeDomain-getShapeClass">getShapeClass</a></td>
+    </tr>
+    <tr>
+      <td>minGap (0x4c)</td>
+      <td>double</td>
+      <td>Returns the offset (gap to front vehicle if halting) of vehicles of this type [m]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._vehicletype.html#VehicleTypeDomain-getMinGap">getMinGap</a></td>
+    </tr>
+    <tr>
+      <td>width (0x4d)</td>
+      <td>double</td>
+      <td>Returns the width of vehicles of this type [m]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._vehicletype.html#VehicleTypeDomain-getWidth">getWidth</a></td>
+    </tr>
+    <tr>
+      <td>height (0xbc)</td>
+      <td>double</td>
+      <td>Returns the height of vehicles of this type [m]</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._vehicletype.html#VehicleTypeDomain-getHeight">getHeight</a></td>
+    </tr>
+    <tr>
+      <td>color (0x45)</td>
+      <td>byte,byte,byte,byte</td>
+      <td>Returns the color of this type</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._vehicletype.html#VehicleTypeDomain-getColor">getColor</a></td>
+    </tr>
+    <tr>
+      <td>max lateral speed (0xba)</td>
+      <td>double</td>
+      <td>Returns the maximum lateral speed in m/s of this type.</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._vehicletype.html#VehicleTypeDomain-getMaxSpeedLat">getMaxSpeedLat</a></td>
+    </tr>
+    <tr>
+      <td>lateral gap (0xbb)</td>
+      <td>double</td>
+      <td>Returns the desired lateral gap of this type at 50km/h in m.</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._vehicletype.html#VehicleTypeDomain-getMinGapLat">getMinGapLat</a></td>
+    </tr>
+    <tr>
+      <td>lateral alignment (0xb9)</td>
+      <td>string</td>
+      <td>Returns the preferred lateral alignment of the type.</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._vehicletype.html#VehicleTypeDomain-getLateralAlignment">getLateralAlignment</a></td>
+    </tr>
+    <tr>
+      <td>action step length (0x7d)</td>
+      <td>double</td>
+      <td>Returns the action step length for the vehicle type in s.</td>
+      <td><a href="http://www.sumo.dlr.de/daily/pydoc/traci._vehicletype.html#VehicleTypeDomain-getActionStepLength">getActionStepLength</a></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="response-0xb5-vehicle-type-variable">Response 0xb5: Vehicle Type Variable</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">ubyte</td>
+      <td style="text-align: center"><return_type></return_type></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Variable</td>
+      <td style="text-align: center">Vehicle Type ID</td>
+      <td style="text-align: center">Return type of the variable</td>
+      <td style="text-align: center"><VARIABLE_VALUE></VARIABLE_VALUE></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The respond to a <strong>“Command Get Vehicle Type Variable”</strong>.</p>
+
+  </div><a class="u-url" href="/sumo-documentation/TraCI/VehicleType_Value_Retrieval/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

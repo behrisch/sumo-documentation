@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Developer Documentation Build | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Developer Documentation Build" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Developer/Documentation_Build/" />
+<meta property="og:url" content="/sumo-documentation/Developer/Documentation_Build/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Developer/Documentation_Build/","headline":"Developer Documentation Build","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Developer Documentation Build</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Developer/Documentation_Build.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>When accessing SUMO web space, you will find an index page, and several additional HTML pages. You will also find a link to a wiki and to the <a href="https://github.com/DLR-TS/sumo">GitHub presence</a>. In the following, it is described how these documentation parts are build, and mirrored.</p>
+
+<p>After some tries, we decided to work as following:</p>
+
+<ul>
+  <li>The documentation is “developed” within the wiki; the wiki refers to the state of the package as-is within the current head of the master branch of the main <a href="https://github.com/DLR-TS/sumo">Git repository</a>.</li>
+  <li>The HTML documentation is generated from the wiki</li>
+</ul>
+
+<h1 id="documentation-parts">Documentation Parts</h1>
+
+<h2 id="wiki">Wiki</h2>
+
+<p><strong>scope</strong></p>
+
+<p>The wiki should include the complete user documentation, as well as finalized developer documents, and any kind of additional documentation as long as it is in a state which can be presented. Incomplete or outdated wiki documents should have the prefix “Purgatory/” and should not be linked from any other documents.</p>
+
+<p><strong>rights</strong></p>
+
+<p>The rights to edit the wiki are given to known users on request.</p>
+
+<p><strong>backup</strong></p>
+
+<font color="red">Redescribe</font>
+<p>; Wiki-pages can be mirrored using <em>tools/build/mirrorWiki.py</em></p>
+
+<p>There are currently two options for looking up information from wiki versions before 0.13.1</p>
+
+<ul>
+  <li>Use the wiki-history for an individual wiki page</li>
+  <li>Use the <em>sumo-user.pdf</em> included in older releases. This pdf was compiled from the wiki at the time of the release and should contain most of the wiki content.</li>
+</ul>
+
+<h2 id="html-pages">HTML pages</h2>
+
+<p><strong>scope</strong></p>
+
+<p>HTML pages contain all information stored in the wiki at the time of the last release.</p>
+
+<p><strong>rights</strong></p>
+
+<p>HTML pages are generated and uploaded by SUMO developers which have access to the web space.</p>
+
+<p><strong>backup</strong></p>
+
+<p>A HTML-backup of the wiki is created as part of the linux build. The file <em>/Makefile.am</em> defines the task <em>userdoc</em> which calls the script <em>tools/build/buildHTMLDocs.py</em> to create an offline-browsable mirror (excluding special pages such as history and discussion). The backup is included in the regular release starting at version 0.13.1.</p>
+
+<h1 id="html-pages-generation">HTML pages generation</h1>
+
+<p>The HTML documentation pages are built from the wiki. All scripts needed are located in /tools/build. <code class="highlighter-rouge">buildHTMLDocs.py</code> is used to retrieve the HTML-representation of wiki-pages. If started with a parameter, this parameter is assumed to be the name of the page to retrieve. If no parameter is given, <code class="highlighter-rouge">getWikiPages.py</code> retrieves the list of all pages, first, from Special::AllPages.</p>
+
+<p>Each of the pages to retrieve is read from the wiki and stripped so that it contains the article HTML only. Links are patched to match the depth of the folder the page is located in. <code class="highlighter-rouge">buildHTMLDocs.py</code> changes the links included in this result and retrieves the embedded images (only the “normal” version, no thumbnails) and saves the resulting HTML with no header/tail into a file located in “mirror” named using the articles’ name. The folder “mirror” is generated.</p>
+
+<p>All images found in the read pages are retrieved and stored in “mirror/images”.</p>
+
+<p>The HTML template is located in /docs/wiki as “index.html”. <code class="highlighter-rouge">getWikiPages.py</code> reads the wiki-text of “SUMO User Documentation”, extracts the content list, parses it into HTML, and embeds it into “index.html” between the comments and .</p>
+
+<p>Then, the pages to convert stored in “mirror” are read and their content is inserted into “index.html” between the comments and . The so obtained HTML-pages are stored into “docs”.</p>
+
+<p>The images stored in “mirror/images” are copied to “docs/images”.</p>
+
+  </div><a class="u-url" href="/sumo-documentation/Developer/Documentation_Build/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

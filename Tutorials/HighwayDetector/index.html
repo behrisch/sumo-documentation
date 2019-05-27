@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Tutorials HighwayDetector | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Tutorials HighwayDetector" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Tutorials/HighwayDetector/" />
+<meta property="og:url" content="/sumo-documentation/Tutorials/HighwayDetector/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Tutorials/HighwayDetector/","headline":"Tutorials HighwayDetector","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Tutorials HighwayDetector</h1>
+    <p class="post-meta">
+      
+    <a href="https://github.com/angelobanse/sumo-documentation/edit/master/docs/Tutorials/HighwayDetector.md">Edit on GitHub</a></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <table>
+  <tbody>
+    <tr>
+      <td>This tutorial describes how to set up a traffic scenario using mainly <a href="/NETEDIT" title="wikilink">NETEDIT</a>, <a href="/DFROUTER" title="wikilink">DFROUTER</a> and some python tools when you already have a fairly good network source for your simulation site and also a good coverage of the network with detectors giving you aggregated counts (and maybe speeds) of the vehicles in the real world. It is not limited to highways but the preconditions are met there more frequently. The focus is more on demand preparation and calibration and not so much on network tweaking. [thumb</td>
+      <td>Selected edges (blue) are of minor priority and will be discarded](/File:netedit_select_highway.png “wikilink”)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="network">Network</h2>
+
+<p>Assuming you are already familiar with network extraction from your favourite mapping source you can open your net with <a href="/NETEDIT" title="wikilink">NETEDIT</a> and reduce it to your area of interest. Assume you have a navteq file you can select (and then delete) all edges with a priority of less than -1 to reduce it to a highway network. Afterwards one can use rectangle selection (hold shift) to further limit the area considered. You also might want to enable ramp guessing in the options dialog. If the network has been prepared by an older version of SUMO it is probably a good idea to recalculate all the connections afterwards. Do so by selecting all junctions in select mode and then resetting them in connect mode. There may still be missing ramps and unusual connections which could not be guessed automatically and which should be fixed manually after setting up the basic scenario.</p>
+
+<h2 id="detector-data">Detector data</h2>
+
+<h3 id="locating-detectors">Locating detectors</h3>
+
+<p>Your final network should have locations for induction loops on many of the available edges. If you have detector positions as geo-coordinates it usually requires some manual work to locate the detectors in the network. A starting point can be to use the python sumolib to match the positions to the network:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sys.path.append(os.path.join(os.environ["SUMO_HOME"], 'tools'))
+import sumolib
+
+net = sumolib.net.readNet(&lt;NETFILE&gt;)
+detectors = []
+for id, lon, lat in &lt;DETECTORS&gt;:
+    xy_pos = net.convertLonLat2XY(lon, lat)
+    # look 10m around the position
+    lanes = net.getNeighboringLanes(xy_pos[0], xy_pos[1], 10)
+    # attention, result is unsorted
+    for lane, dist in lanes:
+        # now process them and determine a "bestLane"
+        # ...
+        pos, d = bestLane.getClosestLanePosAndDist(xy_pos)
+        detectors.append(sumolib.sensors.inductive_loop.InductiveLoop(id, bestLane.getID(), pos))
+sumolib.files.additional.write(&lt;DETECTORFILE&gt;, ils)
+</code></pre></div></div>
+
+<p>Be aware to have the python rtree library installed if you are working with large networks. It will speed up the geometry lookups tremendously. Depending on the quality of your network and detector location data, you should probably not always choose the closest lane but also consider whether the number of lanes / the speed limit match your expectations. After the initial positioning you can load the file for fine tuning as an additional file into <a href="/NETEDIT" title="wikilink">NETEDIT</a>.</p>
+
+<h3 id="processing-input-data">Processing input data</h3>
+
+<p>A common format for detector data is an aggregation into slots of one minute. The <a href="/DFROUTER" title="wikilink">DFROUTER</a> can process files of the following format:</p>
+
+<h2 id="determining-the-routes">Determining the routes</h2>
+
+<h3 id="dfrouter"><a href="/DFROUTER" title="wikilink">DFROUTER</a></h3>
+
+<h3 id="flowrouterpy">flowrouter.py</h3>
+
+<h3 id="validation-and-initial-parameters">Validation and initial parameters</h3>
+
+<p>flowFromRoutes.py</p>
+
+<ul>
+  <li>maximum flow</li>
+  <li>multiple intervals</li>
+</ul>
+
+<h2 id="calibrating-the-data">Calibrating the data</h2>
+
+<h3 id="speed-calibration">Speed calibration</h3>
+
+  </div><a class="u-url" href="/sumo-documentation/Tutorials/HighwayDetector/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sumo-documentation/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
