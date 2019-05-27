@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Basics Notation | Eclipse SUMO - Documentation</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Basics Notation" />
+<meta property="og:locale" content="ja" />
+<meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="/sumo-documentation/Basics/Notation_ja/" />
+<meta property="og:url" content="/sumo-documentation/Basics/Notation_ja/" />
+<meta property="og:site_name" content="Eclipse SUMO - Documentation" />
+<script type="application/ld+json">
+{"description":"Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebPage","url":"/sumo-documentation/Basics/Notation_ja/","headline":"Basics Notation","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sumo-documentation/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/sumo-documentation/feed.xml" title="Eclipse SUMO - Documentation" /></head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/sumo-documentation/">Eclipse SUMO - Documentation</a>
+      <img src="https://sumo.dlr.de/favicon.ico" style="width:80px;"><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Basics Notation</h1>
+    <p class="post-meta">
+      
+    <div align="right"><a href="https://github.com/angelobanse/sumo-documentation/edit/master/en/Basics/Notation_ja.md">Edit on GitHub</a></div></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="ドキュメント上の記法">ドキュメント上の記法</h1>
+
+<p><a href="https://sumo.dlr.de/wiki/Basics/Notation">原文ページ</a></p>
+
+<p>このWikiでのドキュメントでは色ごとに異なる情報を表現しています。
+こうした記法を以下に示します。</p>
+
+<h2 id="コマンドライン">コマンドライン</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>netconvert --visum=MyVisumNet.inp --output-file=MySUMONet.net.xml
+</code></pre></div></div>
+
+<p>こうした表現は、コマンドラインでの命令になります。
+行の終りに’'がつく場合もあります。
+この場合その行が継続していることを示しており、改行せずに下の行を書く必要があります (‘'と改行を両方無視してください)。
+下の例は上の例と全く同じものです。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>netconvert --visum=MyVisumNet.inp \
+  --output-file=MySUMONet.net.xml
+</code></pre></div></div>
+
+<h2 id="アプリケーションオプション">アプリケーションオプション</h2>
+
+<p>コマンドラインオプションは基本的に<strong>このように</strong>表現されます。
+値は<strong><code class="highlighter-rouge">&lt;こんな感じ&gt;</code></strong>です。</p>
+
+<h2 id="xmlの例">XMLの例</h2>
+
+<p>XMLの要素と属性は</p>
+
+<h2 id="データタイプ">データタイプ</h2>
+
+<ul>
+  <li><code class="highlighter-rouge">&lt;BOOL&gt;</code>: 真偽値です。エンコードには”t”か”true”と”f”か”false”を使います</li>
+  <li><code class="highlighter-rouge">&lt;INT&gt;</code>: 整数値、負の数の事もあります</li>
+  <li><code class="highlighter-rouge">&lt;UINT&gt;</code>: 符号なし整数値、常に &gt;`= 0です</li>
+  <li><code class="highlighter-rouge">&lt;FLOAT&gt;</code>: 浮動小数点数</li>
+  <li><code class="highlighter-rouge">&lt;TIME&gt;</code>: 秒で与えられる時間を表します。小数も可能です(例: “12.1”)</li>
+  <li><code class="highlighter-rouge">&lt;STRING&gt;</code>: ASCII文字のみを使った文字列です</li>
+  <li><code class="highlighter-rouge">&lt;ID&gt;</code>: 次の文字を含まない文字列です: ‘#’</li>
+</ul>
+
+<p>!!! caution “警告”
+    許可されていない文字のリストは不完全です</p>
+
+<ul>
+  <li><code class="highlighter-rouge">&lt;FILE&gt;</code>または<code class="highlighter-rouge">&lt;FILENAME&gt;</code></li>
+  <li><code class="highlighter-rouge">&lt;PATH&gt;</code>: 通常フォルダへの(相対または絶対)パス</li>
+  <li><code class="highlighter-rouge">&lt;COLOR&gt;</code>: ‘,’で区切られた4つの浮動小数点数(<code class="highlighter-rouge">&lt;FLOAT&gt;</code>,<code class="highlighter-rouge">&lt;FLOAT&gt;</code>,<code class="highlighter-rouge">&lt;FLOAT&gt;</code>,<code class="highlighter-rouge">&lt;FLOAT&gt;</code>)。0.0～1.0か0-255の範囲で赤、緑、青、透明度(アルファ)を示します(アルファ値はオプションです)
+セパレータはコンマだけで、スペースを挟んではいけないことに注意してください
+色は<a href="http://ja.wikipedia.org/wiki/ウェブカラー#16進トリプレット表記">HTMLカラーコード</a>を用いるか基本的な色の場合には一つの文字列として定義することもできます(基本の色: “red”, “green”, “blue”, “yellow”, “cyan”, “magenta”, “black”, “white”, “grey”)</li>
+  <li><code class="highlighter-rouge">&lt;2D-POSITION&gt;</code>: ‘,’で区切られた2つの浮動小数点数 (<code class="highlighter-rouge">&lt;FLOAT&gt;</code>,<code class="highlighter-rouge">&lt;FLOAT&gt;</code>)で、それぞれX軸とY軸を表します。Zは暗黙に0です</li>
+  <li><code class="highlighter-rouge">&lt;3D-POSITION&gt;</code>: ‘,’で区切られた3つの浮動小数点数 (<code class="highlighter-rouge">&lt;FLOAT&gt;</code>,<code class="highlighter-rouge">&lt;FLOAT&gt;</code>,<code class="highlighter-rouge">&lt;FLOAT&gt;</code>)で、それぞれX軸、Y軸、Z軸を表します</li>
+  <li><code class="highlighter-rouge">&lt;POSITION-VECTOR&gt;</code>: ‘ ‘(半角スペース)で区切られた2次元または3次元座標のリストです</li>
+  <li><code class="highlighter-rouge">&lt;2D-BOUNDING_BOX&gt;</code>: ‘,’で区切られた4つの浮動小数点数(<code class="highlighter-rouge">&lt;FLOAT&gt;</code>,<code class="highlighter-rouge">&lt;FLOAT&gt;</code>,<code class="highlighter-rouge">&lt;FLOAT&gt;</code>,<code class="highlighter-rouge">&lt;FLOAT&gt;</code>)で、Xの最小値、 Yの最小値、Xの最大値、Yの最大値を表します</li>
+  <li><code class="highlighter-rouge">&lt;PROJ_DEFINITION&gt;</code>: proj.4で使用されるプロジェクト定義が入っている文字列です。定義文字列はクォートに囲まれている必要があることに注意してください</li>
+</ul>
+
+<h3 id="ファイルタイプ">ファイルタイプ</h3>
+
+<h2 id="さらに進んだ枠組み">さらに進んだ枠組み</h2>
+
+<p>大括弧(角括弧) ‘[‘と ‘]’で囲われた情報は任意(オプショナル)です。
+山括弧 ‘&lt;’と ‘&gt;’は変数を示します。
+好きな値を入れてください。</p>
+
+<p><strong><code class="highlighter-rouge">&lt;SUMO_HOME&gt;</code></strong> はSUMOパッケージが保存されているパスです。</p>
+
+  </div><a class="u-url" href="/sumo-documentation/Basics/Notation_ja/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+    <data class="u-url" href="/sumo-documentation/"></data>
+  
+    
+    
+    
+    
+    <footer class="lang-options">
+        <em>Read this page in a different language:</em>
+        <ul>
+        
+        <li><a href="/Basics/Notation/" class="en title="View in ja">ja</a></li>
+        
+        <li><a href="/Basics/Notation_ja/" class="ja title="View in ja">ja</a></li>
+        
+        </ul>
+    </div>
+    
+
+
+    <div class="wrapper">
+  
+      <div class="footer-col-wrapper">
+        <div class="footer-col one-half">
+        <h2 class="footer-heading">Eclipse SUMO - Documentation</h2>
+          <ul class="contact-list">
+            <li class="p-name">Eclipse SUMO - Documentation</li></ul>
+        </div>
+  
+        <div class="footer-col one-half">
+          <p>Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+        </div>
+  
+        <div class="social-links"><ul class="social-media-list"><li><a href="https://www.twitter.com/eclipseSUMO"><svg class="svg-icon"><use xlink:href="/sumo-documentation/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eclipseSUMO</span></a></li></ul>
+</div>
+      </div>
+  
+    </div>
+  
+  </footer></body>
+
+</html>
