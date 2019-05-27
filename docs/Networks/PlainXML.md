@@ -562,7 +562,7 @@ This may be used to simplify signal plans by implementing signal groups. In this
 | **fromLane**   | int                | the lane index of the incoming lane (numbers starting with 0)                                   |
 | **toLane**     | int                | the lane index of the outgoing lane (numbers starting with 0)                                   |
 | **tl**         | string             | id of the traffic light which controls this connection                                          |
-| **linkIndex**  | int                | the index in the *state*-attribute of the {{XML|<phase>-elements which controls this connection |
+| **linkIndex**  | int                | the index in the *state*-attribute of the {{XML|<phase>}}-elements which controls this connection |
 
 You can easily get examples for this type of file by loading a *sumo.net.xml* in [NETCONVERT](/NETCONVERT "wikilink") and using option .
 
