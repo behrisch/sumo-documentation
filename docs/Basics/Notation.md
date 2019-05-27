@@ -38,8 +38,8 @@ Complete examples of XML-Files are shown like the following:
 Referenced Data Types
 ---------------------
 
--   *<BOOL>*: a boolean value, use “t” or “true” and “f” or “false” for encoding
--   *<INT>*: an integer value, may be negative
+-   *&lt;BOOL&gt;*: a boolean value, use “t” or “true” and “f” or “false” for encoding
+-   *&lt;INT&gt;*: an integer value, may be negative
 -   *<UINT>*: an unsigned integer value, must be &gt;=0
 -   *<FLOAT>*: a floating point number
 -   *<TIME>*: time, given in seconds; fractions are allowed, e.g. “12.1”
