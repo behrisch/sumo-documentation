@@ -2,7 +2,7 @@
 
 # SUMO Documentation :book:
 
-The new SUMO Documentation is generated using [Jekyll](https://jekyllrb.com).
+The SUMO Documentation is generated using [Jekyll](https://jekyllrb.com).
 
 ## Getting started
 
