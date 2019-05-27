@@ -2,6 +2,8 @@
 layout: post
 title: Basics Notation
 permalink: /Basics/Notation/
+lang: en
+lang-ref: basics-notation
 ---
 
 The documentation within this wiki uses coloring to differ between different type of information. Below, these annotations and colors are described.
