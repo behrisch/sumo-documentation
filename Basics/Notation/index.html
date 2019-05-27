@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="ja"><head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Basics Notation | Eclipse SUMO - Documentation</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Basics Notation" />
-<meta property="og:locale" content="en" />
+<meta property="og:locale" content="ja" />
 <meta name="description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
 <meta property="og:description" content="Write an awesome description for your new site here 12345. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
 <link rel="canonical" href="/sumo-documentation/Basics/Notation/" />
@@ -38,75 +38,77 @@
     <h1 class="post-title p-name" itemprop="name headline">Basics Notation</h1>
     <p class="post-meta">
       
-    <div align="right"><a href="https://github.com/angelobanse/sumo-documentation/edit/master/en/Basics/Notation.md">Edit on GitHub</a></div></p>
+    <div align="right"><a href="https://github.com/angelobanse/sumo-documentation/edit/master/ja/Basics/Notation.md">Edit on GitHub</a></div></p>
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <p>The documentation within this wiki uses coloring to differ between different type of information. Below, these annotations and colors are described.</p>
+    <h1 id="ドキュメント上の記法">ドキュメント上の記法</h1>
 
-<h2 id="command-line">Command Line</h2>
+<p><a href="https://sumo.dlr.de/wiki/Basics/Notation">原文ページ</a></p>
 
-<p>If you encounter something like this:</p>
+<p>このWikiでのドキュメントでは色ごとに異なる情報を表現しています。
+こうした記法を以下に示します。</p>
 
-<p><code class="highlighter-rouge">netconvert --visum=MyVisumNet.inp --output-file=MySUMONet.net.xml</code></p>
+<h2 id="コマンドライン">コマンドライン</h2>
 
-<p>you should know that this is a call on the command line. There may be also a ‘\’ at the end of a line. This indicates that you have to continue typing without pressing return (ignoring both the ‘\’ and the following newline). The following example means exactly the same as the one above:</p>
-
-<p><code class="highlighter-rouge">netconvert --visum=MyVisumNet.inp \</code>
-<code class="highlighter-rouge">  --output-file=MySUMONet.net.xml</code></p>
-
-<h2 id="application-options">Application Options</h2>
-
-<p>Command line option names are normally coloured . Their values .</p>
-
-<h2 id="xml-examples">XML Examples</h2>
-
-<p>XML-elements and attributes are shown <span class="inlxml">like this</span>. Their values, if variable, <span class="inlxml">*<LIKE THIS="">*&lt;/span&gt;.</LIKE></span></p>
-
-<p>Complete examples of XML-Files are shown like the following:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;myType&gt;
-   &lt;myElem myAttr1="0" myAttr2="0.0"/&gt;
-   &lt;myElem myAttr1="1" myAttr2="-500.0"/&gt;
-&lt;/myType&gt;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>netconvert --visum=MyVisumNet.inp --output-file=MySUMONet.net.xml
 </code></pre></div></div>
 
-<h2 id="referenced-data-types">Referenced Data Types</h2>
+<p>こうした表現は、コマンドラインでの命令になります。
+行の終りに’'がつく場合もあります。
+この場合その行が継続していることを示しており、改行せずに下の行を書く必要があります (‘'と改行を両方無視してください)。
+下の例は上の例と全く同じものです。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>netconvert --visum=MyVisumNet.inp \
+  --output-file=MySUMONet.net.xml
+</code></pre></div></div>
+
+<h2 id="アプリケーションオプション">アプリケーションオプション</h2>
+
+<p>コマンドラインオプションは基本的に<strong>このように</strong>表現されます。
+値は<strong><code class="highlighter-rouge">&lt;こんな感じ&gt;</code></strong>です。</p>
+
+<h2 id="xmlの例">XMLの例</h2>
+
+<p>XMLの要素と属性は</p>
+
+<h2 id="データタイプ">データタイプ</h2>
 
 <ul>
-  <li><em>&lt;BOOL&gt;</em>: a boolean value, use “t” or “true” and “f” or “false” for encoding</li>
-  <li><em>&lt;INT&gt;</em>: an integer value, may be negative</li>
-  <li>*<UINT>*: an unsigned integer value, must be &gt;=0</UINT></li>
-  <li>*<FLOAT>*: a floating point number</FLOAT></li>
-  <li>*<TIME>*: time, given in seconds; fractions are allowed, e.g. “12.1”</TIME></li>
-  <li>*<STRING>*: any string, but use ASCII-characters only</STRING></li>
-  <li>
-    <p>*<ID>*: a string which must not contain the following characters: '\#'</ID></p>
-  </li>
-  <li>*<FILE>* or *<FILENAME>*: the (relative or absolute) path to a file; see also [\#Referenced File Types](/#Referenced_File_Types "wikilink")</FILENAME></FILE></li>
-  <li>*<PATH>*: a (a relative or absolute) path (usually to a folder)</PATH></li>
-  <li>*<COLOR>*: a quadruple of floats separated by ',' (*<FLOAT>*,*<FLOAT>*,*<FLOAT>*,*<FLOAT>*), which describe the red, green, blue, and alpha component ranging from 0.0 to 1.0 (the alpha component is optional), alternatively the list may contain integers in the 0-255 range. Please note that the separator must be a comma and there are no spaces allowed. The color may also be defined using a single string with a [HTML color code](http://en.wikipedia.org/wiki/Web_colors#Hex_triplet) or one of the basic colors (“red”, “green”, “blue”, “yellow”, “cyan”, “magenta”, “black”, “white”, “grey”)</FLOAT></FLOAT></FLOAT></FLOAT></COLOR></li>
-  <li><em>&lt;2D-POSITION&gt;</em>: two floats separated by ‘,’ (*<FLOAT>*,*<FLOAT>*), which describe the x- and the y-offset, respectively. z is 0 implicitly</FLOAT></FLOAT></li>
-  <li><em>&lt;3D-POSITION&gt;</em>: three floats separated by ‘,’ (*<FLOAT>*,*<FLOAT>*,*<FLOAT>*), which describe the x- , y- and the z-offset, respectively</FLOAT></FLOAT></FLOAT></li>
-  <li>*<POSITION-VECTOR>*: A list of 2D- or 3D-Positions separate by ' '. I.e. (*&lt;2D-POSITION&gt;* *&lt;2D-POSITION&gt;*,*&lt;3D-POSITION&gt;*)</POSITION-VECTOR></li>
-  <li><em>&lt;2D-BOUNDING_BOX&gt;</em>: four floats separated by ‘,’ (*<FLOAT>*,*<FLOAT>*,*<FLOAT>*,*<FLOAT>*), which describe x-minimum, y-minimum, x-maximum, and y-maximum</FLOAT></FLOAT></FLOAT></FLOAT></li>
-  <li>*<PROJ_DEFINITION>*: a string containing the projection definition as used by proj.4; please note that you have to embed the definition string in quotes</PROJ_DEFINITION></li>
+  <li><code class="highlighter-rouge">&lt;BOOL&gt;</code>: 真偽値です。エンコードには”t”か”true”と”f”か”false”を使います</li>
+  <li><code class="highlighter-rouge">&lt;INT&gt;</code>: 整数値、負の数の事もあります</li>
+  <li><code class="highlighter-rouge">&lt;UINT&gt;</code>: 符号なし整数値、常に &gt;`= 0です</li>
+  <li><code class="highlighter-rouge">&lt;FLOAT&gt;</code>: 浮動小数点数</li>
+  <li><code class="highlighter-rouge">&lt;TIME&gt;</code>: 秒で与えられる時間を表します。小数も可能です(例: “12.1”)</li>
+  <li><code class="highlighter-rouge">&lt;STRING&gt;</code>: ASCII文字のみを使った文字列です</li>
+  <li><code class="highlighter-rouge">&lt;ID&gt;</code>: 次の文字を含まない文字列です: ‘#’</li>
 </ul>
 
-<h3 id="referenced-file-types">Referenced File Types</h3>
+<p>!!! caution “警告”
+    許可されていない文字のリストは不完全です</p>
 
 <ul>
-  <li>*<NETWORK_FILE>*: a [SUMO network file](/Networks/SUMO_Road_Networks "wikilink") as built by [NETGENERATE](/NETGENERATE "wikilink") or [NETCONVERT](/NETCONVERT "wikilink")</NETWORK_FILE></li>
-  <li>*<ROUTES_FILE>*: a [SUMO routes file](/Definition_of_Vehicles,_Vehicle_Types,_and_Routes "wikilink") as built by [DUAROUTER](/DUAROUTER "wikilink") or [JTRROUTER](/JTRROUTER "wikilink") or by hand</ROUTES_FILE></li>
-  <li>*<TYPE_FILE>*: a [SUMO edge type file](/SUMO_edge_type_file "wikilink"), built by hand or downloaded</TYPE_FILE></li>
-  <li>*<OSM_FILE>*: a [OpenStreetMap file](/OpenStreetMap_file "wikilink") as exported from [OpenStreetMap](http://www.openstreetmap.org/)</OSM_FILE></li>
+  <li><code class="highlighter-rouge">&lt;FILE&gt;</code>または<code class="highlighter-rouge">&lt;FILENAME&gt;</code></li>
+  <li><code class="highlighter-rouge">&lt;PATH&gt;</code>: 通常フォルダへの(相対または絶対)パス</li>
+  <li><code class="highlighter-rouge">&lt;COLOR&gt;</code>: ‘,’で区切られた4つの浮動小数点数(<code class="highlighter-rouge">&lt;FLOAT&gt;</code>,<code class="highlighter-rouge">&lt;FLOAT&gt;</code>,<code class="highlighter-rouge">&lt;FLOAT&gt;</code>,<code class="highlighter-rouge">&lt;FLOAT&gt;</code>)。0.0～1.0か0-255の範囲で赤、緑、青、透明度(アルファ)を示します(アルファ値はオプションです)
+セパレータはコンマだけで、スペースを挟んではいけないことに注意してください
+色は<a href="http://ja.wikipedia.org/wiki/ウェブカラー#16進トリプレット表記">HTMLカラーコード</a>を用いるか基本的な色の場合には一つの文字列として定義することもできます(基本の色: “red”, “green”, “blue”, “yellow”, “cyan”, “magenta”, “black”, “white”, “grey”)</li>
+  <li><code class="highlighter-rouge">&lt;2D-POSITION&gt;</code>: ‘,’で区切られた2つの浮動小数点数 (<code class="highlighter-rouge">&lt;FLOAT&gt;</code>,<code class="highlighter-rouge">&lt;FLOAT&gt;</code>)で、それぞれX軸とY軸を表します。Zは暗黙に0です</li>
+  <li><code class="highlighter-rouge">&lt;3D-POSITION&gt;</code>: ‘,’で区切られた3つの浮動小数点数 (<code class="highlighter-rouge">&lt;FLOAT&gt;</code>,<code class="highlighter-rouge">&lt;FLOAT&gt;</code>,<code class="highlighter-rouge">&lt;FLOAT&gt;</code>)で、それぞれX軸、Y軸、Z軸を表します</li>
+  <li><code class="highlighter-rouge">&lt;POSITION-VECTOR&gt;</code>: ‘ ‘(半角スペース)で区切られた2次元または3次元座標のリストです</li>
+  <li><code class="highlighter-rouge">&lt;2D-BOUNDING_BOX&gt;</code>: ‘,’で区切られた4つの浮動小数点数(<code class="highlighter-rouge">&lt;FLOAT&gt;</code>,<code class="highlighter-rouge">&lt;FLOAT&gt;</code>,<code class="highlighter-rouge">&lt;FLOAT&gt;</code>,<code class="highlighter-rouge">&lt;FLOAT&gt;</code>)で、Xの最小値、 Yの最小値、Xの最大値、Yの最大値を表します</li>
+  <li><code class="highlighter-rouge">&lt;PROJ_DEFINITION&gt;</code>: proj.4で使用されるプロジェクト定義が入っている文字列です。定義文字列はクォートに囲まれている必要があることに注意してください</li>
 </ul>
 
-<h2 id="further-schemes">Further Schemes</h2>
+<h3 id="ファイルタイプ">ファイルタイプ</h3>
 
-<p>Brackets ‘[’ and ‘]’ indicate that the enclosed information is optional. Brackets ‘&lt;’ and ‘&gt;’ indicate a variable - insert your own value in here.</p>
+<h2 id="さらに進んだ枠組み">さらに進んだ枠組み</h2>
 
-<p>is the path you have saved your SUMO-package into.</p>
+<p>大括弧(角括弧) ‘[‘と ‘]’で囲われた情報は任意(オプショナル)です。
+山括弧 ‘&lt;’と ‘&gt;’は変数を示します。
+好きな値を入れてください。</p>
+
+<p><strong><code class="highlighter-rouge">&lt;SUMO_HOME&gt;</code></strong> はSUMOパッケージが保存されているパスです。</p>
 
   </div><a class="u-url" href="/sumo-documentation/Basics/Notation/" hidden></a>
 </article>
@@ -122,9 +124,9 @@
         <em>Read this page in a different language:</em>
         <ul>
         
-        <li><a href="/Basics/Notation/" class="en title="View in en">en</a></li>
+        <li><a href="/Basics/Notation/" class="en title="View in ja">ja</a></li>
         
-        <li><a href="/ja/Basics/Notation/" class="ja title="View in en">en</a></li>
+        <li><a href="/Basics/Notation/" class="ja title="View in ja">ja</a></li>
         
         </ul>
     </div>
