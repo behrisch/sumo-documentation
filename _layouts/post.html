@@ -7,7 +7,7 @@ layout: default
     <h1 class="post-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
     <p class="post-meta">
       
-    <a href="{{ site.repository_url }}/edit/master/{{ page.path }}">Edit on GitHub</a>
+    <div align="right"><a href="{{ site.repository_url }}/edit/master/{{ page.path }}">Edit on GitHub</a></div>
 
       {%- if page.author -%}
         • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">{{ page.author | escape }}</span></span>
