@@ -31,6 +31,7 @@ repository_url: "https://github.com/angelobanse/sumo-documentation"
 # Build settings
 markdown: kramdown
 theme: minima
+#remote_theme: pmarsceill/just-the-docs # for github-pages
 #theme: just-the-docs
 plugins:
   - jekyll-feed
